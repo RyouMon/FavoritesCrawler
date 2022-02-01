@@ -1,2 +1,1 @@
-pixivpy==3.6.2
 scrapy==2.5.1

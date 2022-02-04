@@ -16,6 +16,6 @@ ROBOTSTXT_OBEY = False
 
 DOWNLOAD_DELAY = 0.1
 
-FILES_STORE = r'files'
+FILES_STORE = r'favorites_crawler_files'
 
 LOG_LEVEL = 'INFO'

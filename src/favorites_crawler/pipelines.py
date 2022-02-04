@@ -35,3 +35,13 @@ class PixivFilesPipeline(FilesPipeline):
         file_ext = match.group(2)
         filename = item.get_filename(file_id, file_ext)
         return os.path.join('Pixiv', filename)
+
+
+class YandreFilesPipeline(FilesPipeline):
+
+    def get_media_requests(self, item, info):
+        item_dict = ItemAdapter(item).asdict()
+        return [Request(item_dict['file_url'])]
+
+    def file_path(self, request, response=None, info=None, *, item=None):
+        return os.path.join('Yandere', item.get_filename())

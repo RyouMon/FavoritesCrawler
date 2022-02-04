@@ -27,6 +27,7 @@ def oauth_pkce(transform):
 
 
 def login_pixiv():
+    config = load_config('pixiv.yml')
     try:
         user_id = input("user id: ").strip()
     except (EOFError, KeyboardInterrupt):
@@ -62,11 +63,9 @@ def login_pixiv():
     )
 
     data = response.json()
-    config = {
-        'user_id': user_id,
-        'access_token': data['access_token'],
-        'refresh_token': data['refresh_token'],
-    }
+    config['user_id'] = user_id
+    config['access_token'] = data['access_token']
+    config['refresh_token'] = data['refresh_token']
     dump_config('pixiv.yml', config)
     return config
 

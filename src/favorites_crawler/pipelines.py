@@ -11,7 +11,7 @@ from scrapy.exceptions import DropItem
 from scrapy.pipelines.files import FilesPipeline
 from itemadapter import ItemAdapter
 
-from constants.regexes import PIXIV_ORIGINAL_IMAGE_URL_PATTERN
+from favorites_crawler.constants.regexes import PIXIV_ORIGINAL_IMAGE_URL_PATTERN
 
 
 class PixivFilesPipeline(FilesPipeline):

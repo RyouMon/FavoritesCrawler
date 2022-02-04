@@ -1,6 +1,6 @@
 from itemloaders.processors import TakeFirst, Identity
 
-from constants.blacklists import PIXIV_TAG_KEYWORD_BLACKLIST
+from favorites_crawler.constants.blacklists import PIXIV_TAG_KEYWORD_BLACKLIST
 
 
 take_first = TakeFirst()

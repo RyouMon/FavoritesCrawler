@@ -4,10 +4,10 @@ from urllib.parse import urlencode
 from scrapy import Spider, Request
 
 from favorites_crawler.itemloaders import PixivIllustItemLoader
-from constants.domains import PIXIV_DOMAIN
-from constants.endpoints import PIXIV_USER_BOOKMARKS_ENDPOINT
-from constants.headers import PIXIV_REQUEST_HEADERS, PIXIV_IOS_USER_AGENT
-from utils.config import load_config
+from favorites_crawler.constants.domains import PIXIV_DOMAIN
+from favorites_crawler.constants.endpoints import PIXIV_USER_BOOKMARKS_ENDPOINT
+from favorites_crawler.constants.headers import PIXIV_REQUEST_HEADERS, PIXIV_IOS_USER_AGENT
+from favorites_crawler.utils.config import load_config
 
 
 class PixivSpider(Spider):

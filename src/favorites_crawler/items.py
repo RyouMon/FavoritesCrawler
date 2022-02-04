@@ -5,7 +5,7 @@
 
 from dataclasses import dataclass, field
 
-from utils.text import drop_illegal_characters
+from favorites_crawler.utils.text import drop_illegal_characters
 
 
 @dataclass

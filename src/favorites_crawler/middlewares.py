@@ -3,7 +3,7 @@
 # See documentation in:
 # https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
-from utils.auth import refresh_pixiv
+from favorites_crawler.utils.auth import refresh_pixiv
 
 
 class PixivAuthorizationMiddleware:

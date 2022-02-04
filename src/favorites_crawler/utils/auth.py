@@ -6,9 +6,9 @@ from webbrowser import open as open_url
 
 import requests
 
-from constants.endpoints import PIXIV_REDIRECT_URI, PIXIV_LOGIN_URL, PIXIV_AUTH_TOKEN_URL
-from constants.headers import PIXIV_ANDROID_USER_AGENT
-from utils.config import dump_config, load_config
+from favorites_crawler.constants.endpoints import PIXIV_REDIRECT_URI, PIXIV_LOGIN_URL, PIXIV_AUTH_TOKEN_URL
+from favorites_crawler.constants.headers import PIXIV_ANDROID_USER_AGENT
+from favorites_crawler.utils.config import dump_config, load_config
 
 CLIENT_ID = "MOBrBDS8blbauoSck0ZfDbtuzpyT"
 CLIENT_SECRET = "lsACyCD94FhDUtGTXi3QzcFE2uU1hqtDaKeqrdwj"

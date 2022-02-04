@@ -10,6 +10,21 @@ Plan to support:
 Already support:
 - pixiv.net (must login), Thanks for project [PixivPy](https://github.com/upbit/pixivpy).
 
+# Requirements
+- Python3.6+
+
+# Install
+```
+pip install favorites_crawler
+```
+
+# Config Proxy (Optional)
+```bash
+# on Windows
+set http_proxy=http://localhost:8080  # replace with your proxy server
+# on Liunx/macOS
+export http_proxy=http://localhost:8080
+```
 
 # Login
 ## Login Pixiv
@@ -29,7 +44,7 @@ Thanks for [@ZipFile Pixiv OAuth Flow](https://gist.github.com/ZipFile/c9ebedb22
 8. After login, a config file will create on `{your_home}/.favorites_crawler/pixiv.yml`.
 
 # Crawl
-## Crawl All
+## Crawl All Support Site
 Before run this command, make sure that you are already login on pixiv.
 ```
 favors crawl

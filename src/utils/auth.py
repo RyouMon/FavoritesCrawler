@@ -26,7 +26,12 @@ def oauth_pkce(transform):
     return code_verifier, code_challenge
 
 
-def login_pixiv(user_id):
+def login_pixiv():
+    try:
+        user_id = input("user id: ").strip()
+    except (EOFError, KeyboardInterrupt):
+        return
+
     code_verifier, code_challenge = oauth_pkce(s256)
     login_params = {
         "code_challenge": code_challenge,

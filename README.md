@@ -24,9 +24,9 @@ pip install favorites_crawler
 # Config Proxy (Optional)
 ```bash
 # on Windows
-set http_proxy=http://localhost:8080  # replace with your proxy server
+set https_proxy=http://localhost:8080  # replace with your proxy server
 # on Liunx/macOS
-export http_proxy=http://localhost:8080
+export https_proxy=http://localhost:8080
 ```
 
 # Login

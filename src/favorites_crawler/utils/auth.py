@@ -96,3 +96,15 @@ def refresh_pixiv():
     pixiv_config['access_token'] = access_token
     dump_config(config)
     return access_token
+
+
+def auth_yandere():
+    config = load_config()
+    try:
+        username = input("username: ").strip()
+    except (EOFError, KeyboardInterrupt):
+        return
+    yandere_config = config.setdefault('yandere', {})
+    yandere_config['username'] = username
+    dump_config(config)
+    return yandere_config

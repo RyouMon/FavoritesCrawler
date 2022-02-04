@@ -3,6 +3,7 @@
 # See documentation in:
 # https://docs.scrapy.org/en/latest/topics/items.html
 
+from urllib.parse import unquote
 from dataclasses import dataclass, field
 
 from favorites_crawler.utils.text import drop_illegal_characters
@@ -25,3 +26,16 @@ class PixivIllustItem:
         ))
         title = drop_illegal_characters(self.title)
         return f'{pk} {title} [{tags}].{ext}'
+
+
+@dataclass
+class YanderePostItem:
+    """Yandere Post"""
+    id: int = field(default=None)
+    file_url: str = field(default=None)
+
+    def get_filename(self):
+        filename = self.file_url.rsplit('/', maxsplit=1)[1]
+        filename = unquote(filename)
+        filename = drop_illegal_characters(filename)
+        return filename

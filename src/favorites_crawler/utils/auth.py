@@ -27,7 +27,7 @@ def oauth_pkce(transform):
 
 
 def login_pixiv():
-    config = load_config('pixiv.yml')
+    config = load_config()
     try:
         user_id = input("user id: ").strip()
     except (EOFError, KeyboardInterrupt):
@@ -63,19 +63,21 @@ def login_pixiv():
     )
 
     data = response.json()
-    config['user_id'] = user_id
-    config['access_token'] = data['access_token']
-    config['refresh_token'] = data['refresh_token']
-    dump_config('pixiv.yml', config)
-    return config
+    pixiv_config = config.setdefault('pixiv', {})
+    pixiv_config['user_id'] = user_id
+    pixiv_config['access_token'] = data['access_token']
+    pixiv_config['refresh_token'] = data['refresh_token']
+    dump_config(config)
+    return pixiv_config
 
 
 def refresh_pixiv():
-    config = load_config('pixiv.yml')
-    if not config:
-        return
+    config = load_config()
+    pixiv_config = config.get('pixiv', {})
+    refresh_token = pixiv_config.get('refresh_token')
+    if not refresh_token:
+        raise ValueError('Cannot find refresh_token in config file, did you run `favors login pixiv`?')
 
-    refresh_token = config['refresh_token']
     response = requests.post(
         PIXIV_AUTH_TOKEN_URL,
         data={
@@ -91,6 +93,6 @@ def refresh_pixiv():
 
     data = response.json()
     access_token = data['access_token']
-    config['access_token'] = access_token
-    dump_config('pixiv.yml', config)
+    pixiv_config['access_token'] = access_token
+    dump_config(config)
     return access_token

@@ -24,7 +24,8 @@ class PixivSpider(Spider):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.user_id = load_config('pixiv.yml').get('user_id')
+        config = load_config().get('pixiv', {})
+        self.user_id = config.get('user_id')
 
     def start_requests(self):
         if self.user_id:

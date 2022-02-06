@@ -17,9 +17,9 @@ login_processors = {
 }
 
 
-def crawl(name=None):
+def crawl(name):
     process = CrawlerProcess(scrapy_settings)
-    if not name:
+    if name == 'all':
         for spider in spider_loader.list():
             process.crawl(spider)
     else:
@@ -37,7 +37,7 @@ def main():
     login_parser.set_defaults(func=lambda ns: login_processors[ns.name]())
 
     crawl_parser = subparsers.add_parser('crawl', help='crawl help')
-    crawl_parser.add_argument('-n', dest='name', choices=spider_loader.list())
+    crawl_parser.add_argument('name', choices=spider_loader.list() + ['all'])
     crawl_parser.set_defaults(func=lambda ns: crawl(ns.name))
 
     args = parser.parse_args()

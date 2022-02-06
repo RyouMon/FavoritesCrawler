@@ -59,18 +59,18 @@ Thanks for [@ZipFile Pixiv OAuth Flow](https://gist.github.com/ZipFile/c9ebedb22
 ## Crawl Pixiv
 Before run this command, make sure you are already run `favors login pixiv`.
 ```
-favors crawl -n pixiv
+favors crawl pixiv
 ```
 
 ## Crawl Yandere
 Before run this command, make sure you are already run `favors login yandere`.
 ```
-favors crawl -n yandere
+favors crawl yandere
 ```
 
 ## Crawl All Support Site
 ```
-favors crawl
+favors crawl all
 ```
 
 # Config

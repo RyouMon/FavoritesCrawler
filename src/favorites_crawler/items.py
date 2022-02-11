@@ -52,3 +52,12 @@ class LemonPicPostItem:
         name = url.rsplit('/', maxsplit=1)[1]
         filename = os.path.join(folder, name)
         return drop_illegal_characters(filename)
+
+
+@dataclass
+class NHentaiGalleryItem:
+    id: str = field(default=None)
+    title: str = field(default=None)
+    tags: List = field(default=None)
+    characters: List = field(default=None)
+    image_urls: List = field(default=None)

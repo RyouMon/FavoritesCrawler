@@ -3,6 +3,7 @@
 # See documentation in:
 # https://docs.scrapy.org/en/latest/topics/items.html
 
+from typing import List
 from urllib.parse import unquote
 from dataclasses import dataclass, field
 
@@ -39,3 +40,11 @@ class YanderePostItem:
         filename = unquote(filename)
         filename = drop_illegal_characters(filename)
         return filename
+
+
+@dataclass
+class LemonPicPostItem:
+    id: int = field(default=None)
+    title: str = field(default=None)
+    image_urls: List = field(default=None)
+    tags: List = field(default=None)

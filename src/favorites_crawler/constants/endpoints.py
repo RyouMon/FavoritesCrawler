@@ -4,3 +4,5 @@ PIXIV_LOGIN_URL = "https://app-api.pixiv.net/web/v1/login"
 PIXIV_AUTH_TOKEN_URL = "https://oauth.secure.pixiv.net/auth/token"
 
 YANDERE_POST_URL = 'https://yande.re/post.json'
+
+LEMON_PIC_LOGIN_URL = 'https://www.lmmpic.com/wp-login.php'

@@ -17,3 +17,8 @@ class YanderePostItemLoader(ItemLoader):
     """Yandere Post Loader"""
     default_item_class = items.YanderePostItem
     default_output_processor = pc.take_first
+
+
+class LemonPicPostItemLoader(ItemLoader):
+    default_item_class = items.LemonPicPostItem
+    default_output_processor = pc.take_first

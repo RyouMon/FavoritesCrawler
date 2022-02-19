@@ -7,13 +7,14 @@ Crawl your personal favorite images, photo albums, comics from website.
 Plan to support:
 - pixiv.net (crawl your bookmarks for illust)
 - yande.re (crawl posts that you voted)
-- immpic.com
+- immpic.com (crawl your favorites for albums)
 - instagram.com
 - nhentai.net
 
 Already support:
 - pixiv.net (must login), Thanks for project [PixivPy](https://github.com/upbit/pixivpy).
 - yande.re (must login, only input your username)
+- lmmpic.com (must login)
 
 # Requirements
 - Python3.6+
@@ -32,6 +33,11 @@ export https_proxy=http://localhost:8080
 ```
 
 # Login
+
+```
+crawl login [-h] {pixiv,yandere,lemon}
+```
+
 ## Login Pixiv
 Thanks for [@ZipFile Pixiv OAuth Flow](https://gist.github.com/ZipFile/c9ebedb224406f4f11845ab700124362)
 1. run command
@@ -54,19 +60,34 @@ Thanks for [@ZipFile Pixiv OAuth Flow](https://gist.github.com/ZipFile/c9ebedb22
    ```
 2. input your username and hit the Enter key.
 
+## Login Lmmpic
+1. run command:
+   ```
+   favors login lemon
+   ```
+2. input your username and hit the Enter key.
+3. input your password and hit the Enter key.
+
 # Crawl
 
 ## Crawl Pixiv
-Before run this command, make sure you are already run `favors login pixiv`.
+Before run this command, make sure you are already [login](#Login Pixiv).
 ```
 favors crawl pixiv
 ```
 
 ## Crawl Yandere
-Before run this command, make sure you are already run `favors login yandere`.
+Before run this command, make sure you are already [login](#Login Yandere).
 ```
 favors crawl yandere
 ```
+
+## Crawl Lmmpic
+Before run this command, make sure you are already [login](#Login Yandere).
+```
+favors crawl lemon
+```
+
 
 ## Crawl All Support Site
 ```

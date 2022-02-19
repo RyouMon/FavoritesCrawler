@@ -9,3 +9,4 @@ LEMON_PIC_LOGIN_URL = 'https://www.lmmpic.com/wp-login.php'
 LEMON_PIC_USER_FAVORITES_URL = 'https://www.lmmpic.com/user-center'
 
 NHENTAI_LOGIN_URL = 'https://nhentai.net/login/?next=/favorites/'
+NHENTAI_USER_FAVORITES_URL = 'https://nhentai.net/favorites/'

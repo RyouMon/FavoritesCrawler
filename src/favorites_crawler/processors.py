@@ -25,3 +25,7 @@ def get_nhentai_id(url):
     if not match:
         return ''
     return match.group(1)
+
+
+def replace_space_with_under_scope(text):
+    return '_'.join(text.split())

@@ -1,8 +1,9 @@
 from itemloaders import ItemLoader
-from itemloaders.processors import Join, Compose
+from itemloaders.processors import Join, Compose, MapCompose
 
 from favorites_crawler import items
 from favorites_crawler.processors import take_first, identity, filter_pixiv_tags, get_nhentai_id
+from favorites_crawler.processors import replace_space_with_under_scope
 
 
 class PixivIllustItemLoader(ItemLoader):
@@ -27,6 +28,8 @@ class NHentaiGalleryItemLoader(ItemLoader):
     id_out = Compose(take_first, get_nhentai_id)
     title_out = Join('')
     image_urls_out = identity
+    tags_out = MapCompose(replace_space_with_under_scope)
+    characters_out = MapCompose(replace_space_with_under_scope)
 
 
 class LemonPicPostItemLoader(ItemLoader):

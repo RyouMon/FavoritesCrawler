@@ -1,8 +1,4 @@
-# Define here the models for your scraped items
-#
-# See documentation in:
-# https://docs.scrapy.org/en/latest/topics/items.html
-
+import os.path
 from typing import List
 from urllib.parse import unquote
 from dataclasses import dataclass, field
@@ -48,3 +44,10 @@ class LemonPicPostItem:
     title: str = field(default=None)
     image_urls: List = field(default=None)
     tags: List = field(default=None)
+
+    def get_filename(self, url):
+        tags = ' '.join(self.tags)
+        folder = f'{self.title} [{tags}]'
+        name = url.rsplit('/', maxsplit=1)[1]
+        filename = os.path.join(folder, name)
+        return drop_illegal_characters(filename)

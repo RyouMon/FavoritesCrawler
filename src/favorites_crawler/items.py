@@ -8,7 +8,7 @@ from favorites_crawler.utils.text import drop_illegal_characters
 
 @dataclass
 class BaseItem:
-    id: int = field(default=None)
+    id: str = field(default=None)
     title: str = field(default=None)
     image_urls: List = field(default_factory=list)
     tags: List = field(default_factory=list)
@@ -25,7 +25,10 @@ class BaseItem:
 
     def get_folder_name(self):
         tags = ' '.join(self.tags)
-        return f'{self.title} [{tags}]'
+        prefix = f'[{self.id}] {self.title}'
+        if tags:
+            return prefix + f' [{tags}]'
+        return prefix
 
 
 @dataclass
@@ -78,4 +81,11 @@ class LemonPicPostItem:
 
 @dataclass
 class NHentaiGalleryItem(BaseItem):
-    characters: List = field(default=None)
+    characters: List = field(default_factory=list)
+
+    def get_folder_name(self):
+        folder_name = super().get_folder_name()
+        characters = ' '.join(self.characters)
+        if characters:
+            return folder_name + f' [{characters}]'
+        return folder_name

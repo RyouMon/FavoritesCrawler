@@ -20,6 +20,9 @@ class LemonSpider(CrawlSpider):
             callback='parse_item',
         ),
     ]
+    custom_settings = {
+        'ITEM_PIPELINES': {'favorites_crawler.pipelines.CollectionFilePipeline': 0},
+    }
 
     def __init__(self, **kwargs):
         super(LemonSpider, self).__init__(**kwargs)
@@ -49,4 +52,5 @@ class LemonSpider(CrawlSpider):
         loader.add_xpath('title', '//h1[@class="entry-title"]/text()')
         loader.add_xpath('image_urls', '//div[@class="single-content"]//img/@src')
         loader.add_xpath('tags', '//a[@rel="tag"]/text()')
+        loader.add_value('referer', response.url)
         yield loader.load_item()

@@ -44,6 +44,7 @@ class LemonPicPostItem:
     title: str = field(default=None)
     image_urls: List = field(default=None)
     tags: List = field(default=None)
+    referer: str = field(default=None)
 
     def get_filename(self, url):
         tags = ' '.join(self.tags)

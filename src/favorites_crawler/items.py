@@ -1,8 +1,5 @@
-# Define here the models for your scraped items
-#
-# See documentation in:
-# https://docs.scrapy.org/en/latest/topics/items.html
-
+import os.path
+from typing import List
 from urllib.parse import unquote
 from dataclasses import dataclass, field
 
@@ -39,3 +36,19 @@ class YanderePostItem:
         filename = unquote(filename)
         filename = drop_illegal_characters(filename)
         return filename
+
+
+@dataclass
+class LemonPicPostItem:
+    id: int = field(default=None)
+    title: str = field(default=None)
+    image_urls: List = field(default=None)
+    tags: List = field(default=None)
+    referer: str = field(default=None)
+
+    def get_filename(self, url):
+        tags = ' '.join(self.tags)
+        folder = f'{self.title} [{tags}]'
+        name = url.rsplit('/', maxsplit=1)[1]
+        filename = os.path.join(folder, name)
+        return drop_illegal_characters(filename)

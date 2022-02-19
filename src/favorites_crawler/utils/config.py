@@ -19,4 +19,4 @@ def load_config():
 def dump_config(data):
     """Dump config data to user home"""
     with open(config_file, 'w', encoding='utf8') as f:
-        yaml.safe_dump(data, f)
+        yaml.safe_dump(data, f, allow_unicode=True)

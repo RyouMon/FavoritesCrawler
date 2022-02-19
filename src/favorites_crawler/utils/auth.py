@@ -1,3 +1,4 @@
+from getpass import getpass
 from base64 import urlsafe_b64encode
 from hashlib import sha256
 from secrets import token_urlsafe
@@ -108,3 +109,17 @@ def auth_yandere():
     yandere_config['username'] = username
     dump_config(config)
     return yandere_config
+
+
+def auth_lmmpic():
+    config = load_config()
+    try:
+        username = input("username: ").strip()
+        password = getpass("password: ")
+    except (EOFError, KeyboardInterrupt):
+        return
+    lmmpic_config = config.setdefault('lmmpic', {})
+    lmmpic_config['username'] = username
+    lmmpic_config['password'] = password
+    dump_config(config)
+    return lmmpic_config

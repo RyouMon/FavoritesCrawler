@@ -14,6 +14,7 @@ spider_loader = SpiderLoader(scrapy_settings)
 login_processors = {
     'pixiv': auth.login_pixiv,
     'yandere': auth.auth_yandere,
+    'lemon': auth.auth_lmmpic,
 }
 
 

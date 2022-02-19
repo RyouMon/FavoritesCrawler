@@ -22,3 +22,6 @@ class YanderePostItemLoader(ItemLoader):
 class LemonPicPostItemLoader(ItemLoader):
     default_item_class = items.LemonPicPostItem
     default_output_processor = pc.take_first
+
+    image_urls_out = pc.identity
+    tags_out = pc.identity

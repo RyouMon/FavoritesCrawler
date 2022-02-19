@@ -7,6 +7,28 @@ from favorites_crawler.utils.text import drop_illegal_characters
 
 
 @dataclass
+class BaseItem:
+    id: int = field(default=None)
+    title: str = field(default=None)
+    image_urls: List = field(default=None)
+    tags: List = field(default=None)
+    referer: str = field(default=None)
+
+    def get_filepath(self, url):
+        folder_name = self.get_folder_name()
+        filename = self.get_filename(url)
+        filepath = os.path.join(folder_name, filename)
+        return drop_illegal_characters(filepath)
+
+    def get_filename(self, url):
+        return unquote(url.rsplit('/', maxsplit=1)[1])
+
+    def get_folder_name(self):
+        tags = ' '.join(self.tags)
+        return f'{self.title} [{tags}]'
+
+
+@dataclass
 class PixivIllustItem:
     """Pixiv Illust"""
     id: int = field(default=None)
@@ -56,8 +78,4 @@ class LemonPicPostItem:
 
 @dataclass
 class NHentaiGalleryItem:
-    id: str = field(default=None)
-    title: str = field(default=None)
-    tags: List = field(default=None)
     characters: List = field(default=None)
-    image_urls: List = field(default=None)

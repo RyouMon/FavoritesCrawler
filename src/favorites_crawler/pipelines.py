@@ -55,4 +55,4 @@ class CollectionFilePipeline(FilesPipeline):
         return (Request(url, headers={'referer': referer}) for url in item_dict.get('image_urls', ()))
 
     def file_path(self, request, response=None, info=None, *, item=None):
-        return item.get_filename(request.url)
+        return item.get_filepath(request.url)

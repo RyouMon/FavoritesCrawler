@@ -77,5 +77,5 @@ class LemonPicPostItem:
 
 
 @dataclass
-class NHentaiGalleryItem:
+class NHentaiGalleryItem(BaseItem):
     characters: List = field(default=None)

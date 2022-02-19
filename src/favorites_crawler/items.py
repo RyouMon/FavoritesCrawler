@@ -10,8 +10,8 @@ from favorites_crawler.utils.text import drop_illegal_characters
 class BaseItem:
     id: int = field(default=None)
     title: str = field(default=None)
-    image_urls: List = field(default=None)
-    tags: List = field(default=None)
+    image_urls: List = field(default_factory=list)
+    tags: List = field(default_factory=list)
     referer: str = field(default=None)
 
     def get_filepath(self, url):
@@ -33,7 +33,7 @@ class PixivIllustItem:
     """Pixiv Illust"""
     id: int = field(default=None)
     title: str = field(default=None)
-    tags: list = field(default=None)
+    tags: list = field(default_factory=list)
     referer: str = field(default=None)
     original_image_urls: list = field(default=None)
 
@@ -64,8 +64,8 @@ class YanderePostItem:
 class LemonPicPostItem:
     id: int = field(default=None)
     title: str = field(default=None)
-    image_urls: List = field(default=None)
-    tags: List = field(default=None)
+    image_urls: List = field(default_factory=list)
+    tags: List = field(default_factory=list)
     referer: str = field(default=None)
 
     def get_filename(self, url):

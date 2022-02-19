@@ -1,8 +1,8 @@
 from itemloaders import ItemLoader
-from itemloaders.processors import Join
+from itemloaders.processors import Join, Compose
 
 from favorites_crawler import items
-from favorites_crawler.processors import take_first, identity, filter_pixiv_tags
+from favorites_crawler.processors import take_first, identity, filter_pixiv_tags, get_nhentai_id
 
 
 class PixivIllustItemLoader(ItemLoader):
@@ -24,7 +24,9 @@ class NHentaiGalleryItemLoader(ItemLoader):
     default_item_class = items.NHentaiGalleryItem
     default_output_processor = take_first
 
+    id_out = Compose(take_first, get_nhentai_id)
     title_out = Join('')
+    image_urls_out = identity
 
 
 class LemonPicPostItemLoader(ItemLoader):

@@ -84,8 +84,8 @@ class NHentaiGalleryItem(BaseItem):
     characters: List = field(default_factory=list)
 
     def get_folder_name(self):
-        folder_name = super().get_folder_name()
         characters = ' '.join(self.characters)
+        prefix = f'[{self.id}] {self.title}'
         if characters:
-            return folder_name + f' [{characters}]'
-        return folder_name
+            return prefix + f' [{characters}]'
+        return prefix

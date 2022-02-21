@@ -35,7 +35,7 @@ export https_proxy=http://localhost:8080
 # Login
 
 ```
-crawl login [-h] {pixiv,yandere,lemon}
+favors login [-h] {pixiv,yandere,lemon}
 ```
 
 ## Login Pixiv
@@ -68,26 +68,36 @@ Thanks for [@ZipFile Pixiv OAuth Flow](https://gist.github.com/ZipFile/c9ebedb22
 2. input your username and hit the Enter key.
 3. input your password and hit the Enter key.
 
+## Login NHentai
+1. Open nhentai on browser and login.
+2. Use "Get cookies.txt" extension download cookie file.
+3. Copy cookie file to {user_home}/.favorites_crawler.
+
 # Crawl
 
 ## Crawl Pixiv
-Before run this command, make sure you are already [login](#Login Pixiv).
+Before run this command, make sure you are already [login](#login-pixiv).
 ```
 favors crawl pixiv
 ```
 
 ## Crawl Yandere
-Before run this command, make sure you are already [login](#Login Yandere).
+Before run this command, make sure you are already [login](#login-yandere).
 ```
 favors crawl yandere
 ```
 
 ## Crawl Lmmpic
-Before run this command, make sure you are already [login](#Login Yandere).
+Before run this command, make sure you are already [login](#login-lmmpic).
 ```
 favors crawl lemon
 ```
 
+## Crawl NHentai
+Before run this command, make sure you are already [login](#login-nhentai).
+```
+favors crawl nhantai
+```
 
 ## Crawl All Support Site
 ```

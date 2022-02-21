@@ -4,17 +4,22 @@
 
 Crawl your personal favorite images, photo albums, comics from website.
 
-Plan to support:
+# Warning!
+- Not ready for production.
+- Appropriately reduce the crawling speed in the future and provide options to set performance, but your account is still at risk of being disabled by the website.
+
+# Plan to support
 - pixiv.net (crawl your bookmarks for illust)
 - yande.re (crawl posts that you voted)
 - immpic.com (crawl your favorites for albums)
 - instagram.com
 - nhentai.net
 
-Already support:
+# Already support
 - pixiv.net (must login), Thanks for project [PixivPy](https://github.com/upbit/pixivpy).
-- yande.re (must login, only input your username)
+- yande.re (require your username)
 - lmmpic.com (must login)
+- nhentai.net  (must login)
 
 # Requirements
 - Python3.6+
@@ -74,6 +79,10 @@ Thanks for [@ZipFile Pixiv OAuth Flow](https://gist.github.com/ZipFile/c9ebedb22
 3. Copy cookie file to {user_home}/.favorites_crawler.
 
 # Crawl
+
+```
+favors crawl [-h] {lemon,nhentai,pixiv,yandere,all}
+```
 
 ## Crawl Pixiv
 Before run this command, make sure you are already [login](#login-pixiv).

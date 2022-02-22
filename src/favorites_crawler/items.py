@@ -64,19 +64,8 @@ class YanderePostItem:
 
 
 @dataclass
-class LemonPicPostItem:
-    id: int = field(default=None)
-    title: str = field(default=None)
-    image_urls: List = field(default_factory=list)
-    tags: List = field(default_factory=list)
-    referer: str = field(default=None)
-
-    def get_filename(self, url):
-        tags = ' '.join(self.tags)
-        folder = f'{self.title} [{tags}]'
-        name = url.rsplit('/', maxsplit=1)[1]
-        filename = os.path.join(folder, name)
-        return drop_illegal_characters(filename)
+class LemonPicPostItem(BaseItem):
+    pass
 
 
 @dataclass

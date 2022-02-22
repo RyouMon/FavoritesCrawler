@@ -4,7 +4,6 @@ from scrapy.http import Request
 from favorites_crawler.itemloaders import NHentaiGalleryItemLoader
 from favorites_crawler.constants.endpoints import NHENTAI_USER_FAVORITES_URL
 from favorites_crawler.constants.domains import NHENTAI_DOMAIN
-from favorites_crawler.utils.config import load_config
 from favorites_crawler.utils.cookies import load_cookie
 
 
@@ -23,9 +22,6 @@ class NHentaiSpider(CrawlSpider):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        config = load_config().get('nhentai', {})
-        self.username = config.get('username', '')
-        self.password = config.get('password', '')
         self.cookies = load_cookie(NHENTAI_DOMAIN)
 
     def start_requests(self):

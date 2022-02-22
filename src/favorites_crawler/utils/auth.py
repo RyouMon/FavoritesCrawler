@@ -109,31 +109,3 @@ def auth_yandere():
     yandere_config['username'] = username
     dump_config(config)
     return yandere_config
-
-
-def auth_lmmpic():
-    config = load_config()
-    try:
-        username = input("username: ").strip()
-        password = getpass("password: ")
-    except (EOFError, KeyboardInterrupt):
-        return
-    lmmpic_config = config.setdefault('lmmpic', {})
-    lmmpic_config['username'] = username
-    lmmpic_config['password'] = password
-    dump_config(config)
-    return lmmpic_config
-
-
-def auth_nhentai():
-    config = load_config()
-    try:
-        username = input("username: ").strip()
-        password = getpass("password: ")
-    except (EOFError, KeyboardInterrupt):
-        return
-    nhentai_config = config.setdefault('nhentai', {})
-    nhentai_config['username'] = username
-    nhentai_config['password'] = password
-    dump_config(config)
-    return nhentai_config

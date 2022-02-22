@@ -24,11 +24,19 @@ class BaseItem:
         return unquote(url.rsplit('/', maxsplit=1)[1])
 
     def get_folder_name(self):
+        name = self.title
+        prefix = self.get_folder_prefix()
+        subfix = self.get_folder_subfix()
+        return f'{prefix}{name}{subfix}'
+
+    def get_folder_prefix(self):
+        return f'[{self.id}] '
+
+    def get_folder_subfix(self):
         tags = ' '.join(self.tags)
-        prefix = f'[{self.id}] {self.title}'
-        if tags:
-            return prefix + f' [{tags}]'
-        return prefix
+        if not tags:
+            return ''
+        return f' [{tags}]'
 
 
 @dataclass
@@ -64,19 +72,10 @@ class YanderePostItem:
 
 
 @dataclass
-class LemonPicPostItem:
-    id: int = field(default=None)
-    title: str = field(default=None)
-    image_urls: List = field(default_factory=list)
-    tags: List = field(default_factory=list)
-    referer: str = field(default=None)
+class LemonPicPostItem(BaseItem):
 
-    def get_filename(self, url):
-        tags = ' '.join(self.tags)
-        folder = f'{self.title} [{tags}]'
-        name = url.rsplit('/', maxsplit=1)[1]
-        filename = os.path.join(folder, name)
-        return drop_illegal_characters(filename)
+    def get_folder_prefix(self):
+        return ''
 
 
 @dataclass

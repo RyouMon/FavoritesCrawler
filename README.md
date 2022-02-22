@@ -4,17 +4,18 @@
 
 Crawl your personal favorite images, photo albums, comics from website.
 
-Plan to support:
-- pixiv.net (crawl your bookmarks for illust)
-- yande.re (crawl posts that you voted)
-- immpic.com (crawl your favorites for albums)
-- instagram.com
-- nhentai.net
+# Warning!
+- Not ready for production.
+- Appropriately reduce the crawling speed in the future and provide options to set performance, but your account is still at risk of being disabled by the website.
 
-Already support:
-- pixiv.net (must login), Thanks for project [PixivPy](https://github.com/upbit/pixivpy).
-- yande.re (must login, only input your username)
-- lmmpic.com (must login)
+# Plan to support
+- instagram.com
+
+# Already support
+- pixiv.net (crawl your bookmarks for illust, must login), Thanks for project [PixivPy](https://github.com/upbit/pixivpy).
+- yande.re (crawl posts that you voted, require your username)
+- lmmpic.com (crawl your favorites for albums, must login)
+- nhentai.net  (crawl your favorites for comic, must login)
 
 # Requirements
 - Python3.6+
@@ -61,12 +62,9 @@ Thanks for [@ZipFile Pixiv OAuth Flow](https://gist.github.com/ZipFile/c9ebedb22
 2. input your username and hit the Enter key.
 
 ## Login Lmmpic
-1. run command:
-   ```
-   favors login lemon
-   ```
-2. input your username and hit the Enter key.
-3. input your password and hit the Enter key.
+1. Open lmmpic on browser and login.
+2. Use "Get cookies.txt" extension download cookie file.
+3. Copy cookie file to {user_home}/.favorites_crawler.
 
 ## Login NHentai
 1. Open nhentai on browser and login.
@@ -74,6 +72,10 @@ Thanks for [@ZipFile Pixiv OAuth Flow](https://gist.github.com/ZipFile/c9ebedb22
 3. Copy cookie file to {user_home}/.favorites_crawler.
 
 # Crawl
+
+```
+favors crawl [-h] {lemon,nhentai,pixiv,yandere,all}
+```
 
 ## Crawl Pixiv
 Before run this command, make sure you are already [login](#login-pixiv).

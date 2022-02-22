@@ -73,7 +73,9 @@ class YanderePostItem:
 
 @dataclass
 class LemonPicPostItem(BaseItem):
-    pass
+
+    def get_folder_prefix(self):
+        return ''
 
 
 @dataclass

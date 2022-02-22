@@ -24,11 +24,19 @@ class BaseItem:
         return unquote(url.rsplit('/', maxsplit=1)[1])
 
     def get_folder_name(self):
+        name = self.title
+        prefix = self.get_folder_prefix()
+        subfix = self.get_folder_subfix()
+        return f'{prefix}{name}{subfix}'
+
+    def get_folder_prefix(self):
+        return f'[{self.id}] '
+
+    def get_folder_subfix(self):
         tags = ' '.join(self.tags)
-        prefix = f'[{self.id}] {self.title}'
-        if tags:
-            return prefix + f' [{tags}]'
-        return prefix
+        if not tags:
+            return ''
+        return f' [{tags}]'
 
 
 @dataclass

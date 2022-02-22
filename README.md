@@ -62,12 +62,9 @@ Thanks for [@ZipFile Pixiv OAuth Flow](https://gist.github.com/ZipFile/c9ebedb22
 2. input your username and hit the Enter key.
 
 ## Login Lmmpic
-1. run command:
-   ```
-   favors login lemon
-   ```
-2. input your username and hit the Enter key.
-3. input your password and hit the Enter key.
+1. Open lmmpic on browser and login.
+2. Use "Get cookies.txt" extension download cookie file.
+3. Copy cookie file to {user_home}/.favorites_crawler.
 
 ## Login NHentai
 1. Open nhentai on browser and login.

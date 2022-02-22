@@ -9,17 +9,13 @@ Crawl your personal favorite images, photo albums, comics from website.
 - Appropriately reduce the crawling speed in the future and provide options to set performance, but your account is still at risk of being disabled by the website.
 
 # Plan to support
-- pixiv.net (crawl your bookmarks for illust)
-- yande.re (crawl posts that you voted)
-- immpic.com (crawl your favorites for albums)
 - instagram.com
-- nhentai.net
 
 # Already support
-- pixiv.net (must login), Thanks for project [PixivPy](https://github.com/upbit/pixivpy).
-- yande.re (require your username)
-- lmmpic.com (must login)
-- nhentai.net  (must login)
+- pixiv.net (crawl your bookmarks for illust, must login), Thanks for project [PixivPy](https://github.com/upbit/pixivpy).
+- yande.re (crawl posts that you voted, require your username)
+- lmmpic.com (crawl your favorites for albums, must login)
+- nhentai.net  (crawl your favorites for comic, must login)
 
 # Requirements
 - Python3.6+

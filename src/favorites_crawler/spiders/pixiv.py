@@ -17,7 +17,7 @@ class PixivSpider(Spider):
     custom_settings = {
         'USER_AGENT': PIXIV_IOS_USER_AGENT,
         'DEFAULT_REQUEST_HEADERS': PIXIV_REQUEST_HEADERS,
-        'ITEM_PIPELINES': {'favorites_crawler.pipelines.PixivFilesPipeline': 0},
+        'ITEM_PIPELINES': {'favorites_crawler.pipelines.CollectionFilePipeline': 0},
         # Add PixivAuthorizationMiddleware after DefaultHeadersMiddleware
         'DOWNLOADER_MIDDLEWARES': {'favorites_crawler.middlewares.PixivAuthorizationMiddleware': 450},
     }

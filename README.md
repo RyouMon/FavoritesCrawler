@@ -36,7 +36,7 @@ export https_proxy=http://localhost:8080
 # Login
 
 ```
-favors login [-h] {pixiv,yandere,lemon}
+favors login [-h] {pixiv,yandere}
 ```
 
 ## Login Pixiv

@@ -48,8 +48,8 @@ class PixivSpider(Spider):
             loader.add_value('id', illust.get('id'))
             loader.add_value('title', illust.get('title'))
             loader.add_value('tags', illust.get('tags'))
-            loader.add_value('original_image_urls', illust.get('meta_single_page', {}).get('original_image_url', ()))
-            loader.add_value('original_image_urls', [
+            loader.add_value('image_urls', illust.get('meta_single_page', {}).get('original_image_url', ()))
+            loader.add_value('image_urls', [
                 d['image_urls']['original'] for d in illust.get('meta_pages', ())
                 if d.get('image_urls', {}).get('original')
             ])

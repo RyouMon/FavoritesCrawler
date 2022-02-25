@@ -11,7 +11,7 @@ class PixivIllustItemLoader(ItemLoader):
     default_item_class = items.PixivIllustItem
     default_output_processor = take_first
 
-    original_image_urls_out = identity
+    image_urls_out = identity
     tags_out = filter_pixiv_tags
 
 

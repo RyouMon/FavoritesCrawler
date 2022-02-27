@@ -19,3 +19,4 @@ class BaseSpider(CrawlSpider, metaclass=ABCMeta):
         spider = super().from_crawler(crawler, *args, **kwargs)
         user_config = load_config().get(cls.name, {})
         spider.custom_settings.update(user_config)
+        return spider

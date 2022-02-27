@@ -2,7 +2,7 @@ from itemloaders import ItemLoader
 from itemloaders.processors import Join, Compose, MapCompose
 
 from favorites_crawler import items
-from favorites_crawler.processors import take_first, identity, filter_pixiv_tags, get_nhentai_id
+from favorites_crawler.processors import take_first, identity, get_nhentai_id
 from favorites_crawler.processors import replace_space_with_under_scope
 
 
@@ -12,7 +12,6 @@ class PixivIllustItemLoader(ItemLoader):
     default_output_processor = take_first
 
     image_urls_out = identity
-    tags_out = filter_pixiv_tags
 
 
 class YanderePostItemLoader(ItemLoader):

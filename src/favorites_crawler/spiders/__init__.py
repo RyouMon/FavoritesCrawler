@@ -16,6 +16,6 @@ class BaseSpider(CrawlSpider, metaclass=ABCMeta):
 
     @classmethod
     def from_crawler(cls, crawler, *args, **kwargs):
-        spider = super().from_crawler(cls, crawler, *args, **kwargs)
+        spider = super().from_crawler(crawler, *args, **kwargs)
         user_config = load_config().get(cls.name, {})
         spider.custom_settings.update(user_config)

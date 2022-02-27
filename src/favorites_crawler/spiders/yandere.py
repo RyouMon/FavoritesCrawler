@@ -22,6 +22,8 @@ class YandereSpider(BaseSpider):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.username = self.custom_settings.get('USERNAME')
+        if not self.username:
+            raise ValueError('Did you run "favors login yandere"?')
         self.limit = 100
         self.params = {
             'limit': self.limit,
@@ -30,8 +32,7 @@ class YandereSpider(BaseSpider):
         }
 
     def start_requests(self):
-        if self.username:
-            yield Request(f'{YANDERE_POST_URL}?{urlencode(self.params)}')
+        yield Request(f'{YANDERE_POST_URL}?{urlencode(self.params)}')
 
     def parse_start_url(self, response, **kwargs):
         for request_or_item in self.parse(response, **kwargs):

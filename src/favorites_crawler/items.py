@@ -52,18 +52,18 @@ class PixivIllustItem(BaseItem):
         return 'Pixiv'
 
 
-
 @dataclass
-class YanderePostItem:
+class YanderePostItem(BaseItem):
     """Yandere Post"""
-    id: int = field(default=None)
-    file_url: str = field(default=None)
 
-    def get_filename(self):
-        filename = self.file_url.rsplit('/', maxsplit=1)[1]
-        filename = unquote(filename)
-        filename = drop_illegal_characters(filename)
-        return filename
+    def get_folder_prefix(self):
+        return ''
+
+    def get_folder_subfix(self):
+        return ''
+
+    def get_folder_name(self):
+        return 'Yandere'
 
 
 @dataclass

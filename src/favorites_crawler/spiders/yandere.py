@@ -14,7 +14,7 @@ class YandereSpider(Spider):
     allowed_domains = (YANDERE_DOMAIN, )
     custom_settings = {
         'ITEM_PIPELINES': {
-            'favorites_crawler.pipelines.YandreFilesPipeline': 0,
+            'favorites_crawler.pipelines.CollectionFilePipeline': 0,
         },
         'CONCURRENT_REQUESTS': 5,
     }
@@ -35,6 +35,12 @@ class YandereSpider(Spider):
             yield Request(f'{YANDERE_POST_URL}?{urlencode(self.params)}')
 
     def parse(self, response, **kwargs):
+        """Spider Contracts:
+        @url https://yande.re/post.json?limit=100&page=1
+        @returns item 100
+        @returns requests 1
+        @scrapes image_urls
+        """
         posts = response.json()
 
         if len(posts) == self.limit:
@@ -43,5 +49,5 @@ class YandereSpider(Spider):
 
         for post in posts:
             loader = YanderePostItemLoader()
-            loader.add_value('file_url', post['file_url'])
+            loader.add_value('image_urls', post['file_url'])
             yield loader.load_item()

@@ -19,6 +19,8 @@ class YanderePostItemLoader(ItemLoader):
     default_item_class = items.YanderePostItem
     default_output_processor = take_first
 
+    image_urls_out = identity
+
 
 class NHentaiGalleryItemLoader(ItemLoader):
     default_item_class = items.NHentaiGalleryItem

@@ -40,27 +40,15 @@ class BaseItem(Item):
 
 class PixivIllustItem(BaseItem):
 
-    def get_folder_prefix(self):
-        return ''
-
-    def get_folder_subfix(self):
-        return ''
-
     def get_folder_name(self):
-        return 'Pixiv'
+        return ''
 
 
 class YanderePostItem(BaseItem):
     """Yandere Post"""
 
-    def get_folder_prefix(self):
-        return ''
-
-    def get_folder_subfix(self):
-        return ''
-
     def get_folder_name(self):
-        return 'Yandere'
+        return ''
 
 
 class LemonPicPostItem(BaseItem):

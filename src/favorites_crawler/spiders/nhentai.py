@@ -1,27 +1,25 @@
-from scrapy.spiders.crawl import CrawlSpider, Rule, LinkExtractor
+from scrapy.spiders.crawl import Rule, LinkExtractor
 from scrapy.http import Request
 
+from favorites_crawler.spiders import BaseSpider
 from favorites_crawler.itemloaders import NHentaiGalleryItemLoader
 from favorites_crawler.constants.endpoints import NHENTAI_USER_FAVORITES_URL
 from favorites_crawler.constants.domains import NHENTAI_DOMAIN
 from favorites_crawler.utils.cookies import load_cookie
 
 
-class NHentaiSpider(CrawlSpider):
+class NHentaiSpider(BaseSpider):
     name = 'nhentai'
     allowed_domains = (NHENTAI_DOMAIN, )
     rules = (
         Rule(LinkExtractor(restrict_xpaths='//div[@class="container"]'), callback='parse'),
     )
     custom_settings = {
-        'ITEM_PIPELINES': {
-            'favorites_crawler.pipelines.CollectionFilePipeline': 0,
-        },
         'CONCURRENT_REQUESTS': 5,
     }
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.cookies = load_cookie(NHENTAI_DOMAIN)
 
     def start_requests(self):

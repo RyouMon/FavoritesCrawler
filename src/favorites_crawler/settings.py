@@ -25,3 +25,5 @@ LOG_LEVEL = 'INFO'
 DOWNLOAD_WARNSIZE = 0
 
 TELNETCONSOLE_ENABLED = False
+
+ITEM_PIPELINES = {'favorites_crawler.pipelines.CollectionFilePipeline': 0}

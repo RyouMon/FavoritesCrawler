@@ -6,10 +6,12 @@ from scrapy.utils.project import get_project_settings
 from scrapy.spiderloader import SpiderLoader
 
 from favorites_crawler.utils import auth
+from favorites_crawler.utils.config import load_config, overwrite_settings
 
 os.environ.setdefault('SCRAPY_SETTINGS_MODULE', 'favorites_crawler.settings')
 scrapy_settings = get_project_settings()
 spider_loader = SpiderLoader(scrapy_settings)
+overwrite_settings(spider_loader, scrapy_settings, load_config())
 
 login_processors = {
     'pixiv': auth.login_pixiv,

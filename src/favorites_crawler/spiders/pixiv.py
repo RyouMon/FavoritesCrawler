@@ -1,40 +1,38 @@
 import json
 from urllib.parse import urlencode
 
-from scrapy import Spider, Request
+from scrapy import Request
+from scrapy.exceptions import CloseSpider
 
+from favorites_crawler.spiders import BaseSpider
 from favorites_crawler.itemloaders import PixivIllustItemLoader
 from favorites_crawler.constants.domains import PIXIV_DOMAIN
 from favorites_crawler.constants.endpoints import PIXIV_USER_BOOKMARKS_ENDPOINT
 from favorites_crawler.constants.headers import PIXIV_REQUEST_HEADERS, PIXIV_IOS_USER_AGENT
-from favorites_crawler.utils.config import load_config
 
 
-class PixivSpider(Spider):
+class PixivSpider(BaseSpider):
     """Crawl user bookmarks in pixiv"""
     name = 'pixiv'
     allowed_domains = (PIXIV_DOMAIN, )
     custom_settings = {
         'USER_AGENT': PIXIV_IOS_USER_AGENT,
         'DEFAULT_REQUEST_HEADERS': PIXIV_REQUEST_HEADERS,
-        'ITEM_PIPELINES': {'favorites_crawler.pipelines.CollectionFilePipeline': 0},
         # Add PixivAuthorizationMiddleware after DefaultHeadersMiddleware
         'DOWNLOADER_MIDDLEWARES': {'favorites_crawler.middlewares.PixivAuthorizationMiddleware': 450},
     }
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        config = load_config().get('pixiv', {})
-        self.user_id = config.get('user_id')
-
     def start_requests(self):
-        if self.user_id:
-            params = {
-                'user_id': self.user_id,
-                'restrict': 'public',
-                'filter': 'for_ios',
-            }
-            yield Request(f'{PIXIV_USER_BOOKMARKS_ENDPOINT}?{urlencode(params)}')
+        user_id = self.custom_settings.get('USER_ID')
+        if not user_id:
+            raise CloseSpider('Did you run "favors login pixiv"?')
+
+        params = {'user_id': user_id, 'restrict': 'public', 'filter': 'for_ios'}
+        yield Request(f'{PIXIV_USER_BOOKMARKS_ENDPOINT}?{urlencode(params)}')
+
+    def parse_start_url(self, response, **kwargs):
+        for request_or_item in self.parse(response, **kwargs):
+            yield request_or_item
 
     def parse(self, response, **kwargs):
         result = json.loads(response.text)

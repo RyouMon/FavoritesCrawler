@@ -1,38 +1,38 @@
 from urllib.parse import urlencode
 
-from scrapy import Spider, Request
+from scrapy import Request
+from scrapy.exceptions import CloseSpider
 
+from favorites_crawler.spiders import BaseSpider
 from favorites_crawler.constants.domains import YANDERE_DOMAIN
 from favorites_crawler.itemloaders import YanderePostItemLoader
 from favorites_crawler.constants.endpoints import YANDERE_POST_URL
-from favorites_crawler.utils.config import load_config
 
 
-class YandereSpider(Spider):
+class YandereSpider(BaseSpider):
     """Crawl voted post from yandere"""
     name = 'yandere'
     allowed_domains = (YANDERE_DOMAIN, )
     custom_settings = {
-        'ITEM_PIPELINES': {
-            'favorites_crawler.pipelines.CollectionFilePipeline': 0,
-        },
         'CONCURRENT_REQUESTS': 5,
     }
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        config = load_config().get('yandere', {})
-        self.username = config.get('username')
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.limit = 100
-        self.params = {
-            'limit': self.limit,
-            'page': 1,
-            'tags': f'vote:>=1:{self.username}'
-        }
+        self.params = {'page': 1, 'limit': self.limit}
 
     def start_requests(self):
-        if self.username:
-            yield Request(f'{YANDERE_POST_URL}?{urlencode(self.params)}')
+        username = self.custom_settings.get('USERNAME')
+        if not username:
+            raise CloseSpider('Did you run "favors login yandere"?')
+
+        self.params['tags'] = f'vote:>=1:{username}'
+        yield Request(f'{YANDERE_POST_URL}?{urlencode(self.params)}')
+
+    def parse_start_url(self, response, **kwargs):
+        for request_or_item in self.parse(response, **kwargs):
+            yield request_or_item
 
     def parse(self, response, **kwargs):
         """Spider Contracts:

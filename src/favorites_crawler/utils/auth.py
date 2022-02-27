@@ -65,9 +65,9 @@ def login_pixiv():
 
     data = response.json()
     pixiv_config = config.setdefault('pixiv', {})
-    pixiv_config['user_id'] = user_id
-    pixiv_config['access_token'] = data['access_token']
-    pixiv_config['refresh_token'] = data['refresh_token']
+    pixiv_config['USER_ID'] = user_id
+    pixiv_config['ACCESS_TOKEN'] = data['access_token']
+    pixiv_config['REFRESH_TOKEN'] = data['refresh_token']
     dump_config(config)
     return pixiv_config
 
@@ -75,7 +75,7 @@ def login_pixiv():
 def refresh_pixiv():
     config = load_config()
     pixiv_config = config.get('pixiv', {})
-    refresh_token = pixiv_config.get('refresh_token')
+    refresh_token = pixiv_config.get('REFRESH_TOKEN')
     if not refresh_token:
         raise ValueError('Cannot find refresh_token in config file, did you run `favors login pixiv`?')
 
@@ -94,7 +94,7 @@ def refresh_pixiv():
 
     data = response.json()
     access_token = data['access_token']
-    pixiv_config['access_token'] = access_token
+    pixiv_config['ACCESS_TOKEN'] = access_token
     dump_config(config)
     return access_token
 
@@ -106,6 +106,6 @@ def auth_yandere():
     except (EOFError, KeyboardInterrupt):
         return
     yandere_config = config.setdefault('yandere', {})
-    yandere_config['username'] = username
+    yandere_config['USERNAME'] = username
     dump_config(config)
     return yandere_config

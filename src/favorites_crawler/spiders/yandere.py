@@ -35,6 +35,12 @@ class YandereSpider(Spider):
             yield Request(f'{YANDERE_POST_URL}?{urlencode(self.params)}')
 
     def parse(self, response, **kwargs):
+        """Spider Contracts:
+        @url https://yande.re/post.json?limit=100&page=1
+        @returns item 100
+        @returns requests 1
+        @scrapes image_urls
+        """
         posts = response.json()
 
         if len(posts) == self.limit:

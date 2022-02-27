@@ -1,6 +1,7 @@
 from urllib.parse import urlencode
 
 from scrapy import Request
+from scrapy.exceptions import CloseSpider
 
 from favorites_crawler.spiders import BaseSpider
 from favorites_crawler.constants.domains import YANDERE_DOMAIN
@@ -21,17 +22,15 @@ class YandereSpider(BaseSpider):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.username = self.custom_settings.get('USERNAME')
-        if not self.username:
-            raise ValueError('Did you run "favors login yandere"?')
         self.limit = 100
-        self.params = {
-            'limit': self.limit,
-            'page': 1,
-            'tags': f'vote:>=1:{self.username}'
-        }
+        self.params = {}
 
     def start_requests(self):
+        username = self.custom_settings.get('USERNAME')
+        if not username:
+            raise CloseSpider('Did you run "favors login yandere"?')
+
+        self.params.update({'limit': self.limit, 'page': 1, 'tags': f'vote:>=1:{username}'})
         yield Request(f'{YANDERE_POST_URL}?{urlencode(self.params)}')
 
     def parse_start_url(self, response, **kwargs):

@@ -2,6 +2,7 @@ import json
 from urllib.parse import urlencode
 
 from scrapy import Request
+from scrapy.exceptions import CloseSpider
 
 from favorites_crawler.spiders import BaseSpider
 from favorites_crawler.itemloaders import PixivIllustItemLoader
@@ -22,18 +23,13 @@ class PixivSpider(BaseSpider):
         'DOWNLOADER_MIDDLEWARES': {'favorites_crawler.middlewares.PixivAuthorizationMiddleware': 450},
     }
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.user_id = self.custom_settings.get('USER_ID')
-
     def start_requests(self):
-        if self.user_id:
-            params = {
-                'user_id': self.user_id,
-                'restrict': 'public',
-                'filter': 'for_ios',
-            }
-            yield Request(f'{PIXIV_USER_BOOKMARKS_ENDPOINT}?{urlencode(params)}')
+        user_id = self.custom_settings.get('USER_ID')
+        if not user_id:
+            raise CloseSpider('Did you run "favors login pixiv"?')
+
+        params = {'user_id': user_id, 'restrict': 'public', 'filter': 'for_ios'}
+        yield Request(f'{PIXIV_USER_BOOKMARKS_ENDPOINT}?{urlencode(params)}')
 
     def parse_start_url(self, response, **kwargs):
         for request_or_item in self.parse(response, **kwargs):

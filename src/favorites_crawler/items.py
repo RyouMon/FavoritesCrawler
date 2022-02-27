@@ -1,18 +1,17 @@
 import os.path
-from typing import List
 from urllib.parse import unquote
-from dataclasses import dataclass, field
+
+from scrapy import Item, Field
 
 from favorites_crawler.utils.text import drop_illegal_characters
 
 
-@dataclass
-class BaseItem:
-    id: str = field(default=None)
-    title: str = field(default=None)
-    image_urls: List = field(default_factory=list)
-    tags: List = field(default_factory=list)
-    referer: str = field(default=None)
+class BaseItem(Item):
+    id = Field()
+    title = Field()
+    image_urls = Field()
+    tags = Field()
+    referer = Field()
 
     def get_filepath(self, url):
         folder_name = self.get_folder_name()
@@ -39,7 +38,6 @@ class BaseItem:
         return f' [{tags}]'
 
 
-@dataclass
 class PixivIllustItem(BaseItem):
 
     def get_folder_prefix(self):
@@ -52,7 +50,6 @@ class PixivIllustItem(BaseItem):
         return 'Pixiv'
 
 
-@dataclass
 class YanderePostItem(BaseItem):
     """Yandere Post"""
 
@@ -66,16 +63,14 @@ class YanderePostItem(BaseItem):
         return 'Yandere'
 
 
-@dataclass
 class LemonPicPostItem(BaseItem):
 
     def get_folder_prefix(self):
         return ''
 
 
-@dataclass
 class NHentaiGalleryItem(BaseItem):
-    characters: List = field(default_factory=list)
+    characters = Field()
 
     def get_folder_name(self):
         characters = ' '.join(self.characters)

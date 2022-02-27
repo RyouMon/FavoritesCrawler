@@ -107,4 +107,27 @@ favors crawl all
 ```
 
 # Config
-config file locate on `{your_home}/.favorites_crawler/config.yml`.
+Config file locate on `{your_home}/.favorites_crawler/config.yml`. 
+You can set any [scrapy built-in settings](https://docs.scrapy.org/en/latest/topics/settings.html#built-in-settings-reference) in this file.
+
+By default, file content likes this:
+```yaml
+pixiv:
+  ACCESS_TOKEN: xxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  REFRESH_TOKEN: xxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  USER_ID: xxxx
+yandere:
+  USERNAME: xxxx
+```
+
+If you want save pixiv files to `pictures/a`, and want save yandere files to `pictures/b`, you can modify config file like this:
+```yaml
+pixiv:
+  ACCESS_TOKEN: xxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  REFRESH_TOKEN: xxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  USER_ID: xxxx
+  FILES_STORE: pictures/a
+yandere:
+  USERNAME: xxxx
+  FILES_STORE: pictures/b
+```

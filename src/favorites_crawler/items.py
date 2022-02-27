@@ -23,16 +23,16 @@ class BaseItem(Item):
         return unquote(url.rsplit('/', maxsplit=1)[1])
 
     def get_folder_name(self):
-        name = self.title
+        name = self.get('title', '')
         prefix = self.get_folder_prefix()
         subfix = self.get_folder_subfix()
         return f'{prefix}{name}{subfix}'
 
     def get_folder_prefix(self):
-        return f'[{self.id}] '
+        return f'[{self.get("id", "")}] '
 
     def get_folder_subfix(self):
-        tags = ' '.join(self.tags)
+        tags = ' '.join(self.get('tags', ()))
         if not tags:
             return ''
         return f' [{tags}]'
@@ -73,8 +73,8 @@ class NHentaiGalleryItem(BaseItem):
     characters = Field()
 
     def get_folder_name(self):
-        characters = ' '.join(self.characters)
-        prefix = f'[{self.id}] {self.title}'
+        characters = ' '.join(self.get('characters', ()))
+        prefix = f'[{self.get("id", "")}] {self.get("title", "")}'
         if characters:
             return prefix + f' [{characters}]'
         return prefix

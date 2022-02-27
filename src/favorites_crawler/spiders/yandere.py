@@ -14,9 +14,6 @@ class YandereSpider(BaseSpider):
     name = 'yandere'
     allowed_domains = (YANDERE_DOMAIN, )
     custom_settings = {
-        'ITEM_PIPELINES': {
-            'favorites_crawler.pipelines.CollectionFilePipeline': 0,
-        },
         'CONCURRENT_REQUESTS': 5,
     }
 

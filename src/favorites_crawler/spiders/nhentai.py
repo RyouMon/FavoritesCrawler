@@ -15,9 +15,6 @@ class NHentaiSpider(BaseSpider):
         Rule(LinkExtractor(restrict_xpaths='//div[@class="container"]'), callback='parse'),
     )
     custom_settings = {
-        'ITEM_PIPELINES': {
-            'favorites_crawler.pipelines.CollectionFilePipeline': 0,
-        },
         'CONCURRENT_REQUESTS': 5,
     }
 

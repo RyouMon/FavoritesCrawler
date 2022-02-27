@@ -1,23 +1,24 @@
 from scrapy.http import Request
-from scrapy.spiders.crawl import CrawlSpider, Rule, LinkExtractor
+from scrapy.spiders.crawl import Rule, LinkExtractor
 
+from favorites_crawler.spiders import BaseSpider
 from favorites_crawler.itemloaders import LemonPicPostItemLoader
 from favorites_crawler.constants.endpoints import LEMON_PIC_USER_FAVORITES_URL
 from favorites_crawler.constants.domains import LMMPIC_DOMAIN
 from favorites_crawler.utils.cookies import load_cookie
 
 
-class LemonSpider(CrawlSpider):
+class LemonSpider(BaseSpider):
     name = 'lemon'
     allowed_domains = ['lmmpic.com']
     rules = [
         Rule(
             LinkExtractor(restrict_xpaths='//div[@class="my-favorite"]', allow='.+html', deny='#'),
-            callback='parse_item', follow=True,
+            callback='parse', follow=True,
         ),
         Rule(
             LinkExtractor(restrict_xpaths='//div[@class="page-links"]', allow='.+html/.+'),
-            callback='parse_item',
+            callback='parse',
         ),
     ]
     custom_settings = {
@@ -31,7 +32,7 @@ class LemonSpider(CrawlSpider):
     def start_requests(self):
         yield Request(url=LEMON_PIC_USER_FAVORITES_URL, cookies=self.cookies)
 
-    def parse_item(self, response, **kwargs):
+    def parse(self, response, **kwargs):
         loader = LemonPicPostItemLoader(selector=response)
         loader.add_xpath('title', '//h1[@class="entry-title"]/text()')
         loader.add_xpath('image_urls', '//div[@class="single-content"]//img/@src')

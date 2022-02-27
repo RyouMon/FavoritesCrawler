@@ -1,14 +1,14 @@
 from urllib.parse import urlencode
 
-from scrapy import Spider, Request
+from scrapy import Request
 
+from favorites_crawler.spiders import BaseSpider
 from favorites_crawler.constants.domains import YANDERE_DOMAIN
 from favorites_crawler.itemloaders import YanderePostItemLoader
 from favorites_crawler.constants.endpoints import YANDERE_POST_URL
-from favorites_crawler.utils.config import load_config
 
 
-class YandereSpider(Spider):
+class YandereSpider(BaseSpider):
     """Crawl voted post from yandere"""
     name = 'yandere'
     allowed_domains = (YANDERE_DOMAIN, )
@@ -21,8 +21,7 @@ class YandereSpider(Spider):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        config = load_config().get('yandere', {})
-        self.username = config.get('username')
+        self.username = self.custom_settings.get('USERNAME')
         self.limit = 100
         self.params = {
             'limit': self.limit,
@@ -33,6 +32,10 @@ class YandereSpider(Spider):
     def start_requests(self):
         if self.username:
             yield Request(f'{YANDERE_POST_URL}?{urlencode(self.params)}')
+
+    def parse_start_url(self, response, **kwargs):
+        for request_or_item in self.parse(response, **kwargs):
+            yield request_or_item
 
     def parse(self, response, **kwargs):
         """Spider Contracts:

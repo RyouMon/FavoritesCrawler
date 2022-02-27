@@ -1,16 +1,16 @@
 import json
 from urllib.parse import urlencode
 
-from scrapy import Spider, Request
+from scrapy import Request
 
+from favorites_crawler.spiders import BaseSpider
 from favorites_crawler.itemloaders import PixivIllustItemLoader
 from favorites_crawler.constants.domains import PIXIV_DOMAIN
 from favorites_crawler.constants.endpoints import PIXIV_USER_BOOKMARKS_ENDPOINT
 from favorites_crawler.constants.headers import PIXIV_REQUEST_HEADERS, PIXIV_IOS_USER_AGENT
-from favorites_crawler.utils.config import load_config
 
 
-class PixivSpider(Spider):
+class PixivSpider(BaseSpider):
     """Crawl user bookmarks in pixiv"""
     name = 'pixiv'
     allowed_domains = (PIXIV_DOMAIN, )
@@ -24,8 +24,7 @@ class PixivSpider(Spider):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        config = load_config().get('pixiv', {})
-        self.user_id = config.get('user_id')
+        self.user_id = self.custom_settings.get('USER_ID')
 
     def start_requests(self):
         if self.user_id:
@@ -35,6 +34,10 @@ class PixivSpider(Spider):
                 'filter': 'for_ios',
             }
             yield Request(f'{PIXIV_USER_BOOKMARKS_ENDPOINT}?{urlencode(params)}')
+
+    def parse_start_url(self, response, **kwargs):
+        for request_or_item in self.parse(response, **kwargs):
+            yield request_or_item
 
     def parse(self, response, **kwargs):
         result = json.loads(response.text)

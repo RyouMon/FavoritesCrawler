@@ -14,7 +14,7 @@ class YandereSpider(Spider):
     allowed_domains = (YANDERE_DOMAIN, )
     custom_settings = {
         'ITEM_PIPELINES': {
-            'favorites_crawler.pipelines.YandreFilesPipeline': 0,
+            'favorites_crawler.pipelines.CollectionFilePipeline': 0,
         },
         'CONCURRENT_REQUESTS': 5,
     }
@@ -43,5 +43,5 @@ class YandereSpider(Spider):
 
         for post in posts:
             loader = YanderePostItemLoader()
-            loader.add_value('file_url', post['file_url'])
+            loader.add_value('image_urls', post['file_url'])
             yield loader.load_item()

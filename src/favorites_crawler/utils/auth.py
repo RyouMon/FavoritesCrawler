@@ -66,8 +66,11 @@ def login_pixiv():
     data = response.json()
     pixiv_config = config.setdefault('pixiv', {})
     pixiv_config['USER_ID'] = user_id
-    pixiv_config['ACCESS_TOKEN'] = data['access_token']
-    pixiv_config['REFRESH_TOKEN'] = data['refresh_token']
+    try:
+        pixiv_config['ACCESS_TOKEN'] = data['access_token']
+        pixiv_config['REFRESH_TOKEN'] = data['refresh_token']
+    except KeyError:
+        print(data)
     dump_config(config)
     return pixiv_config
 

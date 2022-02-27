@@ -25,8 +25,8 @@ class LemonSpider(BaseSpider):
         'ITEM_PIPELINES': {'favorites_crawler.pipelines.CollectionFilePipeline': 0},
     }
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.cookies = load_cookie(LMMPIC_DOMAIN)
 
     def start_requests(self):

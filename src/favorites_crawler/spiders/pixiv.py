@@ -22,8 +22,8 @@ class PixivSpider(BaseSpider):
         'DOWNLOADER_MIDDLEWARES': {'favorites_crawler.middlewares.PixivAuthorizationMiddleware': 450},
     }
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.user_id = self.custom_settings.get('USER_ID')
 
     def start_requests(self):

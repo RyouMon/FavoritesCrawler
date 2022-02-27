@@ -21,8 +21,8 @@ class NHentaiSpider(BaseSpider):
         'CONCURRENT_REQUESTS': 5,
     }
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.cookies = load_cookie(NHENTAI_DOMAIN)
 
     def start_requests(self):

@@ -19,8 +19,8 @@ class YandereSpider(BaseSpider):
         'CONCURRENT_REQUESTS': 5,
     }
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.username = self.custom_settings.get('USERNAME')
         self.limit = 100
         self.params = {

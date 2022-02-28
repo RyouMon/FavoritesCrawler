@@ -2,7 +2,7 @@ from itemloaders import ItemLoader
 from itemloaders.processors import Join, Compose, MapCompose
 
 from favorites_crawler import items
-from favorites_crawler.processors import take_first, identity, get_nhentai_id
+from favorites_crawler.processors import take_first, identity, get_nhentai_id, original_url_from_nhentai_thumb_url
 from favorites_crawler.processors import replace_space_with_under_scope
 
 
@@ -28,7 +28,7 @@ class NHentaiGalleryItemLoader(ItemLoader):
 
     id_out = Compose(take_first, get_nhentai_id)
     title_out = Join('')
-    image_urls_out = identity
+    image_urls_out = MapCompose(original_url_from_nhentai_thumb_url)
     tags_out = MapCompose(replace_space_with_under_scope)
     characters_out = MapCompose(replace_space_with_under_scope)
 

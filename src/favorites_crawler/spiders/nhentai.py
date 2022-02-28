@@ -26,14 +26,11 @@ class NHentaiSpider(BaseSpider):
         yield Request(NHENTAI_USER_FAVORITES_URL, cookies=self.cookies)
 
     def parse(self, response, **kwargs):
-        count = len(response.css('.thumb-container'))
-        gid = response.xpath('//div[@id="cover"]//img/@src').re(r'https://.+/galleries/(\d+)/.+')[0]
-
         loader = NHentaiGalleryItemLoader(selector=response)
-        loader.add_value('image_urls', [f'https://i.nhentai.net/galleries/{gid}/{i+1}.jpg' for i in range(count)])
         loader.add_value('id', response.url)
         loader.add_value('referer', response.url)
         loader.add_xpath('title', '//h1[@class="title"]/span/text()')
         loader.add_xpath('tags', '//section[@id="tags"]/div[3]//span[@class="name"]/text()')
+        loader.add_xpath('image_urls', '//div[@id="thumbnail-container"]//img/@src')
         loader.add_xpath('characters', '//section[@id="tags"]/div[2]//span[@class="name"]/text()')
         yield loader.load_item()

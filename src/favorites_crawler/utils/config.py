@@ -26,7 +26,9 @@ def overwrite_settings(spider_loader, settings, user_config):
     spider_names = spider_loader.list()
     for name in spider_names:
         cls = spider_loader.load(name)
-        cls.custom_settings.update(user_config.get(cls.name, {}))
+        spider_config = user_config.get(cls.name, {})
+        if spider_config:
+            cls.custom_settings.update(spider_config)
 
         default_files_store = os.path.join(settings.get('FILES_STORE', ''), cls.name)
         cls.custom_settings.setdefault('FILES_STORE', default_files_store)

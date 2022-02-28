@@ -42,4 +42,5 @@ jobs:
         python -m pytest ../tests
     - name: Check spiders contacts
       run: |
+        cd src
         scrapy check

@@ -10,7 +10,7 @@ from favorites_crawler.utils.cookies import load_cookie
 
 class LemonSpider(BaseSpider):
     name = 'lemon'
-    allowed_domains = ['lmmpic.com']
+    allowed_domains = [LMMPIC_DOMAIN]
     rules = [
         Rule(
             LinkExtractor(restrict_xpaths='//div[@class="my-favorite"]', allow='.+html', deny='#'),

@@ -74,7 +74,7 @@ Thanks for [@ZipFile Pixiv OAuth Flow](https://gist.github.com/ZipFile/c9ebedb22
 # Crawl
 
 ```
-favors crawl [-h] {lemon,nhentai,pixiv,yandere,all}
+favors crawl [-h] {lemon,nhentai,pixiv,yandere}
 ```
 
 ## Crawl Pixiv
@@ -99,11 +99,6 @@ favors crawl lemon
 Before run this command, make sure you are already [login](#login-nhentai).
 ```
 favors crawl nhantai
-```
-
-## Crawl All Support Site
-```
-favors crawl all
 ```
 
 # Config

@@ -32,7 +32,7 @@ class LemonSpider(BaseSpider):
     def parse(self, response, **kwargs):
         loader = LemonPicPostItemLoader(selector=response)
         loader.add_xpath('title', '//h1[@class="entry-title"]/text()')
-        loader.add_xpath('image_urls', '//div[@class="single-content"]//img/@src')
+        loader.add_xpath('file_urls', '//div[@class="single-content"]//img/@src')
         loader.add_xpath('tags', '//a[@rel="tag"]/text()')
         loader.add_value('referer', response.url)
         yield loader.load_item()

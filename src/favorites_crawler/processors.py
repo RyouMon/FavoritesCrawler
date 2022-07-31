@@ -26,3 +26,45 @@ def original_url_from_nhentai_thumb_url(url):
     'https://i2.nhentai.net/galleries/154829234522/4.png'
     """
     return re.sub(r'https://t(.+/\d+)t(\..+)', r'https://i\g<1>\g<2>', url)
+
+
+def wrap_credits(artists):
+    return [{'person': person, 'role': 'Artist'} for person in artists]
+
+
+def select_best_nhentai_title(titles):
+    if not titles:
+        return ''
+
+    titles = [t.strip() for t in titles if t and isinstance(t, str)]
+
+    if not titles:
+        return ''
+
+    if len(titles) == 1:
+        return titles[0]
+
+    for t in titles.copy():
+        if (t.startswith('[') and t.endswith(']')) or (t.startswith('(') and t.endswith(']')):
+            titles.remove(t)
+        elif t.startswith('(') and t.endswith(')'):
+            return t
+
+    if titles:
+        return titles[0]
+    else:
+        return ''
+
+
+def clean_nhentai_title(title):
+    if not title:
+        return ''
+
+    match = re.match(r'^.*\((.+)\)$|^\[.+\] (.+) \[.+\]$', title)
+    if match:
+        title = match.group(1) or match.group(2)
+
+    while title.endswith('.'):
+        title = title[:-1]
+
+    return title

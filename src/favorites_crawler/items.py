@@ -4,6 +4,7 @@ import os.path
 from dataclasses import dataclass, field, fields
 from urllib.parse import unquote
 
+from favorites_crawler import __version__
 from favorites_crawler.utils.text import drop_illegal_characters
 
 
@@ -62,7 +63,7 @@ class ComicBookInfoItem:
             comic_book_info[f.name] = val
 
         return json.dumps({
-            'appID': 'FavoritesCrawler/0.1.4',
+            'appID': f'FavoritesCrawler/{__version__}',
             'lastModified': str(datetime.datetime.now()),
             'ComicBookInfo/1.0': comic_book_info,
         }, ensure_ascii=False)

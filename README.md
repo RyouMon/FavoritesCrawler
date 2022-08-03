@@ -18,7 +18,7 @@ Crawl your personal favorite images, photo albums, comics from website.
 - nhentai.net  (crawl your favorites for comic, must login)
 
 # Requirements
-- Python3.6+
+- Python3.7+
 
 # Install
 ```

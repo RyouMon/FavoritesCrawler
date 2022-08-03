@@ -91,6 +91,8 @@ class LemonPicPostItem(BaseItem):
 class NHentaiGalleryItem(BaseItem, ComicBookInfoItem):
     title: str = field(default=None, metadata={'is_comic_info': True})
     tags: list = field(default=None, metadata={'is_comic_info': True})
+    parodies: str = field(default=None)
+    characters: list = field(default=None)
     sort_title: str = field(default=None)
 
     def get_folder_name(self):

@@ -36,6 +36,9 @@ class NHentaiSpider(BaseSpider):
         loader.add_value('referer', response.url)
         loader.add_xpath('file_urls', '//div[@id="thumbnail-container"]//img/@data-src')
         loader.add_xpath('sort_title', '//h1[@class="title"]/span/text()')
+        loader.add_xpath('parodies', '//h2[@class="title"]/span[@class="after"]/text()')
+        loader.add_xpath('parodies', '//section[@id="tags"]/div[1]//span[@class="name"]/text()')
+        loader.add_xpath('characters', '//section[@id="tags"]/div[2]//span[@class="name"]/text()')
 
         loader.add_xpath('title', '//h2[@class="title"]/span/text()')
         loader.add_value('series', loader.get_output_value('title'))
@@ -44,9 +47,9 @@ class NHentaiSpider(BaseSpider):
         loader.add_xpath('genre', '//section[@id="tags"]/div[7]//span[@class="name"]/text()')
         loader.add_xpath('credits', '//section[@id="tags"]/div[4]//span[@class="name"]/text()')  # Artists
         loader.add_xpath('credits', '//section[@id="tags"]/div[5]//span[@class="name"]/text()')  # Groups
-        loader.add_xpath('tags', '//section[@id="tags"]/div[1]//span[@class="name"]/text()')  # Parodies
-        loader.add_xpath('tags', '//section[@id="tags"]/div[2]//span[@class="name"]/text()')  # Characters
-        loader.add_xpath('tags', '//section[@id="tags"]/div[3]//span[@class="name"]/text()')  # Tags
+        loader.add_xpath('tags', '//section[@id="tags"]/div[3]//span[@class="name"]/text()')
+        loader.add_value('tags', loader.get_output_value('characters'))
+        loader.add_value('tags', loader.get_output_value('parodies'))
         loader.add_xpath('publicationYear', '//section[@id="tags"]/div[9]//time/@datetime')
         loader.add_xpath('publicationMonth', '//section[@id="tags"]/div[9]//time/@datetime')
         loader.add_value('publisher', 'nhentai')

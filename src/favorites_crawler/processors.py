@@ -97,3 +97,22 @@ def get_series_from_title(title):
     if not match:
         return None
     return match.group(1).strip()
+
+
+def clean_parodies(parodies):
+    if not parodies:
+        return None
+
+    match = re.match(r'^ *\[.+\]$', parodies)
+    if match:
+        return None
+
+    match = re.match(r'^ *(.+) \| .+$', parodies)
+    if match:
+        parodies = match.group(1)
+
+    match = re.match(r'^ *\((.+)\)(?: \[.+\])?$', parodies)
+    if match:
+        parodies = match.group(1)
+
+    return parodies.strip()

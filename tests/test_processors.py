@@ -77,3 +77,18 @@ def test_get_series_from_title(title, expected):
     actual = processors.get_series_from_title(title)
 
     assert actual == expected
+
+
+@pytest.mark.parametrize('parodies,expected', (
+    ('', None), (None, None),
+    (' [中国翻訳]', None),
+    (' (ご注文はうさぎですか?)', 'ご注文はうさぎですか?'),
+    ('gochuumon wa usagi desu ka | is the order a rabbit', 'gochuumon wa usagi desu ka'),
+    ('gochuumon wa usagi desu ka', 'gochuumon wa usagi desu ka'),
+    (' gochuumon wa usagi desu ka ', 'gochuumon wa usagi desu ka'),
+    (' (化物語) [DL版]', '化物語'),
+))
+def test_clean_parodies(parodies, expected):
+    actual = processors.clean_parodies(parodies)
+
+    assert actual == expected

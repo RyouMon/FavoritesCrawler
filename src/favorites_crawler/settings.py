@@ -26,4 +26,4 @@ DOWNLOAD_WARNSIZE = 0
 
 TELNETCONSOLE_ENABLED = False
 
-ITEM_PIPELINES = {'favorites_crawler.pipelines.CollectionFilePipeline': 0}
+ITEM_PIPELINES = {'favorites_crawler.pipelines.FavoritesFilePipeline': 0}

@@ -39,7 +39,7 @@ class YandereSpider(BaseSpider):
         @url https://yande.re/post.json?limit=100&page=1
         @returns item 100
         @returns requests 1
-        @scrapes image_urls
+        @scrapes file_urls
         """
         posts = response.json()
 
@@ -49,5 +49,5 @@ class YandereSpider(BaseSpider):
 
         for post in posts:
             loader = YanderePostItemLoader()
-            loader.add_value('image_urls', post['file_url'])
+            loader.add_value('file_urls', post['file_url'])
             yield loader.load_item()

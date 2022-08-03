@@ -1,17 +1,19 @@
+import json
+import datetime
 import os.path
+from dataclasses import dataclass, field, fields
 from urllib.parse import unquote
-
-from scrapy import Item, Field
 
 from favorites_crawler.utils.text import drop_illegal_characters
 
 
-class BaseItem(Item):
-    id = Field()
-    title = Field()
-    image_urls = Field()
-    tags = Field()
-    referer = Field()
+@dataclass
+class BaseItem:
+    id: int = field(default=None)
+    title: str = field(default=None)
+    file_urls: list = field(default=None)
+    tags: list = field(default=None)
+    referer: str = field(default=None)
 
     def get_filepath(self, url):
         folder_name = self.get_folder_name()
@@ -23,46 +25,75 @@ class BaseItem(Item):
         return unquote(url.rsplit('/', maxsplit=1)[1])
 
     def get_folder_name(self):
-        name = self.get('title', '')
-        prefix = self.get_folder_prefix()
-        subfix = self.get_folder_subfix()
-        return f'{prefix}{name}{subfix}'
-
-    def get_folder_prefix(self):
-        return f'[{self.get("id", "")}] '
-
-    def get_folder_subfix(self):
-        tags = ' '.join(self.get('tags', ()))
-        if not tags:
-            return ''
-        return f' [{tags}]'
+        name = self.title
+        if not name:
+            name = str(datetime.date.today())
+        return name
 
 
+@dataclass
+class ComicBookInfoItem:
+
+    title: str = field(default=None, metadata={'is_comic_info': True})
+    series: str = field(default=None, metadata={'is_comic_info': True})
+    publisher: str = field(default=None, metadata={'is_comic_info': True})
+    publicationMonth: int = field(default=None, metadata={'is_comic_info': True})
+    publicationYear: int = field(default=None, metadata={'is_comic_info': True})
+    issue: int = field(default=None, metadata={'is_comic_info': True})
+    numberOfIssues: int = field(default=None, metadata={'is_comic_info': True})
+    volume: int = field(default=None, metadata={'is_comic_info': True})
+    numberOfVolumes: int = field(default=None, metadata={'is_comic_info': True})
+    rating: int = field(default=None, metadata={'is_comic_info': True})
+    genre: str = field(default=None, metadata={'is_comic_info': True})
+    language: str = field(default=None, metadata={'is_comic_info': True})
+    country: str = field(default=None, metadata={'is_comic_info': True})
+    credits: list = field(default=None, metadata={'is_comic_info': True})
+    tags: list = field(default=None, metadata={'is_comic_info': True})
+    comments: str = field(default=None, metadata={'is_comic_info': True})
+
+    def get_comic_info(self):
+        comic_book_info = {}
+        for f in fields(self):
+            if not f.metadata.get('is_comic_info', False):
+                continue
+            val = getattr(self, f.name)
+            if not val:
+                continue
+            comic_book_info[f.name] = val
+
+        return json.dumps({
+            'appID': 'FavoritesCrawler/0.1.4',
+            'lastModified': str(datetime.datetime.now()),
+            'ComicBookInfo/1.0': comic_book_info,
+        }, ensure_ascii=False)
+
+
+@dataclass
 class PixivIllustItem(BaseItem):
 
     def get_folder_name(self):
         return ''
 
 
+@dataclass
 class YanderePostItem(BaseItem):
-    """Yandere Post"""
 
     def get_folder_name(self):
         return ''
 
 
+@dataclass
 class LemonPicPostItem(BaseItem):
-
-    def get_folder_prefix(self):
-        return ''
+    pass
 
 
-class NHentaiGalleryItem(BaseItem):
-    characters = Field()
+@dataclass
+class NHentaiGalleryItem(BaseItem, ComicBookInfoItem):
+    title: str = field(default=None, metadata={'is_comic_info': True})
+    tags: list = field(default=None, metadata={'is_comic_info': True})
+    parodies: str = field(default=None)
+    characters: list = field(default=None)
+    sort_title: str = field(default=None)
 
     def get_folder_name(self):
-        characters = ' '.join(self.get('characters', ()))
-        prefix = f'[{self.get("id", "")}] {self.get("title", "")}'
-        if characters:
-            return prefix + f' [{characters}]'
-        return prefix
+        return drop_illegal_characters(self.sort_title)

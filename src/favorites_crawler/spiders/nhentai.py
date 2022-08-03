@@ -45,6 +45,9 @@ class NHentaiSpider(BaseSpider):
         loader.add_xpath('credits', '//section[@id="tags"]/div[5]//span[@class="name"]/text()')
         loader.add_xpath('tags', '//section[@id="tags"]/div[2]//span[@class="name"]/text()')
         loader.add_xpath('tags', '//section[@id="tags"]/div[3]//span[@class="name"]/text()')
+        loader.add_xpath('publicationYear', '//section[@id="tags"]/div[9]//time/@datetime')
+        loader.add_xpath('publicationMonth', '//section[@id="tags"]/div[9]//time/@datetime')
+        loader.add_value('publisher', 'nhentai')
 
         yield loader.load_item()
 

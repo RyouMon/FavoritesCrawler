@@ -1,4 +1,5 @@
 import re
+from datetime import datetime
 
 from itemloaders.processors import TakeFirst, Identity
 
@@ -68,3 +69,11 @@ def clean_nhentai_title(title):
         title = title[:-1]
 
     return title
+
+
+def get_year_from_iso_format(iso_format):
+    return datetime.fromisoformat(iso_format).year
+
+
+def get_month_from_iso_format(iso_format):
+    return datetime.fromisoformat(iso_format).month

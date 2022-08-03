@@ -3,7 +3,8 @@ from itemloaders.processors import Join, Compose, MapCompose
 
 from favorites_crawler import items
 from favorites_crawler.processors import take_first, identity, get_nhentai_id, wrap_credits, \
-    original_url_from_nhentai_thumb_url, select_best_nhentai_title, clean_nhentai_title
+    original_url_from_nhentai_thumb_url, select_best_nhentai_title, clean_nhentai_title, \
+    get_year_from_iso_format, get_month_from_iso_format
 
 
 class PixivIllustItemLoader(ItemLoader):
@@ -32,6 +33,8 @@ class NHentaiGalleryItemLoader(ItemLoader):
     file_urls_out = MapCompose(original_url_from_nhentai_thumb_url)
     credits_out = wrap_credits
     tags_out = identity
+    publicationYear_out = Compose(take_first, get_year_from_iso_format)
+    publicationMonth_out = Compose(take_first, get_month_from_iso_format)
 
 
 class LemonPicPostItemLoader(ItemLoader):

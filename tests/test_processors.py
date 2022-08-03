@@ -36,3 +36,14 @@ def test_select_best_nhentai_title(titles, expected):
     actual = processors.select_best_nhentai_title(titles)
 
     assert actual == expected
+
+
+def test_get_year():
+    actual = processors.get_year_from_iso_format('2022-08-03T00:06:46.533158+00:00')
+
+    assert actual == 2022
+
+
+def test_get_month():
+    actual = processors.get_month_from_iso_format('2022-08-03T00:06:46.533158+00:00')
+    assert actual == 8

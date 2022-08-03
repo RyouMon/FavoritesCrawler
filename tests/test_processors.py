@@ -50,3 +50,30 @@ def test_get_month():
     actual = processors.get_month_from_iso_format('2022-08-03T00:06:46.533158+00:00')
 
     assert actual == 8
+
+
+@pytest.mark.parametrize('title,expected', (
+    ('confiture あ****ン', None),
+    ('confiture あ****ンvol.7', 7),
+    ('confiture あ****ンvol.13', 13),
+    ('S**** S**** 7', 7),
+    ('S**** S**** 13', 13),
+))
+def test_get_volume_from_title(title, expected):
+    actual = processors.get_volume_from_title(title)
+
+    assert actual == expected
+
+
+@pytest.mark.parametrize('title,expected', (
+    ('confiture あ****ン', None),
+    ('confiture あ****ンvol.7', 'confiture あ****ン'),
+    ('confiture あ****ンvol.13', 'confiture あ****ン'),
+    ('confiture あ****ン vol.13', 'confiture あ****ン'),
+    ('S**** S**** 7', 'S**** S****'),
+    ('S**** S**** 13', 'S**** S****'),
+))
+def test_get_series_from_title(title, expected):
+    actual = processors.get_series_from_title(title)
+
+    assert actual == expected

@@ -80,3 +80,20 @@ def get_year_from_iso_format(iso_format):
 
 def get_month_from_iso_format(iso_format):
     return datetime.fromisoformat(iso_format).month
+
+
+def get_volume_from_title(title):
+    match = re.match(r'^.+?(\d+)$', title)
+    if not match:
+        return None
+    try:
+        return int(match.group(1))
+    except ValueError:
+        return None
+
+
+def get_series_from_title(title):
+    match = re.match(r'^(.+?)(?:vol.)?\d+$', title)
+    if not match:
+        return None
+    return match.group(1).strip()

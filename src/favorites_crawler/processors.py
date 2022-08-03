@@ -46,10 +46,9 @@ def select_best_nhentai_title(titles):
         return titles[0]
 
     for t in titles.copy():
-        if (t.startswith('[') and t.endswith(']')) or (t.startswith('(') and t.endswith(']')):
+        if (t.startswith('[') and t.endswith(']')) or (t.startswith('(') and t.endswith(']')) \
+                or (t.startswith('(') and t.endswith(')')):
             titles.remove(t)
-        elif t.startswith('(') and t.endswith(')'):
-            return t
 
     if titles:
         return titles[0]
@@ -61,9 +60,13 @@ def clean_nhentai_title(title):
     if not title:
         return ''
 
-    match = re.match(r'^.*\((.+)\)$|^\[.+\] (.+) \[.+\]$', title)
+    match = re.match(r'^\[.+\] (.+) \[.+\]$', title)
     if match:
-        title = match.group(1) or match.group(2)
+        title = match.group(1)
+
+    match = re.match(r'^(.+) \| .+$', title)
+    if match:
+        title = match.group(1)
 
     while title.endswith('.'):
         title = title[:-1]

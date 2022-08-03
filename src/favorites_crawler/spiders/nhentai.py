@@ -12,7 +12,11 @@ class NHentaiSpider(BaseSpider):
     name = 'nhentai'
     allowed_domains = (NHENTAI_DOMAIN, )
     rules = (
-        Rule(LinkExtractor(restrict_xpaths='//div[@class="container"]'), callback='parse'),
+        Rule(
+            LinkExtractor(restrict_xpaths='//div[@class="container"]'),
+            callback='parse',
+            process_request='process_request',
+        ),
     )
     custom_settings = {
         'CONCURRENT_REQUESTS': 5,
@@ -43,3 +47,7 @@ class NHentaiSpider(BaseSpider):
         loader.add_xpath('tags', '//section[@id="tags"]/div[3]//span[@class="name"]/text()')
 
         yield loader.load_item()
+
+    def process_request(self, request, _):
+        request.cookies = self.cookies
+        return request

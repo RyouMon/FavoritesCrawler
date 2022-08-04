@@ -13,6 +13,10 @@ class NHentaiSpider(BaseSpider):
     allowed_domains = (NHENTAI_DOMAIN, )
     rules = (
         Rule(
+            LinkExtractor(restrict_xpaths='//section[@class="pagination"]'),
+            process_request='process_request',
+        ),
+        Rule(
             LinkExtractor(restrict_xpaths='//div[@class="container"]'),
             callback='parse',
             process_request='process_request',

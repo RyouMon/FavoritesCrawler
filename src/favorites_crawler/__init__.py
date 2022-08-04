@@ -8,7 +8,7 @@ from scrapy.spiderloader import SpiderLoader
 from favorites_crawler.utils import auth
 from favorites_crawler.utils.config import load_config, overwrite_settings
 
-__version__ = '0.1.5'
+__version__ = '0.1.6'
 
 os.environ.setdefault('SCRAPY_SETTINGS_MODULE', 'favorites_crawler.settings')
 scrapy_settings = get_project_settings()

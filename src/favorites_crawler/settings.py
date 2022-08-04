@@ -19,6 +19,7 @@ USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 ' \
 DOWNLOAD_DELAY = 0.5
 
 FILES_STORE = r'favorites_crawler_files'
+FILES_EXPIRES = 365000
 
 LOG_LEVEL = 'INFO'
 

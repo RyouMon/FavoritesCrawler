@@ -1,6 +1,8 @@
 import os
+from logging import getLogger
 from argparse import ArgumentParser
 
+from scrapy import signals
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 from scrapy.spiderloader import SpiderLoader
@@ -9,6 +11,8 @@ from favorites_crawler.utils import auth
 from favorites_crawler.utils.config import load_config, overwrite_settings
 
 __version__ = '0.1.6'
+
+logger = getLogger(__name__)
 
 os.environ.setdefault('SCRAPY_SETTINGS_MODULE', 'favorites_crawler.settings')
 scrapy_settings = get_project_settings()
@@ -24,7 +28,15 @@ login_processors = {
 def crawl(name):
     process = CrawlerProcess(scrapy_settings)
     process.crawl(name)
+    for crawler in process.crawlers:
+        crawler.signals.connect(spider_closed, signal=signals.spider_closed)
     process.start()
+
+
+def spider_closed(spider):
+    stats = spider.crawler.stats.get_stats()
+    if not (stats.get('item_scrapped_count', 0) + stats.get('item_dropped_count', 0)):
+        logger.warning('Your cookies or token may have expired.')
 
 
 def main():

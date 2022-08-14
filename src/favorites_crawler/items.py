@@ -19,17 +19,16 @@ class BaseItem:
     def get_filepath(self, url):
         folder_name = self.get_folder_name()
         filename = self.get_filename(url)
-        filepath = os.path.join(folder_name, filename)
-        return drop_illegal_characters(filepath)
+        return os.path.join(folder_name, filename)
 
     def get_filename(self, url):
-        return unquote(url.rsplit('/', maxsplit=1)[1])
+        return drop_illegal_characters(unquote(url.rsplit('/', maxsplit=1)[1]))
 
     def get_folder_name(self):
         name = self.title
         if not name:
             name = str(datetime.date.today())
-        return name
+        return drop_illegal_characters(name)
 
 
 @dataclass
@@ -84,8 +83,9 @@ class YanderePostItem(BaseItem):
 
 
 @dataclass
-class LemonPicPostItem(BaseItem):
-    pass
+class LemonPicPostItem(BaseItem, ComicBookInfoItem):
+    title: str = field(default=None, metadata={'is_comic_info': True})
+    tags: list = field(default=None, metadata={'is_comic_info': True})
 
 
 @dataclass

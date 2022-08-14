@@ -1,1 +1,1 @@
-ILLEGAL_FILENAME_CHARACTERS = r'[#%&{}\<>*?/$!\'":@+`|=？]'
+ILLEGAL_FILENAME_CHARACTERS = r'[#%{}\<>*?/$!\'":@+`|=]'

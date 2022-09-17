@@ -2,7 +2,7 @@ from zipfile import ZipFile
 
 import pytest
 
-from favorites_crawler.utils.files import create_comic_archive
+from favorites_crawler.utils.files import create_comic_archive, list_yandere_id
 
 
 @pytest.fixture
@@ -40,3 +40,18 @@ class TestCreateComicArchive:
 
         with ZipFile(comic_archive) as zf:
             assert zf.comment == b"I'm a comic."
+
+
+def test_list_yandere_id(tmp_path):
+    pictures = [
+        tmp_path / 'yande.re 1 b c m.jpg',
+        tmp_path / 'yande.re 2 b c m.png',
+        tmp_path / 'yande.re 10 b c m.jpg',
+        tmp_path / 'yande.re 20 b c m.jpeg',
+    ]
+    for p in pictures:
+        p.touch()
+
+    actual = list_yandere_id(tmp_path)
+
+    assert actual == ['1', '10', '2', '20']

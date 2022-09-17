@@ -148,3 +148,35 @@ yandere:
   ...
 ...
 ```
+
+# Restore your favorites
+## Vote yandere posts
+```bash
+$ favors restore yandere -h
+usage: favors restore yandere [-h] -s {0,1,2,3} -t CSRF_TOKEN -c COOKIE path
+
+positional arguments:
+  path                  The location of the post to vote. (Sub-folders are ignored)
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -s {0,1,2,3}, --score {0,1,2,3}
+                        Set 1, 2 or 3 to vote, 0 to cancel vote.
+  -t CSRF_TOKEN, --csrf-token CSRF_TOKEN
+                        CSRF token. To get it: 
+                        1. Open your browser DevTools. 
+                        2. Switch to network tab. 
+                        3. Vote any post on yandere. 
+                        4. Copy x-csrf-token value from request headers.
+  -c COOKIE, --cookie COOKIE
+                        Cookie. To get it: 
+                        1. Open your browser DevTools. 
+                        2. Switch to network tab. 
+                        3. Vote any post on yandere. 
+                        4. Copy cookie value from request headers.
+```
+
+Example:
+```bash
+favors restore yandere -s 3 -t "xxxx" -c "xx=x; xx=x; xx=x" .
+```

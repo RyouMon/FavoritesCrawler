@@ -14,6 +14,7 @@ class PixivIllustItemLoader(ItemLoader):
     default_output_processor = take_first
 
     file_urls_out = identity
+    user_id_out = Compose(take_first, str)
 
 
 class YanderePostItemLoader(ItemLoader):

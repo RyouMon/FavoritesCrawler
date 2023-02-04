@@ -51,5 +51,6 @@ class PixivSpider(BaseSpider):
                 d['image_urls']['original'] for d in illust.get('meta_pages', ())
                 if d.get('image_urls', {}).get('original')
             ])
+            loader.add_value('user_id', illust.get('user', {}).get('id'))
             loader.add_value('referer', response.url)
             yield loader.load_item()

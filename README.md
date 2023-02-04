@@ -126,3 +126,12 @@ yandere:
   USERNAME: xxxx
   FILES_STORE: pictures/b
 ```
+
+if you want to organize pixiv illust by user, add this line to your config:
+```yaml
+...
+pixiv:
+  FAVORS_PIXIV_ENABLE_ORGANIZE_BY_USER: true  # add this line to your pixiv config
+  ...
+...
+```

@@ -30,11 +30,12 @@ class TestFavoritesFilePipeline:
 
     def test_file_path_should_call_item_get_filepath(self):
         mock_request = MagicMock()
+        mock_info = MagicMock()
         mock_item = MagicMock()
 
-        FavoritesFilePipeline('mock_path').file_path(mock_request, item=mock_item)
+        FavoritesFilePipeline('mock_path').file_path(mock_request, None, mock_info, item=mock_item)
 
-        mock_item.get_filepath.assert_called_once_with(mock_request.url)
+        mock_item.get_filepath.assert_called_once_with(mock_request.url, mock_info.spider)
 
     @patch('favorites_crawler.pipelines.create_comic_archive')
     def test_should_create_comic_archive_when_close_spider(self, mock_create_comic_archive, tmp_path):

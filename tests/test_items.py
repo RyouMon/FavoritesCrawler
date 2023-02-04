@@ -1,5 +1,5 @@
 from datetime import date
-from unittest.mock import patch
+from unittest.mock import patch, MagicMock
 
 import pytest
 
@@ -16,7 +16,7 @@ class TestBaseItem:
     def test_get_filename(self, url, expected):
         item = items.BaseItem()
 
-        actual = item.get_filename(url)
+        actual = item.get_filename(url, None)
 
         assert actual == expected
 
@@ -24,7 +24,7 @@ class TestBaseItem:
         item = items.BaseItem()
         item.title = 'abc'
 
-        actual = item.get_folder_name()
+        actual = item.get_folder_name(None)
 
         assert actual == item.title
 
@@ -35,7 +35,7 @@ class TestBaseItem:
         item = items.BaseItem()
         item.title = None
 
-        actual = item.get_folder_name()
+        actual = item.get_folder_name(None)
 
         assert actual == '2022-02-03'
 
@@ -106,3 +106,30 @@ class TestNHentaiGalleryItem:
         assert '"file_urls"' not in result
         assert '"id"' not in result
         assert '"referer"' not in result
+
+
+class TestPixivIllustItem:
+
+    def test_get_folder_name_should_return_empty_when_disable_organize_by_user(self):
+        mock_spider = MagicMock()
+        mock_spider.crawler.settings.getbool.return_value = False
+        item = items.PixivIllustItem()
+
+        actual = item.get_folder_name(mock_spider)
+
+        assert actual == ''
+
+    @pytest.mark.parametrize('user_id,expected', (
+            (None, 'unknown'),
+            ('', 'unknown'),
+            ('123456', '123456'),
+    ))
+    def test_get_folder_name_should_return_user_id_when_enable_organize_by_user(self, user_id, expected):
+        mock_spider = MagicMock()
+        mock_spider.crawler.settings.getbool.return_value = True
+        item = items.PixivIllustItem(user_id=user_id)
+
+        actual = item.get_folder_name(mock_spider)
+
+        assert actual == expected
+

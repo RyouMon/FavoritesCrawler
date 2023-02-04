@@ -22,11 +22,14 @@ class FavoritesFilePipeline(FilesPipeline):
 
     def close_spider(self, spider):
         for title, comment in self.comic_comments.items():
-            create_comic_archive(self.files_path / title, comment=comment)
+            try:
+                create_comic_archive(self.files_path / title, comment=comment)
+            except FileNotFoundError:
+                pass
 
     def process_item(self, item, spider):
         if hasattr(item, 'get_comic_info'):
-            title = item.get_folder_name()
+            title = item.get_folder_name(spider)
             if (self.files_path / f'{title}.cbz').exists():
                 raise DropItem(f'Comic file of "{title}" already exist, stop download this comic.')
             comment = item.get_comic_info()
@@ -40,4 +43,4 @@ class FavoritesFilePipeline(FilesPipeline):
         return (Request(url, headers={'referer': referer}) for url in item_dict.get(self.files_urls_field, ()))
 
     def file_path(self, request, response=None, info=None, *, item=None):
-        return item.get_filepath(request.url)
+        return item.get_filepath(request.url, info.spider)

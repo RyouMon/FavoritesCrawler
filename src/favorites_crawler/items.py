@@ -16,15 +16,15 @@ class BaseItem:
     tags: list = field(default=None)
     referer: str = field(default=None)
 
-    def get_filepath(self, url):
-        folder_name = self.get_folder_name()
-        filename = self.get_filename(url)
+    def get_filepath(self, url, spider):
+        folder_name = self.get_folder_name(spider)
+        filename = self.get_filename(url, spider)
         return os.path.join(folder_name, filename)
 
-    def get_filename(self, url):
+    def get_filename(self, url, spider):
         return drop_illegal_characters(unquote(url.rsplit('/', maxsplit=1)[1]))
 
-    def get_folder_name(self):
+    def get_folder_name(self, spider):
         name = self.title
         if not name:
             name = str(datetime.date.today())
@@ -71,14 +71,18 @@ class ComicBookInfoItem:
 @dataclass
 class PixivIllustItem(BaseItem):
 
-    def get_folder_name(self):
-        return ''
+    user_id: str = field(default=None)
+
+    def get_folder_name(self, spider):
+        if not spider.crawler.settings.getbool('FAVORS_PIXIV_ENABLE_ORGANIZE_BY_USER'):
+            return ''
+        return self.user_id or 'unknown'
 
 
 @dataclass
 class YanderePostItem(BaseItem):
 
-    def get_folder_name(self):
+    def get_folder_name(self, _):
         return ''
 
 
@@ -96,5 +100,5 @@ class NHentaiGalleryItem(BaseItem, ComicBookInfoItem):
     characters: list = field(default=None)
     sort_title: str = field(default=None)
 
-    def get_folder_name(self):
+    def get_folder_name(self, _):
         return drop_illegal_characters(self.sort_title)

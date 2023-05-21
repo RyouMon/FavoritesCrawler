@@ -82,8 +82,12 @@ class PixivIllustItem(BaseItem):
 @dataclass
 class YanderePostItem(BaseItem):
 
-    def get_folder_name(self, _):
-        return ''
+    artist: str = field(default=None)
+
+    def get_folder_name(self, spider):
+        if not spider.crawler.settings.getbool('ENABLE_ORGANIZE_BY_ARTIST'):
+            return ''
+        return self.artist or 'unknown'
 
 
 @dataclass

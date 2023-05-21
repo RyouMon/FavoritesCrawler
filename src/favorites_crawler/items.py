@@ -74,7 +74,8 @@ class PixivIllustItem(BaseItem):
     user_id: str = field(default=None)
 
     def get_folder_name(self, spider):
-        if not spider.crawler.settings.getbool('FAVORS_PIXIV_ENABLE_ORGANIZE_BY_USER'):
+        if not (spider.crawler.settings.getbool('FAVORS_PIXIV_ENABLE_ORGANIZE_BY_USER')
+                or spider.crawler.settings.getbool('ENABLE_ORGANIZE_BY_ARTIST')):
             return ''
         return self.user_id or 'unknown'
 

@@ -3,7 +3,8 @@ PIXIV_REDIRECT_URI = "https://app-api.pixiv.net/web/v1/users/auth/pixiv/callback
 PIXIV_LOGIN_URL = "https://app-api.pixiv.net/web/v1/login"
 PIXIV_AUTH_TOKEN_URL = "https://oauth.secure.pixiv.net/auth/token"
 
-YANDERE_POST_URL = 'https://yande.re/post.json'
+YANDERE_LIST_POST_URL = 'https://yande.re/post.json'
+YANDERE_SHOW_POST_URL = 'https://yande.re/post/show/{id}'
 
 LEMON_PIC_USER_FAVORITES_URL = 'https://www.lmmbtc.com/user-center'
 

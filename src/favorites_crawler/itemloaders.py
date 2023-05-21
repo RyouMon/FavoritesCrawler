@@ -23,6 +23,7 @@ class YanderePostItemLoader(ItemLoader):
     default_output_processor = take_first
 
     file_urls_out = identity
+    artist_out = Compose(take_first, lambda s: s.strip())
 
 
 class NHentaiGalleryItemLoader(ItemLoader):

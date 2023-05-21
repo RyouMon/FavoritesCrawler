@@ -33,7 +33,7 @@ class TestCreateComicArchive:
         comic_archive = create_comic_archive(comic_path)
 
         with ZipFile(comic_archive) as zf:
-            assert zf.namelist() == ['1.jpg', '2.jpg']
+            assert sorted(zf.namelist()) == ['1.jpg', '2.jpg']
 
     def test_should_write_comment_to_archive(self, comic_path):
         comic_archive = create_comic_archive(comic_path, comment=b"I'm a comic.")

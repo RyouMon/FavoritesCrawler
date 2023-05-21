@@ -115,7 +115,10 @@ yandere:
   USERNAME: xxxx
 ```
 
-If you want save pixiv files to `pictures/a`, and want save yandere files to `pictures/b`, you can modify config file like this:
+## Download location
+By default, pictures will download to working directory.  
+If you want to change download location, you can add FILES_STORE option to config.  
+For example, if you want save pixiv files to `pictures/a`, and want save yandere files to `pictures/b`, you can modify config file like this:
 ```yaml
 pixiv:
   ACCESS_TOKEN: xxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -127,11 +130,21 @@ yandere:
   FILES_STORE: pictures/b
 ```
 
+## Organize file by artist
 if you want to organize pixiv illust by user, add this line to your config:
 ```yaml
 ...
 pixiv:
-  FAVORS_PIXIV_ENABLE_ORGANIZE_BY_USER: true  # add this line to your pixiv config
+  # FAVORS_PIXIV_ENABLE_ORGANIZE_BY_USER: true  # (Deprecation)
+  ENABLE_ORGANIZE_BY_ARTIST: true  # add this line to your yandere config
+  ...
+...
+```
+if you want to organize yandere post by artist, add this line to your config:
+```yaml
+...
+yandere:
+  ENABLE_ORGANIZE_BY_ARTIST: true  # add this line to your yandere config
   ...
 ...
 ```

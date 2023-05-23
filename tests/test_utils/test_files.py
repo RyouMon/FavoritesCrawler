@@ -54,4 +54,4 @@ def test_list_yandere_id(tmp_path):
 
     actual = list_yandere_id(tmp_path)
 
-    assert actual == ['1', '10', '2', '20']
+    assert sorted(actual) == ['1', '10', '2', '20']

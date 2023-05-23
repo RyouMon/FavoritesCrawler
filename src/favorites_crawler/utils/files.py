@@ -1,3 +1,4 @@
+import re
 from pathlib import Path
 from shutil import rmtree
 from zipfile import ZipFile
@@ -15,3 +16,13 @@ def create_comic_archive(path: Path, comment=b''):
     rmtree(path, ignore_errors=True)
 
     return archive_name
+
+
+def list_yandere_id(path='.'):
+    result = []
+    matcher = re.compile(r'^yande\.re (\d+) .+\..+$')
+    for file in Path(path).iterdir():
+        match = matcher.match(file.name)
+        if match:
+            result.append(match.group(1))
+    return result

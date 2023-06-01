@@ -1,3 +1,4 @@
+import pathlib
 from urllib.parse import urlencode
 
 from scrapy import Request
@@ -7,6 +8,7 @@ from favorites_crawler.spiders import BaseSpider
 from favorites_crawler.constants.domains import YANDERE_DOMAIN
 from favorites_crawler.itemloaders import YanderePostItemLoader
 from favorites_crawler.constants.endpoints import YANDERE_LIST_POST_URL, YANDERE_SHOW_POST_URL
+from favorites_crawler.utils.files import list_yandere_id
 
 
 class YandereSpider(BaseSpider):
@@ -21,8 +23,12 @@ class YandereSpider(BaseSpider):
         super().__init__(*args, **kwargs)
         self.limit = 100
         self.params = {'page': 1, 'limit': self.limit}
+        self.posts = set()
 
     def start_requests(self):
+        self.posts = set(list_yandere_id(pathlib.Path(self.settings.get('FILES_STORE')), include_subdir=True))
+        self.logger.debug(f'{len(self.posts)} posts will skip download.')
+
         username = self.custom_settings.get('USERNAME')
         if not username:
             raise CloseSpider('Did you run "favors login yandere"?')
@@ -42,6 +48,8 @@ class YandereSpider(BaseSpider):
             yield Request(f'{YANDERE_LIST_POST_URL}?{urlencode(self.params)}', callback=self.parse_start_url)
 
         for post in posts:
+            if str(post['id']) in self.posts:
+                continue
             loader = YanderePostItemLoader()
             loader.add_value('file_urls', post['file_url'])
             if self.settings.getbool('ENABLE_ORGANIZE_BY_ARTIST'):

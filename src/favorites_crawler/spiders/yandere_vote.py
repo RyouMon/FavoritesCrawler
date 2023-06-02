@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from scrapy import FormRequest
 
 from favorites_crawler.spiders import BaseSpider
@@ -22,7 +24,7 @@ class YandereVoteSpider(BaseSpider):
             self.cookies[k] = v
         self.headers = {'x-csrf-token': csrf_token}
         self.score = score
-        self.path = path
+        self.path = Path(path)
 
     def start_requests(self):
         yandere_id_list = list_yandere_id(self.path)

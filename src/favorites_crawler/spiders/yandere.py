@@ -37,10 +37,7 @@ class YandereSpider(BaseSpider):
         yield Request(f'{YANDERE_LIST_POST_URL}?{urlencode(self.params)}')
 
     def parse_start_url(self, response, **kwargs):
-        """Parse list post url
-        @url https://yande.re/post.json?limit=100&page=1
-        @returns requests 101
-        """
+        """Parse list post url"""
         posts = response.json()
 
         if len(posts) == self.limit:

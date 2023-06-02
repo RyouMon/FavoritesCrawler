@@ -1,4 +1,5 @@
 from zipfile import ZipFile
+from pathlib import Path
 
 import pytest
 
@@ -42,16 +43,31 @@ class TestCreateComicArchive:
             assert zf.comment == b"I'm a comic."
 
 
-def test_list_yandere_id(tmp_path):
-    pictures = [
-        tmp_path / 'yande.re 1 b c m.jpg',
-        tmp_path / 'yande.re 2 b c m.png',
-        tmp_path / 'yande.re 10 b c m.jpg',
-        tmp_path / 'yande.re 20 b c m.jpeg',
-    ]
-    for p in pictures:
-        p.touch()
+class TestListYandereId:
 
-    actual = list_yandere_id(tmp_path)
+    def test_list_yandere_id(self, tmp_path: Path):
+        pictures = [
+            tmp_path / 'yande.re 1 b c m.jpg',
+            tmp_path / 'yande.re 2 b c m.png',
+            tmp_path / 'yande.re 10 b c m.jpg',
+            tmp_path / 'yande.re 20 b c m.jpeg',
+        ]
+        for p in pictures:
+            p.touch()
+        (tmp_path / 'sub').mkdir()
+        (tmp_path / 'sub' / 'yande.re 2 b c m.jpeg').touch()
 
-    assert sorted(actual) == ['1', '10', '2', '20']
+        actual = list_yandere_id(tmp_path)
+
+        assert sorted(actual) == ['1', '10', '2', '20']
+
+    def test_list_yandere_id_include_subdir(self, tmp_path: Path):
+        (tmp_path / 'yande.re 1 b c m.jpg').touch()
+        (tmp_path / 'sub').mkdir()
+        (tmp_path / 'sub' / 'yande.re 2 b c m.jpeg').touch()
+        (tmp_path / 'sub2').mkdir()
+        (tmp_path / 'sub2' / 'yande.re 3 b c m.jpeg').touch()
+
+        actual = list_yandere_id(tmp_path, include_subdir=True)
+
+        assert sorted(actual) == ['1', '2', '3']

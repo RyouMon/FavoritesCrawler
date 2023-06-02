@@ -22,7 +22,7 @@ Crawl your personal favorite images, photo albums, comics from website.
 
 # Install
 ```
-pip install favorites_crawler
+pip install -U favorites_crawler
 ```
 
 # Config Proxy (Optional)

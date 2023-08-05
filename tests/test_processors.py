@@ -92,3 +92,16 @@ def test_clean_parodies(parodies, expected):
     actual = processors.clean_parodies(parodies)
 
     assert actual == expected
+
+
+@pytest.mark.parametrize('url,expected', (
+    ('https://www.xxx.com/811102.html#anchor-comment-3423', 1),
+    ('https://www.xxx.com/811102.html', 1),
+    ('https://www.xxx.com/811102.html/2', 2),
+    ('https://www.xxx.com/811102.html/02', 2),
+    ('https://www.xxx.com/811102.html/3', 3),
+))
+def test_get_page(url, expected):
+    actual = processors.get_page(url)
+
+    assert actual == expected

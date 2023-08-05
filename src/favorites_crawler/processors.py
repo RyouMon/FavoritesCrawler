@@ -116,3 +116,10 @@ def clean_parodies(parodies):
         parodies = match.group(1)
 
     return parodies.strip()
+
+
+def get_page(url):
+    match = re.match(r'https://www\..+html/(\d+)', url)
+    if not match:
+        return 1
+    return int(match.group(1))

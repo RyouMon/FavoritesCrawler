@@ -3,7 +3,7 @@ from scrapy.spiders.crawl import Rule, LinkExtractor
 
 from favorites_crawler.spiders import BaseSpider
 from favorites_crawler.itemloaders import LemonPicPostItemLoader
-from favorites_crawler.constants.endpoints import LEMON_PIC_USER_FAVORITES_URL
+from favorites_crawler.constants.endpoints import LEMON_PIC_USER_CENTER_URL
 from favorites_crawler.constants.domains import LMMPIC_DOMAIN
 from favorites_crawler.utils.cookies import load_cookie
 
@@ -13,7 +13,7 @@ class LemonSpider(BaseSpider):
     allowed_domains = [LMMPIC_DOMAIN]
     rules = [
         Rule(
-            LinkExtractor(restrict_xpaths='//div[@class="my-favorite"]', allow='.+html', deny='#'),
+            LinkExtractor(restrict_xpaths='//ul[@class="my-comment"]'),
             callback='parse', follow=True,
         ),
         Rule(
@@ -27,7 +27,7 @@ class LemonSpider(BaseSpider):
         self.cookies = load_cookie(LMMPIC_DOMAIN)
 
     def start_requests(self):
-        yield Request(url=LEMON_PIC_USER_FAVORITES_URL, cookies=self.cookies)
+        yield Request(url=LEMON_PIC_USER_CENTER_URL, cookies=self.cookies)
 
     def parse(self, response, **kwargs):
         loader = LemonPicPostItemLoader(selector=response)

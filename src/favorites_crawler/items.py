@@ -102,7 +102,7 @@ class LemonPicPostItem(BaseItem, ComicBookInfoItem):
     def get_filename(self, url, spider):
         url = unquote(url)
         basename = drop_illegal_characters(url.rsplit('/', maxsplit=1)[1])
-        return f'{self.page:03}-{self.file_urls.index(url, 1):03}-{basename}'
+        return f'{self.page:03}-{self.file_urls.index(url) + 1:03}-{basename}'
 
 
 @dataclass

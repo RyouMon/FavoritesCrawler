@@ -10,7 +10,7 @@ from scrapy.spiderloader import SpiderLoader
 from favorites_crawler.utils import auth
 from favorites_crawler.utils.config import load_config, overwrite_settings
 
-__version__ = '0.1.11'
+__version__ = '0.1.12'
 
 logger = getLogger(__name__)
 

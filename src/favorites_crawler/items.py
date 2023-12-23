@@ -6,6 +6,7 @@ from urllib.parse import unquote
 
 from favorites_crawler import __version__
 from favorites_crawler.utils.text import drop_illegal_characters
+from favorites_crawler.constants.domains import LMMPIC_DOMAIN
 
 
 @dataclass
@@ -93,8 +94,15 @@ class YanderePostItem(BaseItem):
 
 @dataclass
 class LemonPicPostItem(BaseItem, ComicBookInfoItem):
+    page: str = field(default=None)
     title: str = field(default=None, metadata={'is_comic_info': True})
     tags: list = field(default=None, metadata={'is_comic_info': True})
+    publisher: str = field(default=LMMPIC_DOMAIN, metadata={'is_comic_info': True})
+
+    def get_filename(self, url, spider):
+        url = unquote(url)
+        basename = drop_illegal_characters(url.rsplit('/', maxsplit=1)[1])
+        return f'{self.page:03}-{self.file_urls.index(url) + 1:03}-{basename}'
 
 
 @dataclass

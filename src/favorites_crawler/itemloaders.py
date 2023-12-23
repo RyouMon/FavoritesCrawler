@@ -5,7 +5,7 @@ from favorites_crawler import items
 from favorites_crawler.processors import take_first, identity, get_nhentai_id, wrap_credits, \
     original_url_from_nhentai_thumb_url, select_best_nhentai_title, clean_nhentai_title, \
     get_year_from_iso_format, get_month_from_iso_format, get_series_from_title, get_volume_from_title, \
-    clean_parodies
+    clean_parodies, get_page
 
 
 class PixivIllustItemLoader(ItemLoader):
@@ -51,3 +51,4 @@ class LemonPicPostItemLoader(ItemLoader):
 
     file_urls_out = identity
     tags_out = identity
+    page_out = Compose(take_first, get_page)

@@ -48,9 +48,10 @@ def main():
     login_parser.add_argument('name', choices=login_processors.keys())
     login_parser.set_defaults(func=lambda ns: login_processors[ns.name]())
 
-    vote_parser = subparsers.add_parser('crawl', help='start crawling')
-    vote_parser.add_argument('name', choices=spider_loader.list())
-    vote_parser.set_defaults(func=lambda ns: crawl(ns.name))
+    crawl_parser = subparsers.add_parser('crawl', help='crawl help')
+    crawl_parser.add_argument('name', choices=spider_loader.list())
+    crawl_parser.add_argument('--id', '-i', action='store', nargs='*', dest='id_list')
+    crawl_parser.set_defaults(func=lambda ns, **kwargs: crawl(ns.name, **kwargs))
 
     restore_parser = subparsers.add_parser('restore', help='restore help')
     restore_subparser = restore_parser.add_subparsers()
@@ -74,7 +75,10 @@ def main():
         func=lambda ns: crawl('yandere_vote', score=ns.score, csrf_token=ns.csrf_token, cookie=ns.cookie, path=ns.path))
 
     args = parser.parse_args()
-    args.func(args)
+    try:
+        args.func(args, id_list=args.id_list)
+    except TypeError:
+        args.func(args)
 
 
 if __name__ == '__main__':

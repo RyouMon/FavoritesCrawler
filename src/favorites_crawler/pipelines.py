@@ -3,14 +3,19 @@
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 
+import logging
 from pathlib import Path
 
 from scrapy import Request
 from scrapy.exceptions import DropItem
 from scrapy.pipelines.files import FilesPipeline
 from itemadapter import ItemAdapter
+from twisted.python.failure import Failure
 
 from favorites_crawler.utils.files import create_comic_archive
+
+
+logger = logging.getLogger(__name__)
 
 
 class FavoritesFilePipeline(FilesPipeline):
@@ -22,8 +27,11 @@ class FavoritesFilePipeline(FilesPipeline):
 
     def close_spider(self, spider):
         for title, comment in self.comic_comments.items():
+            folder = self.files_path / title
+            if not folder.exists():
+                continue
             try:
-                create_comic_archive(self.files_path / title, comment=comment)
+                create_comic_archive(folder, comment=comment)
             except FileNotFoundError:
                 pass
 
@@ -44,3 +52,9 @@ class FavoritesFilePipeline(FilesPipeline):
 
     def file_path(self, request, response=None, info=None, *, item=None):
         return item.get_filepath(request.url, info.spider)
+
+    def item_completed(self, results, item, info):
+        for result in info.downloaded.values():
+            if isinstance(result, Failure):
+                logger.error('Error when downloading file: %s', result.value)
+        return super().item_completed(results, item, info)

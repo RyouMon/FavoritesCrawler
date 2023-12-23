@@ -16,6 +16,7 @@ def test_original_url_from_nhentai_thumb_url():
     ('Event no Retsu de...', 'Event no Retsu de'),
     ('Event no Retsu de..', 'Event no Retsu de'),
     ('Event no Retsu de.', 'Event no Retsu de'),
+    ('[xxxx] xxxx xxx [With Digital Bonus] | xxx[xxx] [Digital] [Uncensored]', 'xxxx xxx'),
 ))
 def test_clean_nhentai_title(title, expected):
     actual = processors.clean_nhentai_title(title)

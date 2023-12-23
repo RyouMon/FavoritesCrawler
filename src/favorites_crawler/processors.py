@@ -56,9 +56,11 @@ def select_best_nhentai_title(titles):
         return ''
 
 
-def clean_nhentai_title(title):
+def clean_nhentai_title(title: str) -> str:
     if not title:
         return ''
+
+    title = title.split('|', maxsplit=1)[0].strip()
 
     match = re.match(r'^\[.+\] (.+) \[.+\]$', title)
     if match:
@@ -71,7 +73,7 @@ def clean_nhentai_title(title):
     while title.endswith('.'):
         title = title[:-1]
 
-    return title
+    return title.strip()
 
 
 def get_year_from_iso_format(iso_format):

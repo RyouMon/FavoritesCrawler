@@ -41,6 +41,7 @@ class TestFavoritesFilePipeline:
     def test_should_create_comic_archive_when_close_spider(self, mock_create_comic_archive, tmp_path):
         pipeline = FavoritesFilePipeline('mock_path')
         pipeline.files_path = tmp_path
+        (tmp_path / 'comic').mkdir()
         pipeline.comic_comments = {'comic': b'comment'}
 
         pipeline.close_spider(None)

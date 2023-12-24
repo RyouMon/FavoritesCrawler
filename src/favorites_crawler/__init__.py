@@ -77,7 +77,7 @@ def main():
     args = parser.parse_args()
     try:
         args.func(args, id_list=args.id_list)
-    except TypeError:
+    except (TypeError, AttributeError):
         args.func(args)
 
 

@@ -35,7 +35,7 @@ def crawl(name, **kwargs):
 
 def spider_closed(spider):
     stats = spider.crawler.stats.get_stats()
-    if not (stats.get('item_scrapped_count', 0) + stats.get('item_dropped_count', 0)):
+    if not (stats.get('item_scraped_count', 0) + stats.get('item_dropped_count', 0)):
         logger.warning('Your cookies or token may have expired.')
 
 

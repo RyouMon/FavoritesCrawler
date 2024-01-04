@@ -5,7 +5,7 @@ from scrapy import FormRequest
 from favorites_crawler.spiders import BaseSpider
 from favorites_crawler.constants.domains import YANDERE_DOMAIN
 from favorites_crawler.constants.endpoints import YANDERE_VOTE_POST_URL
-from favorites_crawler.utils.files import list_yandere_id
+from favorites_crawler.utils.files import list_yandere_post
 
 
 class YandereVoteSpider(BaseSpider):
@@ -27,12 +27,10 @@ class YandereVoteSpider(BaseSpider):
         self.path = Path(path)
 
     def start_requests(self):
-        yandere_id_list = list_yandere_id(self.path)
-        self.crawler.stats.set_value('file_count', len(yandere_id_list))
-        yandere_id_set = set(yandere_id_list)
-        self.crawler.stats.set_value('voted/expected', len(yandere_id_set))
+        yandere_id_list = list(list_yandere_post(self.path).keys())
+        self.crawler.stats.set_value('voted/expected', len(yandere_id_list))
 
-        for i in yandere_id_set:
+        for i in yandere_id_list:
             yield FormRequest(YANDERE_VOTE_POST_URL,
                               formdata={'id': str(i), 'score': str(self.score)},
                               cookies=self.cookies, headers=self.headers,

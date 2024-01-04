@@ -1,11 +1,11 @@
 from itemloaders import ItemLoader
-from itemloaders.processors import Join, Compose, MapCompose
+from itemloaders.processors import Compose, MapCompose
 
 from favorites_crawler import items
 from favorites_crawler.processors import take_first, identity, get_nhentai_id, wrap_credits, \
     original_url_from_nhentai_thumb_url, select_best_nhentai_title, clean_nhentai_title, \
     get_year_from_iso_format, get_month_from_iso_format, get_series_from_title, get_volume_from_title, \
-    clean_parodies, get_page
+    clean_parodies, get_lemon_page, get_pixiv_tags, get_yandere_tags
 
 
 class PixivIllustItemLoader(ItemLoader):
@@ -15,6 +15,7 @@ class PixivIllustItemLoader(ItemLoader):
 
     file_urls_out = identity
     user_id_out = Compose(take_first, str)
+    tags_out = get_pixiv_tags
 
 
 class YanderePostItemLoader(ItemLoader):
@@ -24,6 +25,7 @@ class YanderePostItemLoader(ItemLoader):
 
     file_urls_out = identity
     artist_out = Compose(take_first, lambda s: s.strip())
+    tags_out = Compose(take_first, get_yandere_tags)
 
 
 class NHentaiGalleryItemLoader(ItemLoader):
@@ -51,4 +53,4 @@ class LemonPicPostItemLoader(ItemLoader):
 
     file_urls_out = identity
     tags_out = identity
-    page_out = Compose(take_first, get_page)
+    page_out = Compose(take_first, get_lemon_page)

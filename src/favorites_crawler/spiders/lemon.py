@@ -21,6 +21,9 @@ class LemonSpider(BaseSpider):
             callback='parse',
         ),
     ]
+    custom_settings = {
+        'ITEM_PIPELINES': {'favorites_crawler.pipelines.ComicPipeline': 0},
+    }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

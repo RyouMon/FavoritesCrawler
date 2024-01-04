@@ -24,6 +24,7 @@ class NHentaiSpider(BaseSpider):
     )
     custom_settings = {
         'CONCURRENT_REQUESTS': 5,
+        'ITEM_PIPELINES': {'favorites_crawler.pipelines.ComicPipeline': 0},
     }
 
     def __init__(self, *args, **kwargs):

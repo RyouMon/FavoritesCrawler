@@ -19,13 +19,13 @@ def create_comic_archive(path: Path, comment=b''):
     return archive_name
 
 
-def list_yandere_id(path=Path('.'), include_subdir=False, result=None):
-    result = [] if result is None else result
+def list_yandere_post(path=Path('.'), include_subdir=False, result=None):
+    result = {} if result is None else result
     for file_or_dir in path.iterdir():
         if file_or_dir.is_file():
             id_ = get_yandere_post_id(file_or_dir.name)
             if id_:
-                result.append(id_)
+                result[id_] = file_or_dir
         elif include_subdir:
-            list_yandere_id(file_or_dir, include_subdir, result)
+            list_yandere_post(file_or_dir, include_subdir, result)
     return result

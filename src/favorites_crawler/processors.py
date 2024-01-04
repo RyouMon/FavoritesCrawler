@@ -120,8 +120,26 @@ def clean_parodies(parodies):
     return parodies.strip()
 
 
-def get_page(url):
+def get_lemon_page(url):
     match = re.match(r'https://www\..+html/(\d+)', url)
     if not match:
         return 1
     return int(match.group(1))
+
+
+def get_pixiv_tags(tags):
+    """Return en-us tags."""
+    results = set()
+    for tag in tags:
+        if tag.get('name'):
+            results.add(tag['name'].strip().replace(' ', '_').lower())
+        if tag.get('translated_name'):
+            results.add(tag['translated_name'].strip().replace(' ', '_').lower())
+    return list(filter(
+        lambda x: re.match(r'^[ -~]+$', x),  # ascii only
+        results,
+    ))
+
+
+def get_yandere_tags(tags):
+    return tags.split(' ')

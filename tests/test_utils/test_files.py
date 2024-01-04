@@ -3,7 +3,7 @@ from pathlib import Path
 
 import pytest
 
-from favorites_crawler.utils.files import create_comic_archive, list_yandere_id
+from favorites_crawler.utils.files import create_comic_archive, list_yandere_post
 
 
 @pytest.fixture
@@ -43,7 +43,7 @@ class TestCreateComicArchive:
             assert zf.comment == b"I'm a comic."
 
 
-class TestListYandereId:
+class TestListYanderePost:
 
     def test_list_yandere_id(self, tmp_path: Path):
         pictures = [
@@ -57,9 +57,15 @@ class TestListYandereId:
         (tmp_path / 'sub').mkdir()
         (tmp_path / 'sub' / 'yande.re 2 b c m.jpeg').touch()
 
-        actual = list_yandere_id(tmp_path)
+        actual = list_yandere_post(tmp_path)
+        actual = {k: v.name for k, v in actual.items()}
 
-        assert sorted(actual) == ['1', '10', '2', '20']
+        assert actual == {
+            '1': 'yande.re 1 b c m.jpg',
+            '2': 'yande.re 2 b c m.png',
+            '10': 'yande.re 10 b c m.jpg',
+            '20': 'yande.re 20 b c m.jpeg'
+        }
 
     def test_list_yandere_id_include_subdir(self, tmp_path: Path):
         (tmp_path / 'yande.re 1 b c m.jpg').touch()
@@ -68,6 +74,11 @@ class TestListYandereId:
         (tmp_path / 'sub2').mkdir()
         (tmp_path / 'sub2' / 'yande.re 3 b c m.jpeg').touch()
 
-        actual = list_yandere_id(tmp_path, include_subdir=True)
+        actual = list_yandere_post(tmp_path, include_subdir=True)
+        actual = {k: v.name for k, v in actual.items()}
 
-        assert sorted(actual) == ['1', '2', '3']
+        assert actual == {
+            '1': 'yande.re 1 b c m.jpg',
+            '2': 'yande.re 2 b c m.jpeg',
+            '3': 'yande.re 3 b c m.jpeg',
+        }

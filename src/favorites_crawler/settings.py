@@ -27,6 +27,8 @@ DOWNLOAD_WARNSIZE = 0
 
 TELNETCONSOLE_ENABLED = False
 
-ITEM_PIPELINES = {'favorites_crawler.pipelines.FavoritesFilePipeline': 0}
-
 FAVORS_PIXIV_ENABLE_ORGANIZE_BY_USER = False
+
+# ExifTool settings
+ENABLE_WRITE_IPTC_KEYWORDS = True
+EXIF_TOOL_EXECUTABLE = None

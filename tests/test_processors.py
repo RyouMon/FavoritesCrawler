@@ -103,6 +103,6 @@ def test_clean_parodies(parodies, expected):
     ('https://www.xxx.com/811102.html/3', 3),
 ))
 def test_get_page(url, expected):
-    actual = processors.get_page(url)
+    actual = processors.get_lemon_page(url)
 
     assert actual == expected

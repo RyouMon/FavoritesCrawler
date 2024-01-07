@@ -20,6 +20,7 @@ class PixivSpider(BaseSpider):
         'DEFAULT_REQUEST_HEADERS': PIXIV_REQUEST_HEADERS,
         # Add PixivAuthorizationMiddleware after DefaultHeadersMiddleware
         'DOWNLOADER_MIDDLEWARES': {'favorites_crawler.middlewares.PixivAuthorizationMiddleware': 450},
+        'ITEM_PIPELINES': {'favorites_crawler.pipelines.PicturePipeline': 0},
     }
 
     def start_requests(self):

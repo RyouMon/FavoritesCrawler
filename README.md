@@ -133,20 +133,25 @@ yandere:
 ## Organize file by artist
 if you want to organize pixiv illust by user, add this line to your config:
 ```yaml
-...
 pixiv:
   # FAVORS_PIXIV_ENABLE_ORGANIZE_BY_USER: true  # (Deprecation)
   ENABLE_ORGANIZE_BY_ARTIST: true  # add this line to your yandere config
-  ...
-...
 ```
 if you want to organize yandere post by artist, add this line to your config:
 ```yaml
-...
 yandere:
   ENABLE_ORGANIZE_BY_ARTIST: true  # add this line to your yandere config
-  ...
-...
+```
+
+## Store tags to IPTC/Keywords
+only support pixiv and yandere.
+```yaml
+yandere:
+   ENABLE_WRITE_IPTC_KEYWORDS: true  # default: true
+   EXIF_TOOL_EXECUTABLE: '<Path to your exiftool executable>'  # default None
+pixiv:
+   ENABLE_WRITE_IPTC_KEYWORDS: true  # default: true
+   EXIF_TOOL_EXECUTABLE: '<Path to your exiftool executable>'  # default None
 ```
 
 # Restore your favorites

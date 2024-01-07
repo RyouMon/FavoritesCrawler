@@ -34,7 +34,6 @@ class BaseItem:
 
 @dataclass
 class ComicBookInfoItem:
-
     title: str = field(default=None, metadata={'is_comic_info': True})
     series: str = field(default=None, metadata={'is_comic_info': True})
     publisher: str = field(default=None, metadata={'is_comic_info': True})
@@ -71,7 +70,6 @@ class ComicBookInfoItem:
 
 @dataclass
 class PixivIllustItem(BaseItem):
-
     user_id: str = field(default=None)
 
     def get_folder_name(self, spider):
@@ -83,7 +81,6 @@ class PixivIllustItem(BaseItem):
 
 @dataclass
 class YanderePostItem(BaseItem):
-
     artist: str = field(default=None)
 
     def get_folder_name(self, spider):

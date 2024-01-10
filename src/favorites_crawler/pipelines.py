@@ -63,6 +63,8 @@ class PicturePipeline(BasePipeline):
         for success, result in results:
             if not (success and item.tags):
                 continue
+            if result.get('status') == 'uptodate':
+                continue
             path = item.get_filepath(result['url'], info.spider)
             try:
                 msg = self.exif_tool.set_tags(

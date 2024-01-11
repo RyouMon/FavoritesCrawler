@@ -1,5 +1,5 @@
 # FavoritesCrawler
-[![Build](https://img.shields.io/github/workflow/status/RyouMon/FavoritesCrawler/Python%20package/dev)](https://github.com/RyouMon/FavoritesCrawler/actions/workflows/python-package.yml)
+[![Build](https://img.shields.io/github/actions/workflow/status/RyouMon/FavoritesCrawler/python-package.yml?branch=dev)](https://github.com/RyouMon/FavoritesCrawler/actions/workflows/python-package.yml)
 [![Version](https://img.shields.io/pypi/v/favorites_crawler)](https://pypi.org/project/favorites_crawler/)
 
 Crawl your personal favorite images, photo albums, comics from website.

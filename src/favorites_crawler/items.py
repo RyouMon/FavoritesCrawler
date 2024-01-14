@@ -2,7 +2,7 @@ import json
 import datetime
 import os.path
 from dataclasses import dataclass, field, fields
-from urllib.parse import unquote
+from urllib.parse import unquote, urlparse
 
 from favorites_crawler import __version__
 from favorites_crawler.utils.text import drop_illegal_characters
@@ -23,7 +23,9 @@ class BaseItem:
         return os.path.join(folder_name, filename)
 
     def get_filename(self, url, spider):
-        return drop_illegal_characters(unquote(url.rsplit('/', maxsplit=1)[1]))
+        path = urlparse(url).path
+        filename = unquote(path.rsplit('/', maxsplit=1)[1])
+        return drop_illegal_characters(filename)
 
     def get_folder_name(self, spider):
         name = self.title
@@ -87,6 +89,20 @@ class YanderePostItem(BaseItem):
         if not spider.crawler.settings.getbool('ENABLE_ORGANIZE_BY_ARTIST'):
             return ''
         return self.artist or 'unknown'
+
+
+@dataclass
+class TwitterTweetItem(BaseItem):
+    username: str = field(default=None)
+
+    def get_folder_name(self, spider):
+        if not spider.crawler.settings.getbool('ENABLE_ORGANIZE_BY_ARTIST', True):
+            return ''
+        return self.username or 'unknown'
+
+    def get_filename(self, url, spider):
+        filename = super().get_filename(url, spider)
+        return f'{self.id} {filename}'
 
 
 @dataclass

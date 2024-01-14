@@ -5,3 +5,4 @@ itemadapter==0.4.0
 itemloaders==1.0.4
 Twisted==22.10.0
 pyexiftool==0.5.6
+jsonpath-rw==1.4.0

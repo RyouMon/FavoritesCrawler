@@ -16,6 +16,7 @@ class BaseItem:
     file_urls: list = field(default=None)
     tags: list = field(default=None)
     referer: str = field(default=None)
+    created_time: datetime.datetime = field(default=None)
 
     def get_filepath(self, url, spider):
         folder_name = self.get_folder_name(spider)

@@ -159,3 +159,7 @@ def fix_tweet_media_url(url):
     if not url:
         return url
     return url + '?name=orig'
+
+
+def tweet_time_2_datetime(tweet_time):
+    return datetime.strptime(tweet_time, '%a %b %d %H:%M:%S %z %Y')

@@ -105,5 +105,8 @@ class TwitterSpider(BaseSpider):
         loader.add_value('id', entry_router.find('$..rest_id'))
         loader.add_value('username', entry_router.find('$..screen_name'))
         loader.add_value('tags', entry_router.find('$..hashtags[*].text'))
-        loader.add_value('file_urls', entry_router.find('$..media_url_https'))
+        loader.add_value('file_urls', list(set(entry_router.find('$..media_url_https'))))
+        loader.add_value('created_time', entry_router.route_to(
+            'itemContent.tweet_results.result.legacy.created_at',
+        ))
         yield loader.load_item()

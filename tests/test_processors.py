@@ -1,6 +1,9 @@
+from datetime import datetime, timezone
+
 import pytest
 
 from favorites_crawler import processors
+from favorites_crawler.processors import tweet_time_2_datetime
 
 
 def test_original_url_from_nhentai_thumb_url():
@@ -121,4 +124,12 @@ def test_get_twitter_tags(tags, expected):
 ))
 def test_fix_tweet_media_url(url, expected):
     actual = processors.fix_tweet_media_url(url)
+    assert actual == expected
+
+
+@pytest.mark.parametrize('tweet_time, expected', (
+        ('Sat Oct 20 09:47:03 +0000 2012', datetime(2012, 10, 20, 9, 47, 3, tzinfo=timezone.utc)),
+))
+def test_tweet_time_2_datetime(tweet_time, expected):
+    actual = tweet_time_2_datetime(tweet_time)
     assert actual == expected

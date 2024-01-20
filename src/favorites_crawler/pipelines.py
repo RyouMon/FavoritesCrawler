@@ -61,25 +61,32 @@ class PicturePipeline(BasePipeline):
             return item
 
         for success, result in results:
-            if not (success and item.tags):
+            if not success:
                 continue
             if result.get('status') == 'uptodate':
                 continue
             path = item.get_filepath(result['url'], info.spider)
+            tags = {}
+            if item.tags:
+                tags['Keywords'] = item.tags
+            if item.created_time:
+                tags['CreateDate'] = item.created_time
+            if not tags:
+                continue
             try:
                 msg = self.exif_tool.set_tags(
                     Path(self.store.basedir) / path,
-                    {'Keywords': item.tags},
+                    tags,
                     ['-overwrite_original'],
                 ).rstrip()
             except Exception as e:
-                logger.error('Failed to write tags: %r to "%s", result: %r', item.tags, path, e)
+                logger.error('Failed to write tags: %r to "%s", result: %r', tags, path, e)
             else:
                 if msg == '1 image files updated':
                     info.spider.crawler.stats.inc_value('iptc_status_count/updated')
-                    logger.debug('Success to write tags: %r to "%s", result: %s', item.tags, path, msg)
+                    logger.debug('Success to write tags: %r to "%s", result: %s', tags, path, msg)
                 else:
-                    logger.error('Failed to write tags: %r to "%s", result: %s', item.tags, path, msg)
+                    logger.error('Failed to write tags: %r to "%s", result: %s', tags, path, msg)
 
         return item
 

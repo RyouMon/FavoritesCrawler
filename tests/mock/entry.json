@@ -1,0 +1,506 @@
+{
+    "entryType": "TimelineTimelineItem",
+    "__typename": "TimelineTimelineItem",
+    "itemContent": {
+        "itemType": "TimelineTweet",
+        "__typename": "TimelineTweet",
+        "tweet_results": {
+            "result": {
+                "__typename": "Tweet",
+                "rest_id": "1745264765776105611",
+                "core": {
+                    "user_results": {
+                        "result": {
+                            "__typename": "User",
+                            "id": "VXNlcjoxNzEyMDI0NTQyNDE4NTQyNTky",
+                            "rest_id": "1712024542418542592",
+                            "affiliates_highlighted_label": {},
+                            "has_graduated_access": true,
+                            "is_blue_verified": false,
+                            "profile_image_shape": "Circle",
+                            "legacy": {
+                                "can_dm": false,
+                                "can_media_tag": true,
+                                "created_at": "Wed Oct 11 08:37:35 +0000 2023",
+                                "default_profile": true,
+                                "default_profile_image": false,
+                                "description": "アニメ『薬屋のひとりごと』POP UP STORE公式アカウントです。店舗や商品の情報をお知らせいたします。 #薬屋のひとりごと #薬屋ロフト",
+                                "entities": {
+                                    "description": {
+                                        "urls": []
+                                    },
+                                    "url": {
+                                        "urls": [
+                                            {
+                                                "display_url": "philter.co.jp/pani/kusuriya/",
+                                                "expanded_url": "https://www.philter.co.jp/pani/kusuriya/",
+                                                "url": "https://t.co/HJ4mNbzlhN",
+                                                "indices": [
+                                                    0,
+                                                    23
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                },
+                                "fast_followers_count": 0,
+                                "favourites_count": 250,
+                                "followers_count": 4366,
+                                "friends_count": 11,
+                                "has_custom_timelines": false,
+                                "is_translator": false,
+                                "listed_count": 13,
+                                "location": "ロフト6店舗",
+                                "media_count": 56,
+                                "name": "『薬屋のひとりごと』POP UP STORE【公式】",
+                                "normal_followers_count": 4366,
+                                "pinned_tweet_ids_str": [
+                                    "1725348042164023358"
+                                ],
+                                "possibly_sensitive": false,
+                                "profile_banner_url": "https://pbs.twimg.com/profile_banners/1712024542418542592/1700122428",
+                                "profile_image_url_https": "https://pbs.twimg.com/profile_images/1725064575157260288/eD4p14kw_normal.jpg",
+                                "profile_interstitial_type": "",
+                                "screen_name": "kusuriya_popup",
+                                "statuses_count": 141,
+                                "translator_type": "none",
+                                "url": "https://t.co/HJ4mNbzlhN",
+                                "verified": false,
+                                "want_retweets": false,
+                                "withheld_in_countries": []
+                            }
+                        }
+                    }
+                },
+                "unmention_data": {},
+                "edit_control": {
+                    "edit_tweet_ids": [
+                        "1745264765776105611"
+                    ],
+                    "editable_until_msecs": "1704942120000",
+                    "is_edit_eligible": true,
+                    "edits_remaining": "5"
+                },
+                "is_translatable": true,
+                "views": {
+                    "count": "22528",
+                    "state": "EnabledWithCount"
+                },
+                "source": "<a href=\"https://mobile.twitter.com\" rel=\"nofollow\">Twitter Web App</a>",
+                "legacy": {
+                    "bookmark_count": 4,
+                    "bookmarked": false,
+                    "created_at": "Thu Jan 11 02:02:00 +0000 2024",
+                    "conversation_id_str": "1745264765776105611",
+                    "display_text_range": [
+                        0,
+                        154
+                    ],
+                    "entities": {
+                        "hashtags": [],
+                        "media": [
+                            {
+                                "display_url": "pic.twitter.com/79gsgqy8vb",
+                                "expanded_url": "https://twitter.com/kusuriya_popup/status/1745264765776105611/photo/1",
+                                "id_str": "1745262945351970816",
+                                "indices": [
+                                    155,
+                                    178
+                                ],
+                                "media_key": "3_1745262945351970816",
+                                "media_url_https": "https://pbs.twimg.com/media/GDhrZulbMAAxh1l.jpg",
+                                "type": "photo",
+                                "url": "https://t.co/79gsgqy8vb",
+                                "ext_media_availability": {
+                                    "status": "Available"
+                                },
+                                "features": {
+                                    "large": {
+                                        "faces": [
+                                            {
+                                                "x": 285,
+                                                "y": 366,
+                                                "h": 48,
+                                                "w": 48
+                                            },
+                                            {
+                                                "x": 35,
+                                                "y": 314,
+                                                "h": 73,
+                                                "w": 73
+                                            },
+                                            {
+                                                "x": 227,
+                                                "y": 247,
+                                                "h": 124,
+                                                "w": 124
+                                            },
+                                            {
+                                                "x": 72,
+                                                "y": 546,
+                                                "h": 183,
+                                                "w": 183
+                                            }
+                                        ]
+                                    },
+                                    "medium": {
+                                        "faces": [
+                                            {
+                                                "x": 285,
+                                                "y": 366,
+                                                "h": 48,
+                                                "w": 48
+                                            },
+                                            {
+                                                "x": 35,
+                                                "y": 314,
+                                                "h": 73,
+                                                "w": 73
+                                            },
+                                            {
+                                                "x": 227,
+                                                "y": 247,
+                                                "h": 124,
+                                                "w": 124
+                                            },
+                                            {
+                                                "x": 72,
+                                                "y": 546,
+                                                "h": 183,
+                                                "w": 183
+                                            }
+                                        ]
+                                    },
+                                    "small": {
+                                        "faces": [
+                                            {
+                                                "x": 161,
+                                                "y": 207,
+                                                "h": 27,
+                                                "w": 27
+                                            },
+                                            {
+                                                "x": 19,
+                                                "y": 177,
+                                                "h": 41,
+                                                "w": 41
+                                            },
+                                            {
+                                                "x": 128,
+                                                "y": 139,
+                                                "h": 70,
+                                                "w": 70
+                                            },
+                                            {
+                                                "x": 40,
+                                                "y": 309,
+                                                "h": 103,
+                                                "w": 103
+                                            }
+                                        ]
+                                    },
+                                    "orig": {
+                                        "faces": [
+                                            {
+                                                "x": 285,
+                                                "y": 366,
+                                                "h": 48,
+                                                "w": 48
+                                            },
+                                            {
+                                                "x": 35,
+                                                "y": 314,
+                                                "h": 73,
+                                                "w": 73
+                                            },
+                                            {
+                                                "x": 227,
+                                                "y": 247,
+                                                "h": 124,
+                                                "w": 124
+                                            },
+                                            {
+                                                "x": 72,
+                                                "y": 546,
+                                                "h": 183,
+                                                "w": 183
+                                            }
+                                        ]
+                                    }
+                                },
+                                "sizes": {
+                                    "large": {
+                                        "h": 1200,
+                                        "w": 1200,
+                                        "resize": "fit"
+                                    },
+                                    "medium": {
+                                        "h": 1200,
+                                        "w": 1200,
+                                        "resize": "fit"
+                                    },
+                                    "small": {
+                                        "h": 680,
+                                        "w": 680,
+                                        "resize": "fit"
+                                    },
+                                    "thumb": {
+                                        "h": 150,
+                                        "w": 150,
+                                        "resize": "crop"
+                                    }
+                                },
+                                "original_info": {
+                                    "height": 1200,
+                                    "width": 1200,
+                                    "focus_rects": [
+                                        {
+                                            "x": 0,
+                                            "y": 528,
+                                            "w": 1200,
+                                            "h": 672
+                                        },
+                                        {
+                                            "x": 0,
+                                            "y": 0,
+                                            "w": 1200,
+                                            "h": 1200
+                                        },
+                                        {
+                                            "x": 147,
+                                            "y": 0,
+                                            "w": 1053,
+                                            "h": 1200
+                                        },
+                                        {
+                                            "x": 570,
+                                            "y": 0,
+                                            "w": 600,
+                                            "h": 1200
+                                        },
+                                        {
+                                            "x": 0,
+                                            "y": 0,
+                                            "w": 1200,
+                                            "h": 1200
+                                        }
+                                    ]
+                                }
+                            }
+                        ],
+                        "symbols": [],
+                        "timestamps": [],
+                        "urls": [],
+                        "user_mentions": []
+                    },
+                    "extended_entities": {
+                        "media": [
+                            {
+                                "display_url": "pic.twitter.com/79gsgqy8vb",
+                                "expanded_url": "https://twitter.com/kusuriya_popup/status/1745264765776105611/photo/1",
+                                "id_str": "1745262945351970816",
+                                "indices": [
+                                    155,
+                                    178
+                                ],
+                                "media_key": "3_1745262945351970816",
+                                "media_url_https": "https://pbs.twimg.com/media/GDhrZulbMAAxh1l.jpg",
+                                "type": "photo",
+                                "url": "https://t.co/79gsgqy8vb",
+                                "ext_media_availability": {
+                                    "status": "Available"
+                                },
+                                "features": {
+                                    "large": {
+                                        "faces": [
+                                            {
+                                                "x": 285,
+                                                "y": 366,
+                                                "h": 48,
+                                                "w": 48
+                                            },
+                                            {
+                                                "x": 35,
+                                                "y": 314,
+                                                "h": 73,
+                                                "w": 73
+                                            },
+                                            {
+                                                "x": 227,
+                                                "y": 247,
+                                                "h": 124,
+                                                "w": 124
+                                            },
+                                            {
+                                                "x": 72,
+                                                "y": 546,
+                                                "h": 183,
+                                                "w": 183
+                                            }
+                                        ]
+                                    },
+                                    "medium": {
+                                        "faces": [
+                                            {
+                                                "x": 285,
+                                                "y": 366,
+                                                "h": 48,
+                                                "w": 48
+                                            },
+                                            {
+                                                "x": 35,
+                                                "y": 314,
+                                                "h": 73,
+                                                "w": 73
+                                            },
+                                            {
+                                                "x": 227,
+                                                "y": 247,
+                                                "h": 124,
+                                                "w": 124
+                                            },
+                                            {
+                                                "x": 72,
+                                                "y": 546,
+                                                "h": 183,
+                                                "w": 183
+                                            }
+                                        ]
+                                    },
+                                    "small": {
+                                        "faces": [
+                                            {
+                                                "x": 161,
+                                                "y": 207,
+                                                "h": 27,
+                                                "w": 27
+                                            },
+                                            {
+                                                "x": 19,
+                                                "y": 177,
+                                                "h": 41,
+                                                "w": 41
+                                            },
+                                            {
+                                                "x": 128,
+                                                "y": 139,
+                                                "h": 70,
+                                                "w": 70
+                                            },
+                                            {
+                                                "x": 40,
+                                                "y": 309,
+                                                "h": 103,
+                                                "w": 103
+                                            }
+                                        ]
+                                    },
+                                    "orig": {
+                                        "faces": [
+                                            {
+                                                "x": 285,
+                                                "y": 366,
+                                                "h": 48,
+                                                "w": 48
+                                            },
+                                            {
+                                                "x": 35,
+                                                "y": 314,
+                                                "h": 73,
+                                                "w": 73
+                                            },
+                                            {
+                                                "x": 227,
+                                                "y": 247,
+                                                "h": 124,
+                                                "w": 124
+                                            },
+                                            {
+                                                "x": 72,
+                                                "y": 546,
+                                                "h": 183,
+                                                "w": 183
+                                            }
+                                        ]
+                                    }
+                                },
+                                "sizes": {
+                                    "large": {
+                                        "h": 1200,
+                                        "w": 1200,
+                                        "resize": "fit"
+                                    },
+                                    "medium": {
+                                        "h": 1200,
+                                        "w": 1200,
+                                        "resize": "fit"
+                                    },
+                                    "small": {
+                                        "h": 680,
+                                        "w": 680,
+                                        "resize": "fit"
+                                    },
+                                    "thumb": {
+                                        "h": 150,
+                                        "w": 150,
+                                        "resize": "crop"
+                                    }
+                                },
+                                "original_info": {
+                                    "height": 1200,
+                                    "width": 1200,
+                                    "focus_rects": [
+                                        {
+                                            "x": 0,
+                                            "y": 528,
+                                            "w": 1200,
+                                            "h": 672
+                                        },
+                                        {
+                                            "x": 0,
+                                            "y": 0,
+                                            "w": 1200,
+                                            "h": 1200
+                                        },
+                                        {
+                                            "x": 147,
+                                            "y": 0,
+                                            "w": 1053,
+                                            "h": 1200
+                                        },
+                                        {
+                                            "x": 570,
+                                            "y": 0,
+                                            "w": 600,
+                                            "h": 1200
+                                        },
+                                        {
+                                            "x": 0,
+                                            "y": 0,
+                                            "w": 1200,
+                                            "h": 1200
+                                        }
+                                    ]
+                                }
+                            }
+                        ]
+                    },
+                    "favorite_count": 305,
+                    "favorited": true,
+                    "full_text": "🍃ご案内🍃\n『薬屋のひとりごと POP UP STORE in 天神ロフト』_1/11(木)\n\n本日、入場整理券配布とさせて頂いておりましたが、混雑緩和が見込まれる為11:30頃よりフリー入場とさせて頂きます。なお混雑状況によっては再度入場制限及び入場整理券の配布を行う場合がございます。\n\n◇ミーナ天神4階 https://t.co/79gsgqy8vb",
+                    "is_quote_status": false,
+                    "lang": "ja",
+                    "possibly_sensitive": false,
+                    "possibly_sensitive_editable": true,
+                    "quote_count": 2,
+                    "reply_count": 0,
+                    "retweet_count": 35,
+                    "retweeted": false,
+                    "user_id_str": "1712024542418542592",
+                    "id_str": "1745264765776105611"
+                }
+            }
+        },
+        "tweetDisplayType": "Tweet"
+    }
+}

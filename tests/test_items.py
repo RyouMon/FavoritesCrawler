@@ -7,11 +7,11 @@ from favorites_crawler import items
 
 
 class TestBaseItem:
-
     @pytest.mark.parametrize('url,expected', (
         ('https://mock.domain/path/1.jpg', '1.jpg'),
         ('https://mock.domain/path/1.png', '1.png'),
         ('https://mock.domain/path/1.jpeg', '1.jpeg'),
+        ('https://mock.domain/1.jpeg', '1.jpeg'),
     ))
     def test_get_filename(self, url, expected):
         item = items.BaseItem()
@@ -66,7 +66,6 @@ def comic_book_info():
 
 
 class TestComicBookInfoItem:
-
     @patch('favorites_crawler.items.json')
     def test_to_comic_info_should_call_json(self, mock_json, comic_book_info):
         mock_dumps = mock_json.dumps
@@ -96,7 +95,6 @@ class TestComicBookInfoItem:
 
 
 class TestNHentaiGalleryItem:
-
     def test_to_comic_info(self, comic_book_info):
         item = items.NHentaiGalleryItem(**comic_book_info)
 
@@ -109,7 +107,6 @@ class TestNHentaiGalleryItem:
 
 
 class TestPixivIllustItem:
-
     def test_get_folder_name_should_return_empty_when_disable_organize_by_user(self):
         mock_spider = MagicMock()
         mock_spider.crawler.settings.getbool.return_value = False
@@ -133,3 +130,29 @@ class TestPixivIllustItem:
 
         assert actual == expected
 
+
+class TestTwitterTweetItem:
+    @pytest.mark.parametrize('username, expected', (
+            (None, 'unknown'),
+            ('', 'unknown'),
+            ('someone', 'someone'),
+    ))
+    def test_get_folder_name(self, username, expected):
+        mock_spider = MagicMock()
+        mock_spider.crawler.settings.getbool.return_value = True
+        item = items.TwitterTweetItem(username=username)
+
+        actual = item.get_folder_name(mock_spider)
+
+        assert actual == expected
+
+    @pytest.mark.parametrize('id_, url, expected', (
+            (1, 'https://pbs.twimg.com/media/xGDYpKX8bMAANM-J.jpg?name=orig', '1 xGDYpKX8bMAANM-J.jpg'),
+            (1, 'https://pbs.twimg.com/media/xGDYpKX8bMAANM-J.jpg', '1 xGDYpKX8bMAANM-J.jpg'),
+    ))
+    def test_get_filename(self, id_, url, expected):
+        item = items.TwitterTweetItem(id=id_)
+
+        actual = item.get_filename(url, None)
+
+        assert actual == expected

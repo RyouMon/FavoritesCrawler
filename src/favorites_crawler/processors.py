@@ -143,3 +143,23 @@ def get_pixiv_tags(tags):
 
 def get_yandere_tags(tags):
     return tags.split(' ')
+
+
+def get_twitter_tags(tags):
+    results = set()
+    for tag in tags:
+        results.add(tag.strip().replace(' ', '_').lower())
+    return list(filter(
+        lambda x: re.match(r'^[ -~]+$', x),  # ascii only
+        results,
+    ))
+
+
+def fix_tweet_media_url(url):
+    if not url:
+        return url
+    return url + '?name=orig'
+
+
+def tweet_time_2_datetime(tweet_time):
+    return datetime.strptime(tweet_time, '%a %b %d %H:%M:%S %z %Y')

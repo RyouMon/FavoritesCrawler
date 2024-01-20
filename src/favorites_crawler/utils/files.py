@@ -1,3 +1,4 @@
+import json
 from pathlib import Path
 from shutil import rmtree
 from zipfile import ZipFile
@@ -29,3 +30,8 @@ def list_yandere_post(path=Path('.'), include_subdir=False, result=None):
         elif include_subdir:
             list_yandere_post(file_or_dir, include_subdir, result)
     return result
+
+
+def load_json(filename):
+    with open(filename, encoding='utf8') as f:
+        return json.load(f)

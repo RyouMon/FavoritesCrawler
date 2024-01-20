@@ -22,6 +22,7 @@ overwrite_settings(spider_loader, scrapy_settings, load_config())
 login_processors = {
     'pixiv': auth.login_pixiv,
     'yandere': auth.auth_yandere,
+    'twitter': auth.auth_twitter,
 }
 
 

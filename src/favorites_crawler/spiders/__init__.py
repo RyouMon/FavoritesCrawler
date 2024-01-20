@@ -9,5 +9,4 @@ from scrapy.spiders import CrawlSpider
 
 
 class BaseSpider(CrawlSpider, metaclass=ABCMeta):
-
     custom_settings = {}

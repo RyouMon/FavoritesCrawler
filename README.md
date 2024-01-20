@@ -12,10 +12,11 @@ Crawl your personal favorite images, photo albums, comics from website.
 - instagram.com
 
 # Already support
-- pixiv.net (crawl your bookmarks for illust, must login), Thanks for project [PixivPy](https://github.com/upbit/pixivpy).
-- yande.re (crawl posts that you voted, require your username)
-- lmmpic.com (crawl your favorites for albums, must login)
-- nhentai.net  (crawl your favorites for comic, must login)
+- pixiv.net (crawl your liked illust, must login), Thanks for project [PixivPy](https://github.com/upbit/pixivpy).
+- yande.re (crawl your voted posts, require your username)
+- lmmpic.com (crawl your favorite albums, must login)
+- nhentai.net  (crawl your favorite comics, must login)
+- twitter.com (crawl your liked posts, must login)
 
 # Requirements
 - Python3.7+
@@ -71,6 +72,21 @@ Thanks for [@ZipFile Pixiv OAuth Flow](https://gist.github.com/ZipFile/c9ebedb22
 2. Use "Get cookies.txt" extension download cookie file.
 3. Copy cookie file to {user_home}/.favorites_crawler.
 
+## Login Twitter
+1. run command
+    ```
+    favors login twitter
+    ```
+2. input your username, after press Enter, likes page will open in browser.
+3. Open dev console (F12) and switch to network tab.
+4. Enable persistent logging ("Preserve log").
+5. Type into the filter field: Likes?
+6. Refresh Page.
+7. Copy Authorization, X-Csrf-Token and RequestURL from request(Likes?variables...) input on terminal.
+8. Use "Get cookies.txt" extension download cookie file. 
+9. Copy cookie file to {user_home}/.favorites_crawler.
+
+
 # Crawl
 
 ```
@@ -99,6 +115,12 @@ favors crawl lemon
 Before run this command, make sure you are already [login](#login-nhentai).
 ```
 favors crawl nhantai
+```
+
+## Crawl Twitter
+Before run this command, make sure you are already [login](#login-twitter).
+```
+favors crawl twitter
 ```
 
 # Config

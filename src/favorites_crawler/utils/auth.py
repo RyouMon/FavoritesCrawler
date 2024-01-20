@@ -1,13 +1,14 @@
-from getpass import getpass
+import re
 from base64 import urlsafe_b64encode
 from hashlib import sha256
 from secrets import token_urlsafe
-from urllib.parse import urlencode
+from urllib.parse import urlencode, unquote
 from webbrowser import open as open_url
 
 import requests
 
-from favorites_crawler.constants.endpoints import PIXIV_REDIRECT_URI, PIXIV_LOGIN_URL, PIXIV_AUTH_TOKEN_URL
+from favorites_crawler.constants.endpoints import PIXIV_REDIRECT_URI, PIXIV_LOGIN_URL, PIXIV_AUTH_TOKEN_URL, \
+    TWITTER_PROFILE_LIKES_URL
 from favorites_crawler.constants.headers import PIXIV_ANDROID_USER_AGENT
 from favorites_crawler.utils.config import dump_config, load_config
 
@@ -112,3 +113,22 @@ def auth_yandere():
     yandere_config['USERNAME'] = username
     dump_config(config)
     return yandere_config
+
+
+def auth_twitter():
+    username = input('username: ').strip()
+    open_url(TWITTER_PROFILE_LIKES_URL.format(username=username))
+
+    config = load_config()
+    twitter_config = config.setdefault('twitter', {})
+    twitter_config['AUTHORIZATION'] = input('Authorization: ')
+    twitter_config['X_CSRF_TOKEN'] = input('X-Csrf-Token: ')
+    twitter_config['LIKES_ID'], twitter_config['USER_ID'] = parse_twitter_likes_url(input('Request URL: '))
+    dump_config(config)
+    return twitter_config
+
+
+def parse_twitter_likes_url(url):
+    url = unquote(url).replace(' ', '')
+    match = re.match(r'^.+?graphql/(.+?)/.+?userId":"(.+?)".+$', url)
+    return match.groups()

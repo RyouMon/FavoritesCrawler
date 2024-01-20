@@ -19,8 +19,6 @@ class TwitterSpider(BaseSpider):
         'CONCURRENT_REQUESTS': 2,
         'ITEM_PIPELINES': {'favorites_crawler.pipelines.PicturePipeline': 0},
     }
-    cookies = load_cookie(TWITTER_DOMAIN)
-    base_url = TWITTER_LIKES_URL
 
     @property
     def current_url(self):
@@ -32,11 +30,10 @@ class TwitterSpider(BaseSpider):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        authorization = self.custom_settings.get('AUTHORIZATION')
-        x_csrf_token = self.custom_settings.get('X_CSRF_TOKEN')
-        user_id = self.custom_settings.get('USER_ID')
+        self.cookies = load_cookie(TWITTER_DOMAIN)
+        self.base_url = TWITTER_LIKES_URL.format(id=self.custom_settings.get('LIKES_ID'))
         self.variables = {
-            "userId": str(user_id),
+            "userId": str(self.custom_settings.get('USER_ID')),
             "count": 100,
             "includePromotedContent": False,
             "withClientEventToken": False,
@@ -68,8 +65,8 @@ class TwitterSpider(BaseSpider):
             "responsive_web_enhance_cards_enabled": False
         }
         self.headers = {
-            'Authorization': authorization,
-            'x-csrf-token': x_csrf_token,
+            'Authorization': self.custom_settings.get('AUTHORIZATION'),
+            'x-csrf-token': self.custom_settings.get('X_CSRF_TOKEN'),
         }
 
     def start_requests(self):

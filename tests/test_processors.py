@@ -105,8 +105,23 @@ def test_get_page(url, expected):
 
 @pytest.mark.parametrize('tags, expected', (
         (
+                [
+                    {'name': '太もも', 'translated_name': 'thighs'},
+                ],
+                [
+                    'futomomo', 'thighs',
+                ],
+        ),
+))
+def test_get_pixiv_tags(tags, expected):
+    actual = sorted(processors.get_pixiv_tags(tags))
+    assert actual == expected
+
+
+@pytest.mark.parametrize('tags, expected', (
+        (
                 ['凪のあすから', 'nagiasu', 'nagi no asu kara'],
-                sorted(['nagiasu', 'nagi_no_asu_kara']),
+                sorted(['nagi_noasukara', 'nagiasu', 'nagi_no_asu_kara']),
         ),
         (
             [], [],

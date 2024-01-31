@@ -3,6 +3,7 @@ from datetime import datetime
 
 from itemloaders.processors import TakeFirst, Identity
 
+from favorites_crawler.utils.text import ascii_tag
 
 take_first = TakeFirst()
 identity = Identity()
@@ -130,13 +131,12 @@ def get_lemon_page(url):
 def get_pixiv_tags(tags):
     """Return en-us tags."""
     results = set()
-    for tag in tags:
-        if tag.get('name'):
-            results.add(tag['name'].strip().replace(' ', '_').lower())
-        if tag.get('translated_name'):
-            results.add(tag['translated_name'].strip().replace(' ', '_').lower())
+    for tag in tags:  # type: dict
+        results.add(ascii_tag(tag.get('name')))
+        results.add(ascii_tag(tag.get('translated_name')))
+
     return list(filter(
-        lambda x: re.match(r'^[ -~]+$', x),  # ascii only
+        lambda x: x and re.match(r'^[ -~]+$', x),  # ascii only
         results,
     ))
 
@@ -148,9 +148,9 @@ def get_yandere_tags(tags):
 def get_twitter_tags(tags):
     results = set()
     for tag in tags:
-        results.add(tag.strip().replace(' ', '_').lower())
+        results.add(ascii_tag(tag))
     return list(filter(
-        lambda x: re.match(r'^[ -~]+$', x),  # ascii only
+        lambda x: x and re.match(r'^[ -~]+$', x),  # ascii only
         results,
     ))
 

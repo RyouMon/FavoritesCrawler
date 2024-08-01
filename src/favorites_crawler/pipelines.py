@@ -63,6 +63,7 @@ class PicturePipeline(BasePipeline):
         for success, result in results:
             if not success:
                 continue
+            # TODO: add setting control it
             if result.get('status') == 'uptodate':
                 continue
             path = item.get_filepath(result['url'], info.spider)
@@ -71,6 +72,8 @@ class PicturePipeline(BasePipeline):
                 tags['Keywords'] = item.tags
             if item.created_time:
                 tags['CreateDate'] = item.created_time
+            if item.title:
+                tags['Title'] = item.title
             if not tags:
                 continue
             try:

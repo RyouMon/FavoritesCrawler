@@ -1,3 +1,5 @@
+from functools import partial
+
 from itemloaders import ItemLoader
 from itemloaders.processors import Compose, MapCompose
 
@@ -7,6 +9,10 @@ from favorites_crawler.processors import take_first, identity, get_nhentai_id, w
     get_year_from_iso_format, get_month_from_iso_format, get_series_from_title, get_volume_from_title, \
     clean_parodies, get_lemon_page, get_pixiv_tags, get_yandere_tags, get_twitter_tags, fix_tweet_media_url, \
     tweet_time_2_datetime
+from favorites_crawler.utils.text import convert_to_ascii
+
+
+convert_to_ascii = partial(convert_to_ascii, replace_space=False)
 
 
 class BaseItemLoader(ItemLoader):
@@ -21,6 +27,7 @@ class PixivIllustItemLoader(BaseItemLoader):
 
     user_id_out = Compose(take_first, str)
     tags_out = get_pixiv_tags
+    title_out = Compose(take_first, convert_to_ascii)
 
 
 class YanderePostItemLoader(BaseItemLoader):

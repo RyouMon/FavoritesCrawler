@@ -3,7 +3,7 @@ from datetime import datetime
 
 from itemloaders.processors import TakeFirst, Identity
 
-from favorites_crawler.utils.text import ascii_tag
+from favorites_crawler.utils.text import convert_to_ascii
 
 take_first = TakeFirst()
 identity = Identity()
@@ -132,8 +132,8 @@ def get_pixiv_tags(tags):
     """Return en-us tags."""
     results = set()
     for tag in tags:  # type: dict
-        results.add(ascii_tag(tag.get('name')))
-        results.add(ascii_tag(tag.get('translated_name')))
+        results.add(convert_to_ascii(tag.get('name')))
+        results.add(convert_to_ascii(tag.get('translated_name')))
 
     return list(filter(
         lambda x: x and re.match(r'^[ -~]+$', x),  # ascii only
@@ -148,7 +148,7 @@ def get_yandere_tags(tags):
 def get_twitter_tags(tags):
     results = set()
     for tag in tags:
-        results.add(ascii_tag(tag))
+        results.add(convert_to_ascii(tag))
     return list(filter(
         lambda x: x and re.match(r'^[ -~]+$', x),  # ascii only
         results,

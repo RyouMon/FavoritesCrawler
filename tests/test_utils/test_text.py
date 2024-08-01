@@ -1,6 +1,6 @@
 import pytest
 
-from favorites_crawler.utils.text import ascii_tag
+from favorites_crawler.utils.text import convert_to_ascii
 
 
 @pytest.mark.parametrize('input_, expected', (
@@ -11,5 +11,5 @@ from favorites_crawler.utils.text import ascii_tag
         ('你好', 'ni_hao'),
         ('hello', 'hello'),
 ))
-def test_ascii_tag(input_, expected):
-    assert ascii_tag(input_) == expected
+def test_convert_to_ascii(input_, expected):
+    assert convert_to_ascii(input_) == expected

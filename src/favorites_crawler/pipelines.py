@@ -31,7 +31,7 @@ class BasePipeline(FilesPipeline):
     def item_completed(self, results, item, info):
         for result in info.downloaded.values():
             if isinstance(result, Failure):
-                logger.error('Error when downloading file: %s', result.value)
+                logger.error('Error when downloading file: %r', result.value)
         return super().item_completed(results, item, info)
 
 

@@ -13,5 +13,5 @@ LEMON_PIC_POST_URL_PATTERN = 'https://www.emonl.com/{id}.html'
 NHENTAI_LOGIN_URL = 'https://nhentai.net/login/?next=/favorites/'
 NHENTAI_USER_FAVORITES_URL = 'https://nhentai.net/favorites/'
 
-TWITTER_LIKES_URL = 'https://twitter.com/i/api/graphql/{id}/Likes'
-TWITTER_PROFILE_LIKES_URL = 'https://twitter.com/{username}/likes'
+TWITTER_LIKES_URL = 'https://x.com/i/api/graphql/{id}/Likes'
+TWITTER_PROFILE_LIKES_URL = 'https://x.com/{username}/likes'

@@ -14,12 +14,11 @@ Crawl your personal favorite images, photo albums, comics from website.
 # Already support
 - pixiv.net (crawl your liked illust, must login), Thanks for project [PixivPy](https://github.com/upbit/pixivpy).
 - yande.re (crawl your voted posts, require your username)
-- lmmpic.com (crawl your favorite albums, must login)
 - nhentai.net  (crawl your favorite comics, must login)
 - twitter.com (crawl your liked posts, must login)
 
 # Requirements
-- Python3.7+
+- Python3.10+
 
 # Install
 ```
@@ -37,23 +36,32 @@ export https_proxy=http://localhost:8080
 # Login
 
 ```
-favors login [-h] {pixiv,yandere}
+favors login [-h] {pixiv,yandere,twitter}
 ```
 
 ## Login Pixiv
-Thanks for [@ZipFile Pixiv OAuth Flow](https://gist.github.com/ZipFile/c9ebedb224406f4f11845ab700124362)
-1. run command
+### Login by command
+1. Run command
     ```
     favors login pixiv
     ```
-2. input your user_id (Access your pixiv personal page, copy from address bar), after press Enter, Pixiv login page will open in browser.
-3. Open dev console (F12) and switch to network tab.
-4. Enable persistent logging ("Preserve log").
-5. Type into the filter field: callback?
-6. Proceed with Pixiv login.
-7. After logging in you should see a blank page and request that looks like this: 
-   https://app-api.pixiv.net/web/v1/users/auth/pixiv/callback?state=...&code=.... 
-   Copy value of the code param into the prompt and hit the Enter key.
+2. Pixiv login page will open in browser, input username and password, then press login button.
+
+### Login by edit config
+1. Get your access_token and refresh_token by [gppt](https://github.com/eggplants/get-pixivpy-token)
+   ```
+   gppt l -u your_email -p your_password
+   ```
+
+2. Get your user_id (Access your pixiv personal page, copy from address bar)
+
+3. Open config file located in `{your_user_home}/.favorites_crawler/config.yml`, put access_token, refresh_token and user_id in this file
+   ```yaml
+   pixiv:
+     ACCESS_TOKEN: xxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     REFRESH_TOKEN: xxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     USER_ID: xxxx
+   ```
 
 ## Login Yandere
 1. run command:
@@ -61,11 +69,6 @@ Thanks for [@ZipFile Pixiv OAuth Flow](https://gist.github.com/ZipFile/c9ebedb22
    favors login yandere
    ```
 2. input your username and hit the Enter key.
-
-## Login Lmmpic
-1. Open lmmpic on browser and login.
-2. Use "Get cookies.txt" extension download cookie file.
-3. Copy cookie file to {user_home}/.favorites_crawler.
 
 ## Login NHentai
 1. Open nhentai on browser and login.
@@ -103,12 +106,6 @@ favors crawl pixiv
 Before run this command, make sure you are already [login](#login-yandere).
 ```
 favors crawl yandere
-```
-
-## Crawl Lmmpic
-Before run this command, make sure you are already [login](#login-lmmpic).
-```
-favors crawl lemon
 ```
 
 ## Crawl NHentai

@@ -16,12 +16,9 @@ class YandereVoteSpider(BaseSpider):
         'CONCURRENT_REQUESTS': 5,
     }
 
-    def __init__(self, csrf_token, cookie, score, path, *args, **kwargs):
+    def __init__(self, csrf_token, cookies, score, path, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.cookies = {}
-        for pair in cookie.split('; '):
-            k, v = pair.split('=')
-            self.cookies[k] = v
+        self.cookies = cookies
         self.headers = {'x-csrf-token': csrf_token}
         self.score = score
         self.path = Path(path)

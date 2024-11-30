@@ -36,7 +36,7 @@ export https_proxy=http://localhost:8080
 # Login
 
 ```
-favors login [-h] {pixiv,yandere,twitter}
+favors login --help
 ```
 
 ## Login Pixiv
@@ -72,7 +72,7 @@ favors login [-h] {pixiv,yandere,twitter}
 
 ## Login NHentai
 1. Open nhentai on browser and login.
-2. Use "Get cookies.txt" extension download cookie file.
+2. Use "Get cookies.txt" browser extension download cookie file.
 3. Copy cookie file to {user_home}/.favorites_crawler.
 
 ## Login Twitter
@@ -86,14 +86,14 @@ favors login [-h] {pixiv,yandere,twitter}
 5. Type into the filter field: Likes?
 6. Refresh Page.
 7. Copy Authorization, X-Csrf-Token and RequestURL from request(Likes?variables...) input on terminal.
-8. Use "Get cookies.txt" extension download cookie file. 
+8. Use "Get cookies.txt" browser extension download cookie file. 
 9. Copy cookie file to {user_home}/.favorites_crawler.
 
 
 # Crawl
 
 ```
-favors crawl [-h] {lemon,nhentai,pixiv,yandere}
+favors crawl --help
 ```
 
 ## Crawl Pixiv

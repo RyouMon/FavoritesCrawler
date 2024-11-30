@@ -16,23 +16,26 @@ def restore_yandere(
         ),
         csrf_token: str = typer.Option(
             ..., '-t', '--csrf-token',
-            help='CSRF token. To get it: '
-                 '1. Open your browser DevTools. '
-                 '2. Switch to network tab. '
-                 '3. Vote any post on yandere. '
-                 '4. Copy x-csrf-token value from request headers.'),
+            help='CSRF Token.'
+        ),
         cookie: str = typer.Option(
             ..., '-c', '--cookie',
-            help='Cookie. To get it: '
-                 '1. Open your browser DevTools. '
-                 '2. Switch to network tab. '
-                 '3. Vote any post on yandere. '
-                 '4. Copy cookie value from request headers.'
+            help='Cookie. Note: wrap cookies with double quotes.'
         ),
         path: str = typer.Argument(
             '.', help='The location of the post to vote. (Sub-folders are ignored)'
         )
 ):
+    """
+    Restore favorite yandere posts to your account.
+
+    How to get CSRF token and Cookie?\n
+    1. Open your browser DevTools. \n
+    2. Switch to network tab. \n
+    3. Vote any post on yandere. \n
+    4. Copy x-csrf-token value from request headers. \n
+    5. Copy cookie value from request headers.
+    """
     try:
         cookies = {}
         for pair in cookie.split('; '):

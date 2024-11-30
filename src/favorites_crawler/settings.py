@@ -22,6 +22,7 @@ FILES_STORE = r'favorites_crawler_files'
 FILES_EXPIRES = 365000
 
 LOG_LEVEL = 'DEBUG'
+STATS_DUMP = False  # dump stats manually
 
 DOWNLOAD_WARNSIZE = 0
 

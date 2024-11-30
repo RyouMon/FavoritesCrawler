@@ -1,6 +1,6 @@
 import pytest
 
-from favorites_crawler.utils.auth import parse_twitter_likes_url
+from favorites_crawler.commands.login import parse_twitter_likes_url
 
 
 @pytest.mark.parametrize('url, expected', (

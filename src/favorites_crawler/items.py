@@ -4,7 +4,6 @@ import os.path
 from dataclasses import dataclass, field, fields
 from urllib.parse import unquote, urlparse
 
-from favorites_crawler import __version__
 from favorites_crawler.utils.text import drop_illegal_characters
 from favorites_crawler.constants.domains import LMMPIC_DOMAIN
 
@@ -65,7 +64,7 @@ class ComicBookInfoItem:
             comic_book_info[f.name] = val
 
         return json.dumps({
-            'appID': f'FavoritesCrawler/{__version__}',
+            'appID': f'FavoritesCrawler',
             'lastModified': str(datetime.datetime.now()),
             'ComicBookInfo/1.0': comic_book_info,
         }, ensure_ascii=False)

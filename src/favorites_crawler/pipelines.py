@@ -23,7 +23,10 @@ class BasePipeline(FilesPipeline):
     def get_media_requests(self, item, info):
         item_dict = ItemAdapter(item).asdict()
         referer = item_dict.get('referer')
-        return (Request(url, headers={'referer': referer}) for url in item_dict.get(self.files_urls_field, ()))
+        return (
+            Request(url, headers={'referer': referer}, dont_filter=True)
+            for url in item_dict.get(self.files_urls_field, ())
+        )
 
     def file_path(self, request, response=None, info=None, *, item=None):
         return item.get_filepath(request.url, info.spider)

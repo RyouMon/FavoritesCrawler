@@ -1,34 +1,80 @@
 import os
-
 import yaml
 
-config_path = os.path.expanduser('~/.favorites_crawler')
-config_file = os.path.join(config_path, 'config.yml')
-if not os.path.exists(config_path):
-    os.mkdir(config_path)
+DEFAULT_FAVORS_HOME = os.path.expanduser('~/.favorites_crawler')
+DEFAULT_CONFIG = {
+    'global': {
+        'ENABLE_ORGANIZE_BY_ARTIST': True,
+        'ENABLE_WRITE_IPTC_KEYWORDS': True,
+        'EXIF_TOOL_EXECUTABLE': None,
+    },
+    'pixiv': {
+        'FILES_STORE': 'favorites_crawler_files/pixiv',
+        'USER_ID': '',
+        'ACCESS_TOKEN': '',
+        'REFRESH_TOKEN': '',
+    },
+    'yandere': {
+        'FILES_STORE': 'favorites_crawler_files/yandere',
+        'USERNAME': '',
+    },
+    'twitter': {
+        'FILES_STORE': 'favorites_crawler_files/twitter',
+        'USER_ID': '',
+        'AUTHORIZATION': '',
+        'LIKES_ID': '',
+        'X_CSRF_TOKEN': '',
+    },
+    'lemon': {
+        'FILES_STORE': 'favorites_crawler_files/lemon',
+    },
+    'nhentai': {
+        'FILES_STORE': 'favorites_crawler_files/nhentai',
+    }
+}
 
 
-def load_config():
+def load_config(home: str = DEFAULT_FAVORS_HOME) -> dict:
     """Load config from user home"""
+    create_favors_home(home)
+    config_file = os.path.join(home, 'config.yml')
     if not os.path.exists(config_file):
-        return {}
+        dump_config(DEFAULT_CONFIG, home)
+        return DEFAULT_CONFIG
     with open(config_file, encoding='utf8') as f:
         return yaml.safe_load(f)
 
 
-def dump_config(data):
+def dump_config(data: dict, home: str = DEFAULT_FAVORS_HOME):
     """Dump config data to user home"""
+    create_favors_home(home)
+    config_file = os.path.join(home, 'config.yml')
     with open(config_file, 'w', encoding='utf8') as f:
         yaml.safe_dump(data, f, allow_unicode=True)
 
 
-def overwrite_settings(spider_loader, settings, user_config):
-    spider_names = spider_loader.list()
-    for name in spider_names:
-        cls = spider_loader.load(name)
-        spider_config = user_config.get(cls.name, {})
-        if spider_config:
-            cls.custom_settings.update(spider_config)
+def create_favors_home(path: str):
+    """Create favors home if not exists"""
+    if not os.path.exists(path):
+        os.makedirs(path, exist_ok=True)
 
-        default_files_store = os.path.join(settings.get('FILES_STORE', ''), cls.name)
-        cls.custom_settings.setdefault('FILES_STORE', default_files_store)
+
+def overwrite_spider_settings(spider, default_settings, user_config):
+    """
+    Overwrite spider settings by user config
+    Priority: favors spider config > favors global config > spider custom settings > scrapy settings
+
+    :param spider: Spider class
+    :param default_settings: :class:`scrapy.settings.Settings`
+    :param user_config: favorites crawler config
+    """
+    global_config = user_config.get('global')
+    if global_config:
+        spider.custom_settings.update(global_config)
+
+    spider_config = user_config.get(spider.name)
+    if spider_config:
+        spider.custom_settings.update(spider_config)
+
+    default_files_store = os.path.join(default_settings.get('FILES_STORE', ''), spider.name)
+    spider.custom_settings.setdefault('FILES_STORE', default_files_store)

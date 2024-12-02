@@ -8,14 +8,13 @@ from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 from scrapy.spiderloader import SpiderLoader
 
-from favorites_crawler.utils.config import load_config, overwrite_settings
+from favorites_crawler.utils.config import load_config, overwrite_spider_settings
 
 app = typer.Typer(help='Crawl your favorites from websites.', no_args_is_help=True)
 
 os.environ.setdefault('SCRAPY_SETTINGS_MODULE', 'favorites_crawler.settings')
 scrapy_settings = get_project_settings()
 spider_loader = SpiderLoader(scrapy_settings)
-overwrite_settings(spider_loader, scrapy_settings, load_config())
 
 
 @app.command('yandere')
@@ -70,8 +69,14 @@ def crawl(name, **kwargs):
     :param name: spider name
     :param kwargs: kwargs passed to spider's __init__ method
     """
+    spider = spider_loader.load(name)
+    overwrite_spider_settings(spider, scrapy_settings, load_config())
     process = CrawlerProcess(scrapy_settings)
-    process.crawl(name, **kwargs)
+    process.crawl(spider, **kwargs)
     for crawler in process.crawlers:
         crawler.signals.connect(spider_closed, signal=signals.spider_closed)
     process.start()
+
+
+if __name__ == '__main__':
+    crawl('pixiv')

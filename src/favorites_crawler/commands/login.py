@@ -52,6 +52,7 @@ def login_pixiv(
         print(f'Failed to login. {e!r}')
     else:
         dump_config(config)
+        print("Login successful.")
 
 
 @app.command('yandere')
@@ -68,6 +69,7 @@ def login_yandere(
     yandere_config = config.setdefault('yandere', {})
     yandere_config['USERNAME'] = username
     dump_config(config)
+    print("Login successful.")
 
 
 @app.command('x')
@@ -101,6 +103,7 @@ def login_twitter(
         "Failed to login."
         return
     dump_config(config)
+    print("Login successful.")
 
 
 def parse_twitter_likes_url(url):

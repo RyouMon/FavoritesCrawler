@@ -39,7 +39,7 @@ jobs:
     - name: Run Test
       run: |
         cd src
-        pytest ../tests --cov --cov-report=xml
+        python -m pytest ../tests --cov --cov-report=xml
         mv .coverage ../.coverage
         mv coverage.xml ../coverage.xml
     - name: Check spiders contacts

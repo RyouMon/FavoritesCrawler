@@ -1,3 +1,7 @@
+import json
+import re
+from urllib.parse import unquote
+
 from gppt import GetPixivToken
 from gppt.consts import REDIRECT_URI
 from selenium.common import TimeoutException
@@ -31,3 +35,19 @@ def refresh_pixiv():
     pixiv_config['ACCESS_TOKEN'] = access_token
     dump_config(config)
     return access_token
+
+
+def parse_twitter_likes_url(url):
+    """Parse USER_ID and LIKES_ID from URL"""
+    url = unquote(url).replace(' ', '')
+    match = re.match(r'^.+?graphql/(.+?)/.+?userId":"(.+?)".+$', url)
+    return match.groups()
+
+
+def parser_twitter_likes_features(url):
+    url = unquote(url).replace(' ', '')
+    features = re.match(r'^.+features=(\{.+?}).+$', url)
+    if features:
+        print(features.group(1))
+        features = json.loads(features.group(1))
+    return features

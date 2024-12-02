@@ -1,13 +1,11 @@
-import re
 from typing import Optional
-from urllib.parse import unquote
 from webbrowser import open as open_url
 
 import typer
 from selenium.common import NoSuchWindowException
 
 from favorites_crawler.constants.endpoints import TWITTER_PROFILE_LIKES_URL
-from favorites_crawler.utils.auth import CustomGetPixivToken
+from favorites_crawler.utils.auth import CustomGetPixivToken, parse_twitter_likes_url, parser_twitter_likes_features
 from favorites_crawler.utils.config import dump_config, load_config
 
 
@@ -98,16 +96,11 @@ def login_twitter(
     try:
         twitter_config['AUTHORIZATION'] = input('Authorization: ')
         twitter_config['X_CSRF_TOKEN'] = input('X-Csrf-Token: ')
-        twitter_config['LIKES_ID'], twitter_config['USER_ID'] = parse_twitter_likes_url(input('Request URL: '))
-    except KeyboardInterrupt:
-        "Failed to login."
+        url = input('Request URL: ')
+        twitter_config['LIKES_ID'], twitter_config['USER_ID'] = parse_twitter_likes_url(url)
+        twitter_config['FEATURES'] = parser_twitter_likes_features(url)
+    except Exception as e:
+        print(f"Failed to login: {e!r}")
         return
     dump_config(config)
     print("Login successful.")
-
-
-def parse_twitter_likes_url(url):
-    """Parse USER_ID and LIKES_ID from URL"""
-    url = unquote(url).replace(' ', '')
-    match = re.match(r'^.+?graphql/(.+?)/.+?userId":"(.+?)".+$', url)
-    return match.groups()

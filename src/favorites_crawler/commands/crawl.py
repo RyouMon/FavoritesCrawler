@@ -76,7 +76,3 @@ def crawl(name, **kwargs):
     for crawler in process.crawlers:
         crawler.signals.connect(spider_closed, signal=signals.spider_closed)
     process.start()
-
-
-if __name__ == '__main__':
-    crawl('pixiv')

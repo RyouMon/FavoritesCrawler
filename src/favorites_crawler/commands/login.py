@@ -114,3 +114,35 @@ def login_twitter(
         return
     dump_config(config)
     print("Login successful.")
+
+
+@app.command("nhentai")
+def login_nhentai(
+        user_agent: str = typer.Option(
+            ..., '-u', '--user-agent',
+            help='User Agent'
+        ),
+        cookie_file: str = typer.Option(
+            ..., '-c', '--cookie-file',
+            help='Netscape HTTP Cookie File, you can download it by "Get cookies.txt" browser extension.'
+        )
+):
+    """
+    Login to nhentai.
+
+    1. Open nhentai and login.\n
+    2. Open dev console (F12) and switch to network tab.\n
+    3. Open any comic.\n
+    4. Copy user-agent from any request.\n
+    5. Use "Get cookies.txt" browser extension download cookie file.
+    """
+    config = load_config()
+    nhentai_config = config.setdefault('nhentai', {})
+    try:
+        nhentai_config['USER_AGENT'] = user_agent
+        shutil.copy(cookie_file, DEFAULT_FAVORS_HOME)
+    except Exception as e:
+        print(f"Failed to login: {e!r}")
+        return
+    dump_config(config)
+    print("Login successful.")

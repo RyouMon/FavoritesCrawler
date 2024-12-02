@@ -70,9 +70,16 @@ favors login yandere -u {username}
 ```
 
 ## Login NHentai
-1. Open nhentai on browser and login.
-2. Use "Get cookies.txt" browser extension download cookie file.
-3. Copy cookie file to {user_home}/.favorites_crawler.
+1. Get User-Agent and Cookie File
+   1. Open nhentai and login.
+   2. Open dev console (F12) and switch to network tab.
+   3. Open any comic.
+   4. Copy user-agent from any request.
+   5. Use "Get cookies.txt" browser extension download cookie file.
+2. Execute command:
+   ```commandline
+   favors login nhentai -u "{User-Agent}" -c "{Cookie File}"
+   ```
 
 ## Login Twitter
 

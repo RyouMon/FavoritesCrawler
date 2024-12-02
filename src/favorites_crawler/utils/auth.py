@@ -48,6 +48,5 @@ def parser_twitter_likes_features(url):
     url = unquote(url).replace(' ', '')
     features = re.match(r'^.+features=(\{.+?}).+$', url)
     if features:
-        print(features.group(1))
         features = json.loads(features.group(1))
     return features

@@ -64,11 +64,10 @@ favors login --help
    ```
 
 ## Login Yandere
-1. run command:
-   ```
-   favors login yandere
-   ```
-2. input your username and hit the Enter key.
+run command:
+```
+favors login yandere -u {username}
+```
 
 ## Login NHentai
 1. Open nhentai on browser and login.
@@ -76,19 +75,27 @@ favors login --help
 3. Copy cookie file to {user_home}/.favorites_crawler.
 
 ## Login Twitter
-1. run command
-    ```
-    favors login twitter
-    ```
-2. input your username, after press Enter, likes page will open in browser.
-3. Open dev console (F12) and switch to network tab.
-4. Enable persistent logging ("Preserve log").
-5. Type into the filter field: Likes?
-6. Refresh Page.
-7. Copy Authorization, X-Csrf-Token and RequestURL from request(Likes?variables...) input on terminal.
-8. Use "Get cookies.txt" browser extension download cookie file. 
-9. Copy cookie file to {user_home}/.favorites_crawler.
 
+1. Get Authorization, X-Csrf-Token RequestURL and Cookie File
+   1. Open [x.com](https://x.com/) and login, get to your "Likes" page
+   2. Open dev console (F12) and switch to network tab.
+   3. Enable persistent logging ("Preserve log").
+   4. Type into the filter field: Likes?
+   5. Refresh Page.
+   6. Copy Authorization, X-Csrf-Token and RequestURL from request(Likes?variables...)
+   7. Use "Get cookies.txt" browser extension download cookie file. 
+2. Execute command:
+   ```commandline
+   favors login x -at "{Authorization}" -ct "{X-Csrf-Token}" -u "{RequestURL}" -c "{Cookie File}"
+   ```
+Example:
+```commandline
+favors login x -at "Bearer AAAAAAAAAAAAA..." -ct ... -u "https://x.com/i/api/graphql/.../Likes?..." -c "C:\Users\xxx\Downloads\x.com_cookies.txt"
+```
+
+Note: Request URL will make the entire command very long. 
+If you cannot enter such a long command in the macOS terminal, 
+you can write the command in a sh file and execute it.
 
 # Crawl
 

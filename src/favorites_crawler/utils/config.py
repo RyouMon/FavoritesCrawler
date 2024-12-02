@@ -1,7 +1,8 @@
 import os
 import yaml
 
-DEFAULT_FAVORS_HOME = os.path.expanduser('~/.favorites_crawler')
+from favorites_crawler.constants.path import DEFAULT_FAVORS_HOME
+
 DEFAULT_CONFIG = {
     'global': {
         'ENABLE_ORGANIZE_BY_ARTIST': True,

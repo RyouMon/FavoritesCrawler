@@ -1,12 +1,12 @@
+import shutil
 from typing import Optional
-from webbrowser import open as open_url
 
 import typer
 from selenium.common import NoSuchWindowException
 
-from favorites_crawler.constants.endpoints import TWITTER_PROFILE_LIKES_URL
 from favorites_crawler.utils.auth import CustomGetPixivToken, parse_twitter_likes_url, parser_twitter_likes_features
 from favorites_crawler.utils.config import dump_config, load_config
+from favorites_crawler.constants.path import DEFAULT_FAVORS_HOME
 
 
 app = typer.Typer(help='Prepare auth information for crawling.', no_args_is_help=True)
@@ -73,32 +73,42 @@ def login_yandere(
 @app.command('x')
 @app.command('twitter')
 def login_twitter(
-        username: str = typer.Option(
-            ..., '-u', '--username',
-            help="Your twitter username."
+        auth_token: str = typer.Option(
+            ..., '-at', '--auth-token',
+            help='Authorization Token (Copy from Dev console)'
+        ),
+        csrf_token: str = typer.Option(
+            ..., '-ct', '--csrf-token',
+            help='Authorization Token (Copy from Dev console)'
+        ),
+        likes_url: str = typer.Option(
+            ..., '-u', '--likes-url',
+            help='Request URL of Likes API (Copy from Dev console)'
+        ),
+        cookie_file: str = typer.Option(
+            ..., '-c', '--cookie-file',
+            help='Netscape HTTP Cookie File, you can download it by "Get cookies.txt" browser extension.'
         )
 ):
     """
     Login to twitter.
 
-    1. After execute this command, likes page will open in browser.\n
+    1. Open twitter and login, get to your "Likes" page.\n
     2. Open dev console (F12) and switch to network tab.\n
     3. Enable persistent logging ("Preserve log").\n
     4. Type into the filter field: Likes?\n
     5. Refresh Page.\n
     6. Copy Authorization, X-Csrf-Token and RequestURL from request(Likes?variables...) input on terminal.\n
-    7. Use "Get cookies.txt" browser extension download cookie file.\n
-    8. Copy cookie file to {user_home}/.favorites_crawler.
+    7. Use "Get cookies.txt" browser extension download cookie file.
     """
-    open_url(TWITTER_PROFILE_LIKES_URL.format(username=username))
     config = load_config()
     twitter_config = config.setdefault('twitter', {})
     try:
-        twitter_config['AUTHORIZATION'] = input('Authorization: ')
-        twitter_config['X_CSRF_TOKEN'] = input('X-Csrf-Token: ')
-        url = input('Request URL: ')
-        twitter_config['LIKES_ID'], twitter_config['USER_ID'] = parse_twitter_likes_url(url)
-        twitter_config['FEATURES'] = parser_twitter_likes_features(url)
+        twitter_config['AUTHORIZATION'] = auth_token
+        twitter_config['X_CSRF_TOKEN'] = csrf_token
+        twitter_config['LIKES_ID'], twitter_config['USER_ID'] = parse_twitter_likes_url(likes_url)
+        twitter_config['FEATURES'] = parser_twitter_likes_features(likes_url)
+        shutil.copy(cookie_file, DEFAULT_FAVORS_HOME)
     except Exception as e:
         print(f"Failed to login: {e!r}")
         return

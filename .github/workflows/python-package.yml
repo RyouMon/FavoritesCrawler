@@ -28,7 +28,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        python -m pip install flake8 pytest
+        python -m pip install flake8 pytest pytest-cov
         python -m pip install -r requirements.txt
     - name: Lint with flake8
       run: |
@@ -39,8 +39,14 @@ jobs:
     - name: Run Test
       run: |
         cd src
-        python -m pytest ../tests
+        python -m pytest ../tests --cov --cov-report=xml
+        mv .coverage ../.coverage
+        mv coverage.xml ../coverage.xml
     - name: Check spiders contacts
       run: |
         cd src
         scrapy check
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@v5
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}

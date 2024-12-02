@@ -39,14 +39,13 @@ jobs:
     - name: Run Test
       run: |
         cd src
-        python -m pytest ../tests
+        pytest --cov --cov-report=xml
+        mv .coverage ../.coverage
+        mv coverage.xml ../coverage.xml
     - name: Check spiders contacts
       run: |
         cd src
         scrapy check
-    - name: Generate coverage reports
-      run: |
-        pytest --cov --cov-report=xml
     - name: Upload coverage reports to Codecov
       uses: codecov/codecov-action@v5
       with:

@@ -135,7 +135,11 @@ favors crawl twitter
 ```
 
 # Config
-Config file locate on `{your_home}/.favorites_crawler/config.yml`. 
+
+Config file `config.yml` locate on `FAVORS_HOME`, 
+by default `FAVORS_HOME` is `{your_home}/.favorites_crawler`. 
+You can change `FAVORS_HOME` by set environment variable.
+
 You can set any [scrapy built-in settings](https://docs.scrapy.org/en/latest/topics/settings.html#built-in-settings-reference) in this file.
 
 By default, file content likes this:

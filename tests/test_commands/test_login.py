@@ -6,6 +6,23 @@ from favorites_crawler.utils.config import load_config
 runner = CliRunner()
 
 
+class TestLoginYandere:
+    def test_login_yandere_success(self, tmp_path):
+        favors_home = tmp_path / 'home'
+        username = 'username'
+
+        result = runner.invoke(
+            app, ['login', 'yandere', '-u', username],
+            env={'FAVORS_HOME': str(favors_home)}
+        )
+
+        assert result.exit_code == 0
+        assert "success" in result.stdout
+        assert (favors_home / 'config.yml').exists()
+        config = load_config(favors_home)
+        assert config['yandere']['USERNAME'] == username
+
+
 class TestLoginNhentai:
     user_agent = 'Test-User-Agent'
 

@@ -1,8 +1,8 @@
+import os
 import shutil
 from typing import Optional
 
 import typer
-from selenium.common import NoSuchWindowException
 
 from favorites_crawler.utils.auth import CustomGetPixivToken, parse_twitter_likes_url, parser_twitter_likes_features
 from favorites_crawler.utils.config import dump_config, load_config
@@ -33,13 +33,14 @@ def login_pixiv(
 
     If you do not provide your username and password, you will login manually on the web page
     """
-    config = load_config()
+    favors_home = os.getenv('FAVORS_HOME', DEFAULT_FAVORS_HOME)
+    config = load_config(favors_home)
     token_getter = CustomGetPixivToken()
     try:
         login_info = token_getter.login(username=username, password=password)
-    except NoSuchWindowException:
-        print('Failed to login.')
-        return
+    except Exception as e:
+        print(f'Failed to login. {e!r}')
+        exit(1)
 
     pixiv_config = config.setdefault('pixiv', {})
     try:
@@ -49,7 +50,7 @@ def login_pixiv(
     except KeyError as e:
         print(f'Failed to login. {e!r}')
     else:
-        dump_config(config)
+        dump_config(config, favors_home)
         print("Login successful.")
 
 
@@ -63,10 +64,11 @@ def login_yandere(
     """
     Login to yandere.
     """
-    config = load_config()
+    favors_home = os.getenv('FAVORS_HOME', DEFAULT_FAVORS_HOME)
+    config = load_config(favors_home)
     yandere_config = config.setdefault('yandere', {})
     yandere_config['USERNAME'] = username
-    dump_config(config)
+    dump_config(config, favors_home)
     print("Login successful.")
 
 
@@ -101,18 +103,19 @@ def login_twitter(
     6. Copy Authorization, X-Csrf-Token and RequestURL from request(Likes?variables...) input on terminal.\n
     7. Use "Get cookies.txt" browser extension download cookie file.
     """
-    config = load_config()
+    favors_home = os.getenv('FAVORS_HOME', DEFAULT_FAVORS_HOME)
+    config = load_config(favors_home)
     twitter_config = config.setdefault('twitter', {})
     try:
         twitter_config['AUTHORIZATION'] = auth_token
         twitter_config['X_CSRF_TOKEN'] = csrf_token
         twitter_config['LIKES_ID'], twitter_config['USER_ID'] = parse_twitter_likes_url(likes_url)
         twitter_config['FEATURES'] = parser_twitter_likes_features(likes_url)
-        shutil.copy(cookie_file, DEFAULT_FAVORS_HOME)
+        shutil.copy(cookie_file, favors_home)
     except Exception as e:
         print(f"Failed to login: {e!r}")
-        return
-    dump_config(config)
+        exit(1)
+    dump_config(config, favors_home)
     print("Login successful.")
 
 
@@ -136,13 +139,14 @@ def login_nhentai(
     4. Copy user-agent from any request.\n
     5. Use "Get cookies.txt" browser extension download cookie file.
     """
-    config = load_config()
+    favors_home = os.getenv('FAVORS_HOME', DEFAULT_FAVORS_HOME)
+    config = load_config(favors_home)
     nhentai_config = config.setdefault('nhentai', {})
     try:
         nhentai_config['USER_AGENT'] = user_agent
-        shutil.copy(cookie_file, DEFAULT_FAVORS_HOME)
+        shutil.copy(cookie_file, favors_home)
     except Exception as e:
         print(f"Failed to login: {e!r}")
-        return
-    dump_config(config)
+        exit(1)
+    dump_config(config, favors_home)
     print("Login successful.")

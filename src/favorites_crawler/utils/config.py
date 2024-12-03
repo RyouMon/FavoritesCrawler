@@ -1,7 +1,6 @@
 import os
 import yaml
 
-from favorites_crawler.constants.path import DEFAULT_FAVORS_HOME
 
 DEFAULT_CONFIG = {
     'global': {
@@ -35,7 +34,7 @@ DEFAULT_CONFIG = {
 }
 
 
-def load_config(home: str = DEFAULT_FAVORS_HOME) -> dict:
+def load_config(home: str) -> dict:
     """Load config from user home"""
     create_favors_home(home)
     config_file = os.path.join(home, 'config.yml')
@@ -46,7 +45,7 @@ def load_config(home: str = DEFAULT_FAVORS_HOME) -> dict:
         return yaml.safe_load(f)
 
 
-def dump_config(data: dict, home: str = DEFAULT_FAVORS_HOME):
+def dump_config(data: dict, home):
     """Dump config data to user home"""
     create_favors_home(home)
     config_file = os.path.join(home, 'config.yml')

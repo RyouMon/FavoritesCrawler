@@ -49,6 +49,7 @@ def login_pixiv(
         pixiv_config['REFRESH_TOKEN'] = login_info['refresh_token']
     except KeyError as e:
         print(f'Failed to login. {e!r}')
+        exit(1)
     else:
         dump_config(config, favors_home)
         print("Login successful.")

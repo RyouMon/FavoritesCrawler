@@ -1,9 +1,79 @@
+from unittest.mock import patch
+
 from typer.testing import CliRunner
 
 from favorites_crawler import app
 from favorites_crawler.utils.config import load_config
 
 runner = CliRunner()
+
+
+@patch('favorites_crawler.commands.login.CustomGetPixivToken')
+class TestLoginPixiv:
+    username = 'username'
+    password = 'password'
+    user_id = 'user_id'
+    access_token = 'access_token'
+    refresh_token = 'refresh_token'
+
+    def test_login_pixiv_success(self, mock_gppt, tmp_path):
+        favors_home = tmp_path / 'home'
+        mock_login = mock_gppt.return_value.login
+        mock_login.return_value = {
+            'access_token': self.access_token,
+            'refresh_token': self.refresh_token,
+            'user': {'id': self.user_id}
+        }
+
+        result = runner.invoke(
+            app, ['login', 'pixiv', '-u', self.username, '-p', self.password],
+            env={'FAVORS_HOME': str(favors_home)}
+        )
+
+        mock_login.assert_called_once_with(username=self.username, password=self.password)
+        assert result.exit_code == 0
+        assert "success" in result.stdout
+        assert (favors_home / 'config.yml').exists()
+        config = load_config(favors_home)['pixiv']
+        assert config['USER_ID'] == self.user_id
+        assert config['REFRESH_TOKEN'] == self.refresh_token
+        assert config['ACCESS_TOKEN'] == self.access_token
+
+    def test_login_pixiv_should_failed_when_gppt_raise_exc(self, mock_gppt, tmp_path):
+        favors_home = tmp_path / 'home'
+        mock_login = mock_gppt.return_value.login
+        mock_login.side_effect = Exception
+
+        result = runner.invoke(
+            app, ['login', 'pixiv', '-u', self.username, '-p', self.password],
+            env={'FAVORS_HOME': str(favors_home)}
+        )
+
+        mock_login.assert_called_once_with(username=self.username, password=self.password)
+        self.assert_login_failed(result, favors_home)
+
+    def test_login_pixiv_should_failed_when_gppt_return_bad_resp(self, mock_gppt, tmp_path):
+        favors_home = tmp_path / 'home'
+        mock_login = mock_gppt.return_value.login
+        mock_login.return_value = {}
+
+        result = runner.invoke(
+            app, ['login', 'pixiv', '-u', self.username, '-p', self.password],
+            env={'FAVORS_HOME': str(favors_home)}
+        )
+
+        mock_login.assert_called_once_with(username=self.username, password=self.password)
+        self.assert_login_failed(result, favors_home)
+
+    @staticmethod
+    def assert_login_failed(result, favors_home):
+        assert result.exit_code == 1
+        assert "Failed" in result.stdout
+        assert (favors_home / 'config.yml').exists()
+        config = load_config(favors_home)['pixiv']
+        assert config['USER_ID'] == ''
+        assert config['REFRESH_TOKEN'] == ''
+        assert config['ACCESS_TOKEN'] == ''
 
 
 class TestLoginYandere:
@@ -19,8 +89,8 @@ class TestLoginYandere:
         assert result.exit_code == 0
         assert "success" in result.stdout
         assert (favors_home / 'config.yml').exists()
-        config = load_config(favors_home)
-        assert config['yandere']['USERNAME'] == username
+        config = load_config(favors_home)['yandere']
+        assert config['USERNAME'] == username
 
 
 class TestLoginNhentai:
@@ -40,8 +110,8 @@ class TestLoginNhentai:
         assert "success" in result.stdout
         assert (favors_home / 'cookie.txt').exists()
         assert (favors_home / 'config.yml').exists()
-        config = load_config(favors_home)
-        assert config['nhentai']['USER_AGENT'] == self.user_agent
+        config = load_config(favors_home)['nhentai']
+        assert config['USER_AGENT'] == self.user_agent
 
     def test_login_nhentai_failed(self, tmp_path):
         favors_home = tmp_path / 'home'
@@ -56,8 +126,8 @@ class TestLoginNhentai:
         assert "Failed" in result.stdout
         assert not (favors_home / 'cookie.txt').exists()
         assert (favors_home / 'config.yml').exists()
-        config = load_config(favors_home)
-        assert config['nhentai']['USER_AGENT'] == ''
+        config = load_config(favors_home)['nhentai']
+        assert config['USER_AGENT'] == ''
 
 
 class TestLoginTwitter:
@@ -81,11 +151,11 @@ class TestLoginTwitter:
         assert "success" in result.stdout
         assert (favors_home / 'cookie.txt').exists()
         assert (favors_home / 'config.yml').exists()
-        config = load_config(favors_home)
-        assert config['twitter']['AUTHORIZATION'] == self.access_token
-        assert config['twitter']['X_CSRF_TOKEN'] == self.csrf_token
-        assert config['twitter']['LIKES_ID'] == 'likes_id'
-        assert config['twitter']['FEATURES'] == {
+        config = load_config(favors_home)['twitter']
+        assert config['AUTHORIZATION'] == self.access_token
+        assert config['X_CSRF_TOKEN'] == self.csrf_token
+        assert config['LIKES_ID'] == 'likes_id'
+        assert config['FEATURES'] == {
             'profile_label_improvements_pcf_label_in_post_enabled': False,
             'rweb_tipjar_consumption_enabled': True,
             'responsive_web_graphql_exclude_directive_enabled': True,
@@ -111,7 +181,7 @@ class TestLoginTwitter:
             'longform_notetweets_inline_media_enabled': True,
             'responsive_web_enhance_cards_enabled': False
         }
-        assert config['twitter']['USER_ID'] == 'xxx'
+        assert config['USER_ID'] == 'xxx'
 
     def test_login_twitter_failed_when_given_bad_url(self, tmp_path):
         favors_home = tmp_path / 'home'
@@ -138,13 +208,14 @@ class TestLoginTwitter:
 
         self.assert_login_failed(result, favors_home)
 
-    def assert_login_failed(self, result, favors_home):
+    @staticmethod
+    def assert_login_failed(result, favors_home):
         assert result.exit_code == 1
         assert "Failed" in result.stdout
         assert not (favors_home / 'cookie.txt').exists()
         assert (favors_home / 'config.yml').exists()
-        config = load_config(favors_home)
-        assert config['twitter']['AUTHORIZATION'] == ''
-        assert config['twitter']['X_CSRF_TOKEN'] == ''
-        assert config['twitter']['LIKES_ID'] == ''
-        assert config['twitter']['USER_ID'] == ''
+        config = load_config(favors_home)['twitter']
+        assert config['AUTHORIZATION'] == ''
+        assert config['X_CSRF_TOKEN'] == ''
+        assert config['LIKES_ID'] == ''
+        assert config['USER_ID'] == ''

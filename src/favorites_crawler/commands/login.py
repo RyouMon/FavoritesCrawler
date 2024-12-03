@@ -1,14 +1,12 @@
-import re
+import os
+import shutil
 from typing import Optional
-from urllib.parse import unquote
-from webbrowser import open as open_url
 
 import typer
-from selenium.common import NoSuchWindowException
 
-from favorites_crawler.constants.endpoints import TWITTER_PROFILE_LIKES_URL
-from favorites_crawler.utils.auth import CustomGetPixivToken
+from favorites_crawler.utils.auth import CustomGetPixivToken, parse_twitter_likes_url, parser_twitter_likes_features
 from favorites_crawler.utils.config import dump_config, load_config
+from favorites_crawler.constants.path import DEFAULT_FAVORS_HOME
 
 
 app = typer.Typer(help='Prepare auth information for crawling.', no_args_is_help=True)
@@ -35,13 +33,14 @@ def login_pixiv(
 
     If you do not provide your username and password, you will login manually on the web page
     """
-    config = load_config()
+    favors_home = os.getenv('FAVORS_HOME', DEFAULT_FAVORS_HOME)
+    config = load_config(favors_home)
     token_getter = CustomGetPixivToken()
     try:
         login_info = token_getter.login(username=username, password=password)
-    except NoSuchWindowException:
-        print('Failed to login.')
-        return
+    except Exception as e:
+        print(f'Failed to login. {e!r}')
+        exit(1)
 
     pixiv_config = config.setdefault('pixiv', {})
     try:
@@ -50,8 +49,9 @@ def login_pixiv(
         pixiv_config['REFRESH_TOKEN'] = login_info['refresh_token']
     except KeyError as e:
         print(f'Failed to login. {e!r}')
+        exit(1)
     else:
-        dump_config(config)
+        dump_config(config, favors_home)
         print("Login successful.")
 
 
@@ -65,49 +65,89 @@ def login_yandere(
     """
     Login to yandere.
     """
-    config = load_config()
+    favors_home = os.getenv('FAVORS_HOME', DEFAULT_FAVORS_HOME)
+    config = load_config(favors_home)
     yandere_config = config.setdefault('yandere', {})
     yandere_config['USERNAME'] = username
-    dump_config(config)
+    dump_config(config, favors_home)
     print("Login successful.")
 
 
 @app.command('x')
 @app.command('twitter')
 def login_twitter(
-        username: str = typer.Option(
-            ..., '-u', '--username',
-            help="Your twitter username."
+        auth_token: str = typer.Option(
+            ..., '-at', '--auth-token',
+            help='Authorization Token (Copy from Dev console)'
+        ),
+        csrf_token: str = typer.Option(
+            ..., '-ct', '--csrf-token',
+            help='Authorization Token (Copy from Dev console)'
+        ),
+        likes_url: str = typer.Option(
+            ..., '-u', '--likes-url',
+            help='Request URL of Likes API (Copy from Dev console)'
+        ),
+        cookie_file: str = typer.Option(
+            ..., '-c', '--cookie-file',
+            help='Netscape HTTP Cookie File, you can download it by "Get cookies.txt" browser extension.'
         )
 ):
     """
     Login to twitter.
 
-    1. After execute this command, likes page will open in browser.\n
+    1. Open twitter and login, get to your "Likes" page.\n
     2. Open dev console (F12) and switch to network tab.\n
     3. Enable persistent logging ("Preserve log").\n
     4. Type into the filter field: Likes?\n
     5. Refresh Page.\n
     6. Copy Authorization, X-Csrf-Token and RequestURL from request(Likes?variables...) input on terminal.\n
-    7. Use "Get cookies.txt" browser extension download cookie file.\n
-    8. Copy cookie file to {user_home}/.favorites_crawler.
+    7. Use "Get cookies.txt" browser extension download cookie file.
     """
-    open_url(TWITTER_PROFILE_LIKES_URL.format(username=username))
-    config = load_config()
+    favors_home = os.getenv('FAVORS_HOME', DEFAULT_FAVORS_HOME)
+    config = load_config(favors_home)
     twitter_config = config.setdefault('twitter', {})
     try:
-        twitter_config['AUTHORIZATION'] = input('Authorization: ')
-        twitter_config['X_CSRF_TOKEN'] = input('X-Csrf-Token: ')
-        twitter_config['LIKES_ID'], twitter_config['USER_ID'] = parse_twitter_likes_url(input('Request URL: '))
-    except KeyboardInterrupt:
-        "Failed to login."
-        return
-    dump_config(config)
+        twitter_config['AUTHORIZATION'] = auth_token
+        twitter_config['X_CSRF_TOKEN'] = csrf_token
+        twitter_config['LIKES_ID'], twitter_config['USER_ID'] = parse_twitter_likes_url(likes_url)
+        twitter_config['FEATURES'] = parser_twitter_likes_features(likes_url)
+        shutil.copy(cookie_file, favors_home)
+    except Exception as e:
+        print(f"Failed to login: {e!r}")
+        exit(1)
+    dump_config(config, favors_home)
     print("Login successful.")
 
 
-def parse_twitter_likes_url(url):
-    """Parse USER_ID and LIKES_ID from URL"""
-    url = unquote(url).replace(' ', '')
-    match = re.match(r'^.+?graphql/(.+?)/.+?userId":"(.+?)".+$', url)
-    return match.groups()
+@app.command("nhentai")
+def login_nhentai(
+        user_agent: str = typer.Option(
+            ..., '-u', '--user-agent',
+            help='User Agent'
+        ),
+        cookie_file: str = typer.Option(
+            ..., '-c', '--cookie-file',
+            help='Netscape HTTP Cookie File, you can download it by "Get cookies.txt" browser extension.'
+        )
+):
+    """
+    Login to nhentai.
+
+    1. Open nhentai and login.\n
+    2. Open dev console (F12) and switch to network tab.\n
+    3. Open any comic.\n
+    4. Copy user-agent from any request.\n
+    5. Use "Get cookies.txt" browser extension download cookie file.
+    """
+    favors_home = os.getenv('FAVORS_HOME', DEFAULT_FAVORS_HOME)
+    config = load_config(favors_home)
+    nhentai_config = config.setdefault('nhentai', {})
+    try:
+        nhentai_config['USER_AGENT'] = user_agent
+        shutil.copy(cookie_file, favors_home)
+    except Exception as e:
+        print(f"Failed to login: {e!r}")
+        exit(1)
+    dump_config(config, favors_home)
+    print("Login successful.")

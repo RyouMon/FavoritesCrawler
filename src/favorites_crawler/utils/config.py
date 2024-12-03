@@ -1,5 +1,6 @@
 import os
 import yaml
+from copy import deepcopy
 
 
 DEFAULT_CONFIG = {
@@ -29,6 +30,7 @@ DEFAULT_CONFIG = {
         'FILES_STORE': 'favorites_crawler_files/lemon',
     },
     'nhentai': {
+        'USER_AGENT': '',
         'FILES_STORE': 'favorites_crawler_files/nhentai',
     }
 }
@@ -40,7 +42,7 @@ def load_config(home: str) -> dict:
     config_file = os.path.join(home, 'config.yml')
     if not os.path.exists(config_file):
         dump_config(DEFAULT_CONFIG, home)
-        return DEFAULT_CONFIG
+        return deepcopy(DEFAULT_CONFIG)
     with open(config_file, encoding='utf8') as f:
         return yaml.safe_load(f)
 

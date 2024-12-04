@@ -10,6 +10,7 @@ from scrapy.spiderloader import SpiderLoader
 
 from favorites_crawler.utils.config import load_config, overwrite_spider_settings
 from favorites_crawler.constants.path import DEFAULT_FAVORS_HOME
+from favorites_crawler.utils.auth import refresh_pixiv_token
 
 app = typer.Typer(help='Crawl your favorites from websites.', no_args_is_help=True)
 
@@ -27,7 +28,9 @@ def crawl_yandere():
 @app.command('pixiv')
 def crawl_pixiv():
     """Crawl your favorite illustrations from pixiv."""
-    crawl('pixiv')
+    favors_home = os.getenv('FAVORS_HOME', DEFAULT_FAVORS_HOME)
+    access_token = refresh_pixiv_token(favors_home)
+    crawl('pixiv', access_token=access_token)
 
 
 @app.command('nhentai')

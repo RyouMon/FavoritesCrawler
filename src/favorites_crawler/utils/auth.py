@@ -23,8 +23,8 @@ class CustomGetPixivToken(GetPixivToken):
             raise ValueError(msg) from err
 
 
-def refresh_pixiv():
-    config = load_config()
+def refresh_pixiv_token(home: str):
+    config = load_config(home)
     pixiv_config = config.get('pixiv', {})
     refresh_token = pixiv_config.get('REFRESH_TOKEN')
     if not refresh_token:
@@ -33,7 +33,7 @@ def refresh_pixiv():
     login_info = token_getter.refresh(refresh_token)
     access_token = login_info['access_token']
     pixiv_config['ACCESS_TOKEN'] = access_token
-    dump_config(config)
+    dump_config(config, home)
     return access_token
 
 

@@ -84,7 +84,7 @@ class TestOverwriteSpiderSettings:
         }
         spider = spider_loader.load('pixiv')
 
-        overwrite_spider_settings(spider, scrapy_settings, user_config)
+        overwrite_spider_settings(spider, '~', user_config)
 
         assert spider.custom_settings['FILES_STORE'] == user_config['pixiv']['FILES_STORE']
         assert spider.custom_settings['ENABLE_ORGANIZE_BY_ARTIST'] == user_config['global']['ENABLE_ORGANIZE_BY_ARTIST']
@@ -100,7 +100,7 @@ class TestOverwriteSpiderSettings:
         }
         spider = spider_loader.load('yandere')
 
-        overwrite_spider_settings(spider, scrapy_settings, user_config)
+        overwrite_spider_settings(spider, '~', user_config)
 
         assert spider.custom_settings['ENABLE_ORGANIZE_BY_ARTIST'] == user_config['yandere']['ENABLE_ORGANIZE_BY_ARTIST']
 
@@ -108,6 +108,14 @@ class TestOverwriteSpiderSettings:
         user_config = {}
         spider = spider_loader.load('nhentai')
 
-        overwrite_spider_settings(spider, scrapy_settings, user_config)
+        overwrite_spider_settings(spider, '~', user_config)
 
-        assert spider.custom_settings['FILES_STORE'] == os.path.join(scrapy_settings.get('FILES_STORE', ''), 'nhentai')
+        assert spider.custom_settings['FILES_STORE'] == os.path.expanduser(os.path.join('~', 'nhentai'))
+
+    def test_should_replace_favors_home_in_files_store(self):
+        user_config = {'twitter': {'FILES_STORE': os.path.join('$FAVORS_HOME', 'twitter')}}
+        spider = spider_loader.load('twitter')
+
+        overwrite_spider_settings(spider, '~', user_config)
+
+        assert spider.custom_settings['FILES_STORE'] == os.path.expanduser(os.path.join('~', 'twitter'))

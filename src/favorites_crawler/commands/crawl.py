@@ -72,7 +72,7 @@ def crawl(name, **kwargs):
     """
     spider = spider_loader.load(name)
     favors_home = os.getenv('FAVORS_HOME', DEFAULT_FAVORS_HOME)
-    overwrite_spider_settings(spider, scrapy_settings, load_config(favors_home))
+    overwrite_spider_settings(spider, favors_home, load_config(favors_home))
     process = CrawlerProcess(scrapy_settings)
     process.crawl(spider, **kwargs)
     for crawler in process.crawlers:

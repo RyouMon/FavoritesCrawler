@@ -1,6 +1,10 @@
+from unittest.mock import patch
+
 import pytest
 
-from favorites_crawler.utils.auth import parse_twitter_likes_url, parser_twitter_likes_features
+from favorites_crawler.utils.auth import parse_twitter_likes_url, parser_twitter_likes_features, \
+    refresh_pixiv_token
+from favorites_crawler.utils.config import dump_config, load_config
 
 
 def test_parser_twitter_likes_features():
@@ -36,3 +40,35 @@ def test_parser_twitter_likes_features():
 ))
 def test_twitter_parse_likes_url(url, expected):
     assert parse_twitter_likes_url(url) == expected
+
+
+@patch('favorites_crawler.utils.auth.CustomGetPixivToken')
+class TestRefreshPixivToken:
+    def test_should_return_access_token_if_refresh_token_exists(self, mock_gppt, tmp_path):
+        favors_home = tmp_path / 'home'
+        refresh_token = 'refresh_token'
+        new_access_token = 'new_access_token'
+        config = {
+            'pixiv': {
+                'ACCESS_TOKEN': 'old_access_token',
+                'REFRESH_TOKEN': refresh_token,
+            }
+        }
+        dump_config(config, favors_home)
+        mock_refresh = mock_gppt.return_value.refresh
+        mock_refresh.return_value = {'access_token': new_access_token}
+
+        access_token = refresh_pixiv_token(favors_home)
+
+        mock_refresh.assert_called_once_with(refresh_token)
+        assert access_token == new_access_token
+        assert load_config(favors_home)['pixiv']['ACCESS_TOKEN'] == new_access_token
+
+    def test_should_raise_value_error_if_refresh_token_not_exists(self, mock_gppt, tmp_path):
+        favors_home = tmp_path / 'home'
+        mock_refresh = mock_gppt.return_value.refresh
+
+        with pytest.raises(ValueError):
+            refresh_pixiv_token(favors_home)
+
+        mock_refresh.assert_not_called()

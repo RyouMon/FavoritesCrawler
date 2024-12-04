@@ -1,4 +1,7 @@
+from __future__ import annotations
+
 import os
+from pathlib import Path
 from copy import deepcopy
 
 import yaml
@@ -37,7 +40,7 @@ DEFAULT_CONFIG = {
 }
 
 
-def load_config(home: str) -> dict:
+def load_config(home: str | Path) -> dict:
     """Load config from user home"""
     home = os.path.expanduser(home)
     create_favors_home(home)
@@ -49,7 +52,7 @@ def load_config(home: str) -> dict:
         return yaml.safe_load(f)
 
 
-def dump_config(data: dict, home: str):
+def dump_config(data: dict, home: str | Path):
     """Dump config data to user home"""
     home = os.path.expanduser(home)
     create_favors_home(home)
@@ -58,7 +61,7 @@ def dump_config(data: dict, home: str):
         yaml.safe_dump(data, f, allow_unicode=True)
 
 
-def create_favors_home(path: str):
+def create_favors_home(path: str | Path):
     """Create favors home if not exists"""
     if not os.path.exists(path):
         os.makedirs(path, exist_ok=True)

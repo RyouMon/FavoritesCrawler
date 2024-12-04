@@ -11,4 +11,3 @@ NHENTAI_LOGIN_URL = 'https://nhentai.net/login/?next=/favorites/'
 NHENTAI_USER_FAVORITES_URL = 'https://nhentai.net/favorites/'
 
 TWITTER_LIKES_URL = 'https://x.com/i/api/graphql/{id}/Likes'
-TWITTER_PROFILE_LIKES_URL = 'https://x.com/{username}/likes'

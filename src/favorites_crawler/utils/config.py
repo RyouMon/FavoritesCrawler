@@ -1,7 +1,8 @@
 import os
 import yaml
+from copy import deepcopy
 
-DEFAULT_FAVORS_HOME = os.path.expanduser('~/.favorites_crawler')
+
 DEFAULT_CONFIG = {
     'global': {
         'ENABLE_ORGANIZE_BY_ARTIST': True,
@@ -29,24 +30,27 @@ DEFAULT_CONFIG = {
         'FILES_STORE': 'favorites_crawler_files/lemon',
     },
     'nhentai': {
+        'USER_AGENT': '',
         'FILES_STORE': 'favorites_crawler_files/nhentai',
     }
 }
 
 
-def load_config(home: str = DEFAULT_FAVORS_HOME) -> dict:
+def load_config(home: str) -> dict:
     """Load config from user home"""
+    home = os.path.expanduser(home)
     create_favors_home(home)
     config_file = os.path.join(home, 'config.yml')
     if not os.path.exists(config_file):
         dump_config(DEFAULT_CONFIG, home)
-        return DEFAULT_CONFIG
+        return deepcopy(DEFAULT_CONFIG)
     with open(config_file, encoding='utf8') as f:
         return yaml.safe_load(f)
 
 
-def dump_config(data: dict, home: str = DEFAULT_FAVORS_HOME):
+def dump_config(data: dict, home: str):
     """Dump config data to user home"""
+    home = os.path.expanduser(home)
     create_favors_home(home)
     config_file = os.path.join(home, 'config.yml')
     with open(config_file, 'w', encoding='utf8') as f:

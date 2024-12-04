@@ -1,5 +1,8 @@
+from __future__ import annotations
+
 import json
 import re
+from pathlib import Path
 from urllib.parse import unquote
 
 from gppt import GetPixivToken
@@ -23,7 +26,7 @@ class CustomGetPixivToken(GetPixivToken):
             raise ValueError(msg) from err
 
 
-def refresh_pixiv_token(home: str):
+def refresh_pixiv_token(home: str | Path):
     config = load_config(home)
     pixiv_config = config.get('pixiv', {})
     refresh_token = pixiv_config.get('REFRESH_TOKEN')

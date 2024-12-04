@@ -38,6 +38,7 @@ DEFAULT_CONFIG = {
 
 def load_config(home: str) -> dict:
     """Load config from user home"""
+    home = os.path.expanduser(home)
     create_favors_home(home)
     config_file = os.path.join(home, 'config.yml')
     if not os.path.exists(config_file):
@@ -47,8 +48,9 @@ def load_config(home: str) -> dict:
         return yaml.safe_load(f)
 
 
-def dump_config(data: dict, home):
+def dump_config(data: dict, home: str):
     """Dump config data to user home"""
+    home = os.path.expanduser(home)
     create_favors_home(home)
     config_file = os.path.join(home, 'config.yml')
     with open(config_file, 'w', encoding='utf8') as f:

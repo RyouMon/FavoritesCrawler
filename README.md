@@ -155,8 +155,8 @@ yandere:
 ```
 
 ## Download location
-By default, pictures will download to working directory.  
-If you want to change download location, you can add FILES_STORE option to config.  
+By default, pictures will download to `${FAVORS_HOME}/{site_name}`  
+If you want to change download location, you can update FILES_STORE.  
 For example, if you want save pixiv files to `pictures/a`, and want save yandere files to `pictures/b`, you can modify config file like this:
 ```yaml
 pixiv:

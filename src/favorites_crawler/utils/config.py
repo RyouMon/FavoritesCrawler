@@ -1,6 +1,7 @@
 import os
-import yaml
 from copy import deepcopy
+
+import yaml
 
 
 DEFAULT_CONFIG = {
@@ -10,28 +11,28 @@ DEFAULT_CONFIG = {
         'EXIF_TOOL_EXECUTABLE': None,
     },
     'pixiv': {
-        'FILES_STORE': 'favorites_crawler_files/pixiv',
+        'FILES_STORE': os.path.join('$FAVORS_HOME', 'pixiv'),
         'USER_ID': '',
         'ACCESS_TOKEN': '',
         'REFRESH_TOKEN': '',
     },
     'yandere': {
-        'FILES_STORE': 'favorites_crawler_files/yandere',
+        'FILES_STORE': os.path.join('$FAVORS_HOME', 'yandere'),
         'USERNAME': '',
     },
     'twitter': {
-        'FILES_STORE': 'favorites_crawler_files/twitter',
+        'FILES_STORE': os.path.join('$FAVORS_HOME', 'twitter'),
         'USER_ID': '',
         'AUTHORIZATION': '',
         'LIKES_ID': '',
         'X_CSRF_TOKEN': '',
     },
     'lemon': {
-        'FILES_STORE': 'favorites_crawler_files/lemon',
+        'FILES_STORE': os.path.join('$FAVORS_HOME', 'lemon'),
     },
     'nhentai': {
         'USER_AGENT': '',
-        'FILES_STORE': 'favorites_crawler_files/nhentai',
+        'FILES_STORE': os.path.join('$FAVORS_HOME', 'nhentai'),
     }
 }
 
@@ -63,22 +64,26 @@ def create_favors_home(path: str):
         os.makedirs(path, exist_ok=True)
 
 
-def overwrite_spider_settings(spider, default_settings, user_config):
+def overwrite_spider_settings(spider, home, user_config):
     """
     Overwrite spider settings by user config
     Priority: favors spider config > favors global config > spider custom settings > scrapy settings
 
     :param spider: Spider class
-    :param default_settings: :class:`scrapy.settings.Settings`
+    :param home: favors home
     :param user_config: favorites crawler config
     """
     global_config = user_config.get('global')
     if global_config:
         spider.custom_settings.update(global_config)
 
-    spider_config = user_config.get(spider.name)
+    spider_config = user_config.get(spider.name, {})
     if spider_config:
         spider.custom_settings.update(spider_config)
 
-    default_files_store = os.path.join(default_settings.get('FILES_STORE', ''), spider.name)
-    spider.custom_settings.setdefault('FILES_STORE', default_files_store)
+    home = os.path.expanduser(home)
+    files_store = spider_config.get('FILES_STORE')
+    if files_store:
+        spider.custom_settings['FILES_STORE'] = files_store.replace('$FAVORS_HOME', home)
+    else:
+        spider.custom_settings['FILES_STORE'] = os.path.join(home, spider.name)

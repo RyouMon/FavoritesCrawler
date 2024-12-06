@@ -42,7 +42,6 @@ DEFAULT_CONFIG = {
 
 def load_config(home: str | Path) -> dict:
     """Load config from user home"""
-    home = os.path.expanduser(home)
     create_favors_home(home)
     config_file = os.path.join(home, 'config.yml')
     if not os.path.exists(config_file):
@@ -54,7 +53,6 @@ def load_config(home: str | Path) -> dict:
 
 def dump_config(data: dict, home: str | Path):
     """Dump config data to user home"""
-    home = os.path.expanduser(home)
     create_favors_home(home)
     config_file = os.path.join(home, 'config.yml')
     with open(config_file, 'w', encoding='utf8') as f:
@@ -84,7 +82,6 @@ def overwrite_spider_settings(spider, home, user_config):
     if spider_config:
         spider.custom_settings.update(spider_config)
 
-    home = os.path.expanduser(home)
     files_store = spider_config.get('FILES_STORE')
     if files_store:
         spider.custom_settings['FILES_STORE'] = files_store.replace('$FAVORS_HOME', home)

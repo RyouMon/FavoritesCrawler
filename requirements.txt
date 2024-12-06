@@ -7,3 +7,4 @@ langdetect==1.0.9
 pykakasi==2.2.1
 gppt==4.1.0
 typer>=0.14.0
+loguru>=0.7.2

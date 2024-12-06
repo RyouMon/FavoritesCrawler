@@ -8,9 +8,11 @@ from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 from scrapy.spiderloader import SpiderLoader
 
+from favorites_crawler.constants.domains import LMMPIC_DOMAIN, NHENTAI_DOMAIN, TWITTER_DOMAIN
 from favorites_crawler.utils.config import load_config, overwrite_spider_settings
 from favorites_crawler.constants.path import DEFAULT_FAVORS_HOME
 from favorites_crawler.utils.auth import refresh_pixiv_token
+from favorites_crawler.utils.cookies import load_cookie
 
 app = typer.Typer(help='Crawl your favorites from websites.', no_args_is_help=True)
 
@@ -36,20 +38,26 @@ def crawl_pixiv():
 @app.command('nhentai')
 def crawl_nhentai():
     """Crawl your favorite comics from nhentai."""
-    crawl('nhentai')
+    favors_home = os.path.expanduser(os.getenv('FAVORS_HOME', DEFAULT_FAVORS_HOME))
+    cookies = load_cookie(NHENTAI_DOMAIN, favors_home)
+    crawl('nhentai', cookies=cookies)
 
 
 @app.command('x')
 @app.command('twitter')
 def crawl_twitter():
     """Crawl your favorite pictures from twitter."""
-    crawl('twitter')
+    favors_home = os.path.expanduser(os.getenv('FAVORS_HOME', DEFAULT_FAVORS_HOME))
+    cookies = load_cookie(TWITTER_DOMAIN, favors_home)
+    crawl('twitter', cookies=cookies)
 
 
 @app.command('lemon')
 def crawl_lemon(id_list: list[str] = typer.Option([], '--id', '-i')):
     """Crawl your favorite photo albums from lemon."""
-    crawl('lemon', id_list=id_list)
+    favors_home = os.path.expanduser(os.getenv('FAVORS_HOME', DEFAULT_FAVORS_HOME))
+    cookies = load_cookie(LMMPIC_DOMAIN, favors_home)
+    crawl('lemon', id_list=id_list, cookies=cookies)
 
 
 def spider_closed(spider):

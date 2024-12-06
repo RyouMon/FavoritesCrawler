@@ -7,7 +7,6 @@ from favorites_crawler.spiders import BaseSpider
 from favorites_crawler.itemloaders import TwitterTweetItemLoader
 from favorites_crawler.constants.domains import TWITTER_DOMAIN
 from favorites_crawler.constants.endpoints import TWITTER_LIKES_URL
-from favorites_crawler.utils.cookies import load_cookie
 from favorites_crawler.utils.common import DictRouter
 
 
@@ -31,7 +30,6 @@ class TwitterSpider(BaseSpider):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.cookies = load_cookie(TWITTER_DOMAIN)
         self.base_url = TWITTER_LIKES_URL.format(id=self.custom_settings.get('LIKES_ID'))
         self.variables = {
             "userId": str(self.custom_settings.get('USER_ID')),

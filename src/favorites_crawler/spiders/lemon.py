@@ -5,7 +5,6 @@ from favorites_crawler.spiders import BaseSpider
 from favorites_crawler.itemloaders import LemonPicPostItemLoader
 from favorites_crawler.constants.endpoints import LEMON_PIC_USER_CENTER_URL, LEMON_PIC_POST_URL_PATTERN
 from favorites_crawler.constants.domains import LMMPIC_DOMAIN
-from favorites_crawler.utils.cookies import load_cookie
 
 
 class LemonSpider(BaseSpider):
@@ -24,10 +23,6 @@ class LemonSpider(BaseSpider):
     custom_settings = {
         'ITEM_PIPELINES': {'favorites_crawler.pipelines.ComicPipeline': 0},
     }
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.cookies = load_cookie(LMMPIC_DOMAIN)
 
     def start_requests(self):
         if hasattr(self, 'id_list') and self.id_list:

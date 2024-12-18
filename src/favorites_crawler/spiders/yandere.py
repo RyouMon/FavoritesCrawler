@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import pathlib
 from urllib.parse import urlencode
 
@@ -30,7 +32,7 @@ class YandereSpider(BaseSpider):
         self.posts = list_yandere_post(pathlib.Path(self.settings.get('FILES_STORE')), include_subdir=True)
         username = self.custom_settings.get('USERNAME')
         if not username:
-            raise CloseSpider('Did you run "favors login yandere"?')
+            raise CloseSpider('login-required')
 
         self.params['tags'] = f'vote:>=1:{username}'
         yield Request(f'{YANDERE_LIST_POST_URL}?{urlencode(self.params)}')
@@ -44,20 +46,14 @@ class YandereSpider(BaseSpider):
             yield Request(f'{YANDERE_LIST_POST_URL}?{urlencode(self.params)}', callback=self.parse_start_url)
 
         for post in posts:
-            post_id = str(post['id'])
-            if post_id in self.posts:
-                path = self.posts[post_id]  # type: pathlib.Path
-                if (path.name ==
-                        YanderePostItemLoader.default_item_class().get_filename(post['file_url'], self)):
-                    continue
-                path.unlink(missing_ok=True)
-
+            if self.is_crawled(post):
+                continue
             loader = YanderePostItemLoader()
             loader.add_value('file_urls', post['file_url'])
             loader.add_value('tags', post['tags'])
 
             if self.settings.getbool('ENABLE_ORGANIZE_BY_ARTIST'):
-                yield Request(YANDERE_SHOW_POST_URL.format(id=post_id),
+                yield Request(YANDERE_SHOW_POST_URL.format(id=post['id']),
                               callback=self.parse, cb_kwargs={'loader': loader})
             else:
                 yield loader.load_item()
@@ -72,3 +68,16 @@ class YandereSpider(BaseSpider):
         loader.selector = response
         loader.add_xpath('artist', '//li[@class="tag-type-artist"]/a[last()]/text()')
         yield loader.load_item()
+
+    def is_crawled(self, post: dict) -> bool:
+        """Determine whether the post has been crawled, remove old file if filename changed"""
+        post_id = str(post['id'])
+        if post_id not in self.posts:
+            return False
+        path = self.posts[post_id]  # type: pathlib.Path
+        old_filename = path.name
+        new_filename = YanderePostItemLoader.default_item_class().get_filename(post['file_url'], self)
+        if new_filename == old_filename:
+            return True
+        path.unlink(missing_ok=True)
+        return False

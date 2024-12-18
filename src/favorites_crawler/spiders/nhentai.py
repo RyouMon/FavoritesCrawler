@@ -1,10 +1,14 @@
-from scrapy.spiders.crawl import Rule, LinkExtractor
+import re
+from pathlib import Path
+
+from scrapy.spiders.crawl import Rule, LinkExtractor, Link
 from scrapy.http import Request
 
 from favorites_crawler.spiders import BaseSpider
 from favorites_crawler.itemloaders import NHentaiGalleryItemLoader
 from favorites_crawler.constants.endpoints import NHENTAI_USER_FAVORITES_URL
 from favorites_crawler.constants.domains import NHENTAI_DOMAIN
+from favorites_crawler.utils.files import list_comics
 
 
 class NHentaiSpider(BaseSpider):
@@ -13,12 +17,13 @@ class NHentaiSpider(BaseSpider):
     rules = (
         Rule(
             LinkExtractor(restrict_xpaths='//section[@class="pagination"]'),
-            process_request='process_request',
+            process_request='add_cookies',
         ),
         Rule(
             LinkExtractor(restrict_xpaths='//div[@class="container"]'),
             callback='parse',
-            process_request='process_request',
+            process_links='filter_exists_comics',
+            process_request='add_cookies',
         ),
     )
     custom_settings = {
@@ -26,7 +31,12 @@ class NHentaiSpider(BaseSpider):
         'ITEM_PIPELINES': {'favorites_crawler.pipelines.ComicPipeline': 0},
     }
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.comics = {}
+
     def start_requests(self):
+        self.comics = list_comics(Path(self.settings.get('FILES_STORE')))
         yield Request(NHENTAI_USER_FAVORITES_URL, cookies=self.cookies)
 
     def parse(self, response, **kwargs):
@@ -56,6 +66,19 @@ class NHentaiSpider(BaseSpider):
 
         yield loader.load_item()
 
-    def process_request(self, request, _):
+    def filter_exists_comics(self, links: list[Link]):
+        def comic_not_exists(link):
+            comic_id = re.match(r'^.*?(\d+).*?$', link.url)
+            if not comic_id:
+                return True
+            if comic_id.group(1) in self.comics:
+                self.logger.info('Comic already downloaded, filter URL: %s', link.url)
+                self.crawler.stats.inc_value('already_downloaded/filtered')
+                return False
+            return True
+
+        return list(filter(comic_not_exists, links))
+
+    def add_cookies(self, request, _):
         request.cookies = self.cookies
         return request

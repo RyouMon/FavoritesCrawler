@@ -148,3 +148,7 @@ def test_fix_tweet_media_url(url, expected):
 def test_tweet_time_2_datetime(tweet_time, expected):
     actual = tweet_time_2_datetime(tweet_time)
     assert actual == expected
+
+
+def test_join_nhentai_title():
+    assert processors.join_nhentai_title(['a  ', 'b', 'c']) == 'a b c'

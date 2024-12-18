@@ -4,11 +4,7 @@ from itemloaders import ItemLoader
 from itemloaders.processors import Compose, MapCompose
 
 from favorites_crawler import items
-from favorites_crawler.processors import take_first, identity, get_nhentai_id, wrap_credits, \
-    original_url_from_nhentai_thumb_url, select_best_nhentai_title, clean_nhentai_title, \
-    get_year_from_iso_format, get_month_from_iso_format, get_series_from_title, get_volume_from_title, \
-    clean_parodies, get_lemon_page, get_pixiv_tags, get_yandere_tags, get_twitter_tags, fix_tweet_media_url, \
-    tweet_time_2_datetime
+from favorites_crawler.processors import *
 from favorites_crawler.utils.text import convert_to_ascii
 
 
@@ -46,7 +42,7 @@ class NHentaiGalleryItemLoader(BaseItemLoader):
     series_out = Compose(take_first, get_series_from_title)
     volume_out = Compose(take_first, get_volume_from_title)
     title_out = Compose(select_best_nhentai_title, clean_nhentai_title)
-    sort_title_out = Compose(select_best_nhentai_title, clean_nhentai_title)
+    sort_title_out = join_nhentai_title
     file_urls_out = MapCompose(original_url_from_nhentai_thumb_url)
     credits_out = wrap_credits
     publicationYear_out = Compose(take_first, get_year_from_iso_format)

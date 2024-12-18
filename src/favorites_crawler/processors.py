@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import re
 from datetime import datetime
 
@@ -163,3 +165,7 @@ def fix_tweet_media_url(url):
 
 def tweet_time_2_datetime(tweet_time):
     return datetime.strptime(tweet_time, '%a %b %d %H:%M:%S %z %Y')
+
+
+def join_nhentai_title(parts: list[str]) -> str:
+    return ' '.join(map(lambda s: s.strip(), parts))

@@ -122,15 +122,40 @@ class TestComicBookInfoItem:
 
 
 class TestNHentaiGalleryItem:
-    def test_to_comic_info(self, comic_book_info):
+    @patch('favorites_crawler.items.datetime')
+    def test_to_comic_info(self, mock_datetime, comic_book_info):
+        mock_now = mock_datetime.now
+        mock_now.return_value = 'test'
         item = items.NHentaiGalleryItem(**comic_book_info)
 
         result = item.get_comic_info()
 
-        assert 'ComicBookInfo/1.0' in result
-        assert 'file_urls' not in result
-        assert 'id' not in result
-        assert 'referer' not in result
+        assert result == {
+            'ComicBookInfo/1.0': {
+                'comments': 'Tales of the Black Freighter...',
+                'country': 'United States',
+                'credits': [
+                    {'person': 'Moore, Alan', 'role': 'Writer'},
+                    {'person': 'Gibbons, Dave', 'role': 'Artist'}
+                ],
+                'genre': 'Superhero',
+                'issue': 1,
+                'language': 'English',
+                'numberOfIssues': 12,
+                'numberOfVolumes': 1,
+                'publicationMonth': 9,
+                'publicationYear': 1986,
+                'publisher': 'DC Comics',
+                'rating': 5,
+                'series': 'Watchmen',
+                'tags': ['Rorschach', 'Ozymandias', 'Nite Owl'],
+                'title': 'At Midnight, All the Agents',
+                'volume': 1
+            },
+            'appID': 'FavoritesCrawler',
+            'lastModified': 'test',
+            'x-FavoritesCrawler': {'id': 1}
+        }
 
 
 class TestPixivIllustItem:

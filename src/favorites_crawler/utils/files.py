@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import json
 from pathlib import Path
 from shutil import rmtree
@@ -6,7 +8,12 @@ from zipfile import ZipFile
 from favorites_crawler.utils.text import get_yandere_post_id
 
 
-def create_comic_archive(path: Path, comment=b''):
+def create_comic_archive(path: Path, comic_info: dict | None = None) -> Path:
+    comment = bytes(
+        json.dumps(comic_info, ensure_ascii=False),
+        encoding='utf-8'
+    ) if comic_info else b''
+
     archive_name = path.resolve().parent / f'{path.name}.cbz'
     with ZipFile(archive_name, 'x') as zf:
         zf.comment = comment
@@ -16,7 +23,6 @@ def create_comic_archive(path: Path, comment=b''):
             zf.write(f, f.name)
 
     rmtree(path, ignore_errors=True)
-
     return archive_name
 
 

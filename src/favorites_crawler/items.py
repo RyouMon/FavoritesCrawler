@@ -127,6 +127,7 @@ class LemonPicPostItem(BaseItem, ComicBookInfoItem):
 
 @dataclass
 class NHentaiGalleryItem(BaseItem, ComicBookInfoItem):
+    id: int = field(default=None, metadata={'is_ext_comic_info': True})
     title: str = field(default=None, metadata={'is_comic_info': True})
     tags: list = field(default=None, metadata={'is_comic_info': True})
     parodies: str = field(default=None)

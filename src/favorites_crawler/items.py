@@ -1,6 +1,6 @@
 import json
-import datetime
 import os.path
+from datetime import datetime, date
 from dataclasses import dataclass, field, fields
 from urllib.parse import unquote, urlparse
 
@@ -15,7 +15,7 @@ class BaseItem:
     file_urls: list = field(default=None)
     tags: list = field(default=None)
     referer: str = field(default=None)
-    created_time: datetime.datetime = field(default=None)
+    created_time: datetime = field(default=None)
 
     def get_filepath(self, url, spider):
         folder_name = self.get_folder_name(spider)
@@ -30,12 +30,13 @@ class BaseItem:
     def get_folder_name(self, spider):
         name = self.title
         if not name:
-            name = str(datetime.date.today())
+            name = str(date.today())
         return drop_illegal_characters(name)
 
 
 @dataclass
 class ComicBookInfoItem:
+    id: int = field(default=None, metadata={'is_ext_comic_info': True})
     title: str = field(default=None, metadata={'is_comic_info': True})
     series: str = field(default=None, metadata={'is_comic_info': True})
     publisher: str = field(default=None, metadata={'is_comic_info': True})
@@ -54,20 +55,25 @@ class ComicBookInfoItem:
     comments: str = field(default=None, metadata={'is_comic_info': True})
 
     def get_comic_info(self):
-        comic_book_info = {}
-        for f in fields(self):
-            if not f.metadata.get('is_comic_info', False):
-                continue
-            val = getattr(self, f.name)
-            if not val:
-                continue
-            comic_book_info[f.name] = val
-
-        return json.dumps({
+        metadata = {
             'appID': f'FavoritesCrawler',
-            'lastModified': str(datetime.datetime.now()),
-            'ComicBookInfo/1.0': comic_book_info,
-        }, ensure_ascii=False)
+            'lastModified': str(datetime.now()),
+            'ComicBookInfo/1.0': {},
+            'x-FavoritesCrawler': {},
+        }
+        comic_book_info = metadata['ComicBookInfo/1.0']
+        ext_info = metadata['x-FavoritesCrawler']
+        for field_ in fields(self):
+            if field_.metadata.get('is_comic_info', False):
+                value = getattr(self, field_.name)
+                if value:
+                    comic_book_info[field_.name] = value
+            elif field_.metadata.get('is_ext_comic_info', False):
+                value = getattr(self, field_.name)
+                if value:
+                    ext_info[field_.name] = value
+
+        return json.dumps(metadata, ensure_ascii=False)
 
 
 @dataclass

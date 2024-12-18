@@ -135,4 +135,4 @@ class NHentaiGalleryItem(BaseItem, ComicBookInfoItem):
     sort_title: str = field(default=None)
 
     def get_folder_name(self, _):
-        return drop_illegal_characters(self.sort_title)
+        return drop_illegal_characters(self.sort_title) + f' ({self.id})'

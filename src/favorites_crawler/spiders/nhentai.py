@@ -51,6 +51,7 @@ class NHentaiSpider(BaseSpider):
         loader.add_xpath('characters', '//section[@id="tags"]/div[2]//span[@class="name"]/text()')
 
         loader.add_xpath('title', '//h2[@class="title"]/span/text()')
+        loader.add_xpath('title', '//h1[@class="title"]/span/text()')
         loader.add_value('series', loader.get_output_value('title'))
         loader.add_value('volume', loader.get_output_value('title'))
         loader.add_xpath('language', '//section[@id="tags"]/div[6]//span[@class="name"]/text()')
@@ -72,7 +73,7 @@ class NHentaiSpider(BaseSpider):
             if not comic_id:
                 return True
             if comic_id.group(1) in self.comics:
-                self.logger.info('Comic already downloaded, filter URL: %s', link.url)
+                self.logger.info('Comic already downloaded, filter URL: %s', link)
                 self.crawler.stats.inc_value('already_downloaded/filtered')
                 return False
             return True

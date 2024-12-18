@@ -33,3 +33,15 @@ class TestYandereSpider:
 
         assert is_crawled is False
         assert not old_file.exists()
+
+    def test_get_last_bookmark_id(self):
+        spider = YandereSpider()
+        posts = [
+            {'id': 1},
+            {'id': 2},
+            {'id': 3},
+        ]
+
+        actual = spider.get_last_bookmark_id(None, posts=posts)
+
+        assert actual == '1,2,3'

@@ -40,6 +40,7 @@ class YandereSpider(BaseSpider):
     def parse_start_url(self, response, **kwargs):
         """Parse list post url"""
         posts = response.json()
+        self.close_spider_when_bookmark_not_updated(response, posts=posts)
 
         if len(posts) == self.limit:
             self.params['page'] += 1
@@ -81,3 +82,7 @@ class YandereSpider(BaseSpider):
             return True
         path.unlink(missing_ok=True)
         return False
+
+    def get_last_bookmark_id(self, response, **kwargs):
+        posts = kwargs['posts']
+        return ','.join(map(lambda x: str(x.get('id')), posts))

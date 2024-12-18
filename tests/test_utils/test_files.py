@@ -1,3 +1,4 @@
+import json
 from zipfile import ZipFile
 from pathlib import Path
 
@@ -21,7 +22,6 @@ def comic_path(tmp_path):
 
 
 class TestCreateComicArchive:
-
     def test_should_create_an_cbz_archive(self, comic_path):
         tmp_path = comic_path.resolve().parent
 
@@ -37,10 +37,10 @@ class TestCreateComicArchive:
             assert sorted(zf.namelist()) == ['1.jpg', '2.jpg']
 
     def test_should_write_comment_to_archive(self, comic_path):
-        comic_archive = create_comic_archive(comic_path, comment=b"I'm a comic.")
+        comic_archive = create_comic_archive(comic_path, comic_info={'test': 'test'})
 
         with ZipFile(comic_archive) as zf:
-            assert zf.comment == b"I'm a comic."
+            assert zf.comment == b'{"test": "test"}'
 
 
 class TestListYanderePost:

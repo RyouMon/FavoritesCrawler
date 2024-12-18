@@ -1,4 +1,5 @@
-import json
+from __future__ import annotations
+
 import os.path
 from datetime import datetime, date
 from dataclasses import dataclass, field, fields
@@ -54,7 +55,7 @@ class ComicBookInfoItem:
     tags: list = field(default=None, metadata={'is_comic_info': True})
     comments: str = field(default=None, metadata={'is_comic_info': True})
 
-    def get_comic_info(self):
+    def get_comic_info(self) -> dict:
         metadata = {
             'appID': f'FavoritesCrawler',
             'lastModified': str(datetime.now()),
@@ -73,7 +74,7 @@ class ComicBookInfoItem:
                 if value:
                     ext_info[field_.name] = value
 
-        return json.dumps(metadata, ensure_ascii=False)
+        return metadata
 
 
 @dataclass

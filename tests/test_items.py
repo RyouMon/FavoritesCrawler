@@ -81,7 +81,7 @@ class TestComicBookInfoItem:
     def test_to_comic_info_should_not_contains_null(self):
         item = items.ComicBookInfoItem()
 
-        result = item.get_comic_info()
+        result = json.dumps(item.get_comic_info())
 
         assert '"null"' not in result
 
@@ -91,7 +91,7 @@ class TestComicBookInfoItem:
         mock_now.return_value = 'test'
         item = items.ComicBookInfoItem(**comic_book_info)
 
-        result = json.loads(item.get_comic_info())
+        result = item.get_comic_info()
 
         assert result == {
             'ComicBookInfo/1.0': {
@@ -127,10 +127,10 @@ class TestNHentaiGalleryItem:
 
         result = item.get_comic_info()
 
-        assert '"ComicBookInfo/1.0"' in result
-        assert '"file_urls"' not in result
-        assert '"id"' not in result
-        assert '"referer"' not in result
+        assert 'ComicBookInfo/1.0' in result
+        assert 'file_urls' not in result
+        assert 'id' not in result
+        assert 'referer' not in result
 
 
 class TestPixivIllustItem:

@@ -31,7 +31,11 @@ def crawl_yandere():
 def crawl_pixiv():
     """Crawl your favorite illustrations from pixiv."""
     favors_home = get_favors_home()
-    access_token = refresh_pixiv_token(favors_home)
+    try:
+        access_token = refresh_pixiv_token(favors_home)
+    except Exception as e:
+        print(e)
+        exit(1)
     crawl('pixiv', access_token=access_token)
 
 
@@ -66,7 +70,9 @@ def spider_closed(spider):
     print('Dumping Scrapy stats:', stats)
     if spider.name == 'yandere_vote':
         return
-    if not (stats.get('item_scraped_count', 0) + stats.get('item_dropped_count', 0)):
+    if stats.get('finish_reason') == 'fastly-finished':
+        return
+    elif not (stats.get('item_scraped_count', 0) + stats.get('item_dropped_count', 0)):
         print(Panel(
             '[red]Nothing was crawled, your cookies or token may have expired.',
             border_style="red",

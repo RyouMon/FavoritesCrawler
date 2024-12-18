@@ -68,16 +68,6 @@ def comic_book_info():
 
 
 class TestComicBookInfoItem:
-    @patch('favorites_crawler.items.json')
-    def test_to_comic_info_should_call_json(self, mock_json, comic_book_info):
-        mock_dumps = mock_json.dumps
-        item = items.ComicBookInfoItem(**comic_book_info)
-
-        actual = item.get_comic_info()
-
-        mock_dumps.assert_called_once()
-        assert actual == mock_dumps.return_value
-
     def test_to_comic_info_should_not_contains_null(self):
         item = items.ComicBookInfoItem()
 

@@ -118,7 +118,7 @@ class ComicPipeline(BasePipeline):
         if hasattr(item, 'get_comic_info'):
             title = item.get_folder_name(spider)
             if (self.files_path / f'{title}.cbz').exists():
-                raise DropItem(f'Comic file of "{title}" already exist, stop download this comic.')
+                raise DropItem(f'Comic "{title}" already exist, stop downloading this comic.')
             self.comics[title] = item.get_comic_info()
 
         return super().process_item(item, spider)

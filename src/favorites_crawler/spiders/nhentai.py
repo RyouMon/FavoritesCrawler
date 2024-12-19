@@ -39,6 +39,9 @@ class NHentaiSpider(BaseSpider):
         self.comics = list_comics(Path(self.settings.get('FILES_STORE')))
         yield Request(NHENTAI_USER_FAVORITES_URL, cookies=self.cookies)
 
+    def parse_start_url(self, response, **kwargs):
+        self.close_spider_when_bookmark_not_updated(response, **kwargs)
+
     def parse(self, response, **kwargs):
         loader = NHentaiGalleryItemLoader(selector=response)
 
@@ -83,3 +86,7 @@ class NHentaiSpider(BaseSpider):
     def add_cookies(self, request, _):
         request.cookies = self.cookies
         return request
+
+    def get_last_bookmark_id(self, response, **kwargs):
+        comic_ids = response.xpath('//div[@class="container"]/div[@class="gallery-favorite"]/@data-id').getall()
+        return ','.join(comic_ids)

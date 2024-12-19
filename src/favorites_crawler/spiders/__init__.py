@@ -14,6 +14,7 @@ from favorites_crawler.utils.config import load_config, dump_config
 
 class BaseSpider(CrawlSpider, metaclass=ABCMeta):
     custom_settings = {}
+    cookies = None
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

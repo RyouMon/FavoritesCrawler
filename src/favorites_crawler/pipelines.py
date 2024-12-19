@@ -102,24 +102,23 @@ class ComicPipeline(BasePipeline):
     def __init__(self, store_uri, **kwargs):
         super().__init__(store_uri, **kwargs)
         self.files_path = Path(store_uri).resolve()
-        self.comic_comments = {}
+        self.comics = {}
 
     def close_spider(self, spider):
-        for title, comment in self.comic_comments.items():
+        for title, comic_info in self.comics.items():
             folder = self.files_path / title
             if not folder.exists():
                 continue
             try:
-                create_comic_archive(folder, comment=comment)
-            except FileNotFoundError:
-                pass
+                create_comic_archive(folder, comic_info=comic_info)
+            except Exception as e:
+                spider.logger.error('Failed to create cbz file: %r', e)
 
     def process_item(self, item, spider):
         if hasattr(item, 'get_comic_info'):
             title = item.get_folder_name(spider)
             if (self.files_path / f'{title}.cbz').exists():
-                raise DropItem(f'Comic file of "{title}" already exist, stop download this comic.')
-            comment = item.get_comic_info()
-            self.comic_comments[title] = bytes(comment, encoding='utf-8')
+                raise DropItem(f'Comic "{title}" already exist, stop downloading this comic.')
+            self.comics[title] = item.get_comic_info()
 
         return super().process_item(item, spider)

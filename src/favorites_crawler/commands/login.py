@@ -1,4 +1,3 @@
-import os
 import shutil
 from typing import Optional
 
@@ -6,7 +5,7 @@ import typer
 
 from favorites_crawler.utils.auth import CustomGetPixivToken, parse_twitter_likes_url, parser_twitter_likes_features
 from favorites_crawler.utils.config import dump_config, load_config
-from favorites_crawler.constants.path import DEFAULT_FAVORS_HOME
+from favorites_crawler.utils.common import get_favors_home
 
 
 app = typer.Typer(help='Prepare auth information for crawling.', no_args_is_help=True)
@@ -33,10 +32,11 @@ def login_pixiv(
 
     If you do not provide your username and password, you will login manually on the web page
     """
-    favors_home = os.getenv('FAVORS_HOME', DEFAULT_FAVORS_HOME)
+    favors_home = get_favors_home()
     config = load_config(favors_home)
     token_getter = CustomGetPixivToken()
     try:
+        print('Launching chrome...')
         login_info = token_getter.login(username=username, password=password)
     except Exception as e:
         print(f'Failed to login. {e!r}')
@@ -65,7 +65,7 @@ def login_yandere(
     """
     Login to yandere.
     """
-    favors_home = os.getenv('FAVORS_HOME', DEFAULT_FAVORS_HOME)
+    favors_home = get_favors_home()
     config = load_config(favors_home)
     yandere_config = config.setdefault('yandere', {})
     yandere_config['USERNAME'] = username
@@ -104,7 +104,7 @@ def login_twitter(
     6. Copy Authorization, X-Csrf-Token and RequestURL from request(Likes?variables...) input on terminal.\n
     7. Use "Get cookies.txt" browser extension download cookie file.
     """
-    favors_home = os.getenv('FAVORS_HOME', DEFAULT_FAVORS_HOME)
+    favors_home = get_favors_home()
     config = load_config(favors_home)
     twitter_config = config.setdefault('twitter', {})
     try:
@@ -140,7 +140,7 @@ def login_nhentai(
     4. Copy user-agent from any request.\n
     5. Use "Get cookies.txt" browser extension download cookie file.
     """
-    favors_home = os.getenv('FAVORS_HOME', DEFAULT_FAVORS_HOME)
+    favors_home = get_favors_home()
     config = load_config(favors_home)
     nhentai_config = config.setdefault('nhentai', {})
     try:

@@ -1,9 +1,13 @@
-from logging import getLogger
+import os
 
+from loguru import logger
 from jsonpath_rw import parse
 
+from favorites_crawler.constants.path import DEFAULT_FAVORS_HOME
 
-logger = getLogger(__name__)
+
+def get_favors_home():
+    return os.path.expanduser(os.getenv('FAVORS_HOME', DEFAULT_FAVORS_HOME))
 
 
 class DictRouter:
@@ -23,7 +27,7 @@ class DictRouter:
             try:
                 value = value[key]
             except Exception as e:
-                logger.error('Failed to get %s from %r. Reason: %r', path, self.dict_, e)
+                logger.error('Failed to get {} from {!r}. Reason: {!r}', path, self.dict_, e)
                 return default
         return value
 

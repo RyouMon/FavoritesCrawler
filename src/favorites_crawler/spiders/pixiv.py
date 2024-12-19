@@ -1,5 +1,6 @@
-import json
-from urllib.parse import urlencode
+from __future__ import annotations
+
+from urllib.parse import urlencode, urlparse, parse_qs
 
 from scrapy import Request
 from scrapy.exceptions import CloseSpider
@@ -26,17 +27,18 @@ class PixivSpider(BaseSpider):
     def start_requests(self):
         user_id = self.custom_settings.get('USER_ID')
         if not user_id:
-            raise CloseSpider('Did you run "favors login pixiv"?')
+            raise CloseSpider('login-required')
 
         params = {'user_id': user_id, 'restrict': 'public', 'filter': 'for_ios'}
         yield Request(f'{PIXIV_USER_BOOKMARKS_ENDPOINT}?{urlencode(params)}')
 
     def parse_start_url(self, response, **kwargs):
+        self.close_spider_when_bookmark_not_updated(response)
         for request_or_item in self.parse(response, **kwargs):
             yield request_or_item
 
     def parse(self, response, **kwargs):
-        result = json.loads(response.text)
+        result = response.json()
         next_link = result.get('next_url')
         if next_link:
             yield response.follow(next_link)
@@ -55,3 +57,10 @@ class PixivSpider(BaseSpider):
             loader.add_value('user_id', illust.get('user', {}).get('id'))
             loader.add_value('referer', response.url)
             yield loader.load_item()
+
+    def get_last_bookmark_id(self, response, **kwargs):
+        result = response.json()
+        next_link = result.get('next_url')
+        parsed_url = urlparse(next_link)
+        query_params = parse_qs(parsed_url.query)
+        return query_params.get('max_bookmark_id', [None])[0]

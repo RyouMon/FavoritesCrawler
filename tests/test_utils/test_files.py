@@ -1,9 +1,10 @@
+import uuid
 from zipfile import ZipFile
 from pathlib import Path
 
 import pytest
 
-from favorites_crawler.utils.files import create_comic_archive, list_yandere_post
+from favorites_crawler.utils.files import create_comic_archive, list_yandere_post, list_comics, get_comic_id
 
 
 @pytest.fixture
@@ -21,7 +22,6 @@ def comic_path(tmp_path):
 
 
 class TestCreateComicArchive:
-
     def test_should_create_an_cbz_archive(self, comic_path):
         tmp_path = comic_path.resolve().parent
 
@@ -37,10 +37,10 @@ class TestCreateComicArchive:
             assert sorted(zf.namelist()) == ['1.jpg', '2.jpg']
 
     def test_should_write_comment_to_archive(self, comic_path):
-        comic_archive = create_comic_archive(comic_path, comment=b"I'm a comic.")
+        comic_archive = create_comic_archive(comic_path, comic_info={'test': 'test'})
 
         with ZipFile(comic_archive) as zf:
-            assert zf.comment == b"I'm a comic."
+            assert zf.comment == b'{"test": "test"}'
 
 
 class TestListYanderePost:
@@ -82,3 +82,53 @@ class TestListYanderePost:
             '2': 'yande.re 2 b c m.jpeg',
             '3': 'yande.re 3 b c m.jpeg',
         }
+
+
+class TestListComics:
+    def test_list_comics(self, tmp_path: Path):
+        comic_info = {
+            'ComicBookInfo/1.0': {
+                'title': 'At Midnight, All the Agents',
+            },
+            'appID': 'FavoritesCrawler',
+            'lastModified': 'test',
+            'x-FavoritesCrawler': {'id': '1'}
+        }
+        # create dir
+        a_cbz = tmp_path / 'a'
+        b_cbz = tmp_path / 'b'
+        c_cbz = tmp_path / 'child' / 'c'
+        a_cbz.mkdir()
+        b_cbz.mkdir()
+        c_cbz.mkdir(parents=True)
+        # create cbz
+        create_comic_archive(a_cbz, comic_info)
+        comic_info['x-FavoritesCrawler']['id'] = '2'
+        create_comic_archive(b_cbz, comic_info)
+        comic_info['x-FavoritesCrawler']['id'] = '3'
+        create_comic_archive(c_cbz, comic_info)
+
+        actual = list_comics(tmp_path)
+        actual = {k: v.name for k, v in actual.items()}
+
+        assert actual == {
+            '1': 'a.cbz',
+            '2': 'b.cbz',
+            '3': 'c.cbz',
+        }
+
+    def test_get_comic_id(self, tmp_path):
+        uid = uuid.uuid4().hex
+        comic_info = {
+            'ComicBookInfo/1.0': {
+                'title': 'At Midnight, All the Agents',
+            },
+            'appID': 'FavoritesCrawler',
+            'lastModified': 'test',
+            'x-FavoritesCrawler': {'id': uid}
+        }
+        a_cbz = tmp_path / 'a'
+        a_cbz.mkdir()
+        create_comic_archive(a_cbz, comic_info)
+
+        assert get_comic_id(tmp_path / 'a.cbz') == uid

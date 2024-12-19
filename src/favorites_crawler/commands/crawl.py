@@ -10,7 +10,7 @@ from scrapy.spiderloader import SpiderLoader
 
 from favorites_crawler.constants.domains import LMMPIC_DOMAIN, NHENTAI_DOMAIN, TWITTER_DOMAIN
 from favorites_crawler.utils.config import load_config, overwrite_spider_settings
-from favorites_crawler.constants.path import DEFAULT_FAVORS_HOME
+from favorites_crawler.utils.common import get_favors_home
 from favorites_crawler.utils.auth import refresh_pixiv_token
 from favorites_crawler.utils.cookies import load_cookie
 
@@ -30,15 +30,19 @@ def crawl_yandere():
 @app.command('pixiv')
 def crawl_pixiv():
     """Crawl your favorite illustrations from pixiv."""
-    favors_home = os.getenv('FAVORS_HOME', DEFAULT_FAVORS_HOME)
-    access_token = refresh_pixiv_token(favors_home)
+    favors_home = get_favors_home()
+    try:
+        access_token = refresh_pixiv_token(favors_home)
+    except Exception as e:
+        print(e)
+        exit(1)
     crawl('pixiv', access_token=access_token)
 
 
 @app.command('nhentai')
 def crawl_nhentai():
     """Crawl your favorite comics from nhentai."""
-    favors_home = os.path.expanduser(os.getenv('FAVORS_HOME', DEFAULT_FAVORS_HOME))
+    favors_home = get_favors_home()
     cookies = load_cookie(NHENTAI_DOMAIN, favors_home)
     crawl('nhentai', cookies=cookies)
 
@@ -47,7 +51,7 @@ def crawl_nhentai():
 @app.command('twitter')
 def crawl_twitter():
     """Crawl your favorite pictures from twitter."""
-    favors_home = os.path.expanduser(os.getenv('FAVORS_HOME', DEFAULT_FAVORS_HOME))
+    favors_home = get_favors_home()
     cookies = load_cookie(TWITTER_DOMAIN, favors_home)
     crawl('twitter', cookies=cookies)
 
@@ -55,7 +59,7 @@ def crawl_twitter():
 @app.command('lemon')
 def crawl_lemon(id_list: list[str] = typer.Option([], '--id', '-i')):
     """Crawl your favorite photo albums from lemon."""
-    favors_home = os.path.expanduser(os.getenv('FAVORS_HOME', DEFAULT_FAVORS_HOME))
+    favors_home = get_favors_home()
     cookies = load_cookie(LMMPIC_DOMAIN, favors_home)
     crawl('lemon', id_list=id_list, cookies=cookies)
 
@@ -66,7 +70,9 @@ def spider_closed(spider):
     print('Dumping Scrapy stats:', stats)
     if spider.name == 'yandere_vote':
         return
-    if not (stats.get('item_scraped_count', 0) + stats.get('item_dropped_count', 0)):
+    if stats.get('finish_reason') == 'fastly-finished':
+        return
+    elif not (stats.get('item_scraped_count', 0) + stats.get('item_dropped_count', 0)):
         print(Panel(
             '[red]Nothing was crawled, your cookies or token may have expired.',
             border_style="red",
@@ -82,7 +88,7 @@ def crawl(name, **kwargs):
     :param kwargs: kwargs passed to spider's __init__ method
     """
     spider = spider_loader.load(name)
-    favors_home = os.getenv('FAVORS_HOME', DEFAULT_FAVORS_HOME)
+    favors_home = get_favors_home()
     overwrite_spider_settings(spider, favors_home, load_config(favors_home))
     process = CrawlerProcess(scrapy_settings)
     process.crawl(spider, **kwargs)

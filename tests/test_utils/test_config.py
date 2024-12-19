@@ -110,7 +110,7 @@ class TestOverwriteSpiderSettings:
 
         overwrite_spider_settings(spider, '~', user_config)
 
-        assert spider.custom_settings['FILES_STORE'] == os.path.expanduser(os.path.join('~', 'nhentai'))
+        assert spider.custom_settings['FILES_STORE'] == os.path.join('~', 'nhentai')
 
     def test_should_replace_favors_home_in_files_store(self):
         user_config = {'twitter': {'FILES_STORE': os.path.join('$FAVORS_HOME', 'twitter')}}
@@ -118,4 +118,4 @@ class TestOverwriteSpiderSettings:
 
         overwrite_spider_settings(spider, '~', user_config)
 
-        assert spider.custom_settings['FILES_STORE'] == os.path.expanduser(os.path.join('~', 'twitter'))
+        assert spider.custom_settings['FILES_STORE'] == os.path.join('~', 'twitter')

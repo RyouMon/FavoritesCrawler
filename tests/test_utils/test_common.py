@@ -1,9 +1,34 @@
+import os
 from pathlib import Path
 
 import pytest
 
-from favorites_crawler.utils.common import DictRouter
+from favorites_crawler.utils.common import DictRouter, get_favors_home
 from favorites_crawler.utils.files import load_json
+from favorites_crawler.constants.path import DEFAULT_FAVORS_HOME
+
+
+@pytest.mark.parametrize('env,expect', (
+        (
+            os.path.join('~', 'favors'),
+            os.path.expanduser(os.path.join('~', 'favors'))
+        ),
+        (
+            os.path.join('users', 'favors'),
+            os.path.join('users', 'favors')
+        ),
+        (
+            None,
+            os.path.expanduser(DEFAULT_FAVORS_HOME)
+        )
+))
+def test_get_favors_home(env, expect):
+    if env:
+        os.environ['FAVORS_HOME'] = env
+    else:
+        del os.environ['FAVORS_HOME']
+    home = get_favors_home()
+    assert home == expect
 
 
 class TestDictRouter:

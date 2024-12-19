@@ -43,16 +43,16 @@ class TestComicPipeline:
         pipeline = ComicPipeline('mock_path', crawler=None)
         pipeline.files_path = tmp_path
         (tmp_path / 'comic').mkdir()
-        pipeline.comic_comments = {'comic': b'comment'}
+        pipeline.comics = {'comic': sentinel.comic_info}
 
         pipeline.close_spider(None)
 
-        mock_create_comic_archive.assert_called_once_with(tmp_path / 'comic', comment=b'comment')
+        mock_create_comic_archive.assert_called_once_with(tmp_path / 'comic', comic_info=sentinel.comic_info)
 
     @patch('favorites_crawler.pipelines.create_comic_archive')
     def test_should_not_create_comic_archive_when_comic_comments_is_empty(self, mock_create_comic_archive, tmp_path):
         pipeline = ComicPipeline('mock_path', crawler=None)
-        pipeline.comic_comments = {}
+        pipeline.comics = {}
 
         pipeline.close_spider(None)
 

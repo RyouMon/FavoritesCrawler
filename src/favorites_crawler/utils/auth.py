@@ -5,12 +5,14 @@ import re
 from pathlib import Path
 from urllib.parse import unquote
 
+from loguru import logger
 from gppt import GetPixivToken
 from gppt.consts import REDIRECT_URI
 from selenium.common import TimeoutException
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
+from favorites_crawler.exceptions import LoginFailed
 from favorites_crawler.utils.config import dump_config, load_config
 from favorites_crawler.settings import PIXIV_LOGIN_TIMEOUT
 
@@ -31,9 +33,13 @@ def refresh_pixiv_token(home: str | Path):
     pixiv_config = config.get('pixiv', {})
     refresh_token = pixiv_config.get('REFRESH_TOKEN')
     if not refresh_token:
-        raise ValueError('Cannot find refresh_token in config file, did you run `favors login pixiv`?')
+        logger.error('Cannot find refresh_token in config file.')
+        raise LoginFailed(f'Failed to get access token, cannot find refresh_token in config file.')
     token_getter = CustomGetPixivToken()
     login_info = token_getter.refresh(refresh_token)
+    if 'access_token' not in login_info:
+        logger.error('Cannot fine access_token in response: {}', login_info)
+        raise LoginFailed(f"Failed to get access token, cannot fine access_token in response: {login_info}")
     access_token = login_info['access_token']
     pixiv_config['ACCESS_TOKEN'] = access_token
     dump_config(config, home)

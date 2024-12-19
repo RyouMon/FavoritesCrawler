@@ -50,8 +50,8 @@ class TwitterSpider(BaseSpider):
         yield Request(self.current_url, headers=self.headers, cookies=self.cookies)
 
     def parse_start_url(self, response, **kwargs):
-        for item_or_request in self.parse(response, **kwargs):
-            yield item_or_request
+        self.close_spider_when_bookmark_not_updated(response, **kwargs)
+        yield from self.parse(response, **kwargs)
 
     def parse(self, response, **kwargs):
         if response.status == 400:
@@ -87,3 +87,9 @@ class TwitterSpider(BaseSpider):
             'itemContent.tweet_results.result.legacy.created_at',
         ))
         yield loader.load_item()
+
+    def get_last_bookmark_id(self, response, **kwargs):
+        data = response.json()
+        router = DictRouter(data)
+        id_list: list = router.find('$..tweet_results.result.rest_id')
+        return ','.join(id_list)

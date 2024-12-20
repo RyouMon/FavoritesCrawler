@@ -4,7 +4,7 @@ import favorites_crawler.commands.login
 import favorites_crawler.commands.crawl
 import favorites_crawler.commands.restore
 
-__version__ = '0.2.1'
+__version__ = '1.0.0'
 
 app = typer.Typer(
     help='Crawl your personal favorite images, photo albums, comics from website.',

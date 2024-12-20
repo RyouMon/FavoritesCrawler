@@ -36,7 +36,9 @@ def login_pixiv(
     config = load_config(favors_home)
     token_getter = CustomGetPixivToken()
     try:
-        print('Launching chrome...')
+        print('Launching chrome...\n'
+              'If you are running this for the first time and you don\'t have Chrome installed, '
+              'it may take a long time to start Chrome.')
         login_info = token_getter.login(username=username, password=password)
     except Exception as e:
         print(f'Failed to login. {e!r}')

@@ -4,7 +4,7 @@
 
 Crawl your personal favorite images, photo albums, comics from website.
 
-You may prefer [gallery-dl](https://github.com/mikf/gallery-dl), which supports more sites.
+You may prefer [gallery-dl](https://github.com/mikf/gallery-dl), which more powerful and supports more sites.
 
 # Warning!
 - Not ready for production.

@@ -4,6 +4,8 @@
 
 Crawl your personal favorite images, photo albums, comics from website.
 
+You may prefer [gallery-dl](https://github.com/mikf/gallery-dl), which supports more sites.
+
 # Warning!
 - Not ready for production.
 - Appropriately reduce the crawling speed in the future and provide options to set performance, but your account is still at risk of being disabled by the website.

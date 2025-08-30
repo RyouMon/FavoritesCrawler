@@ -16,7 +16,6 @@ You may prefer [gallery-dl](https://github.com/mikf/gallery-dl), which more powe
 # Already support
 - pixiv.net (crawl your liked illust, must login), Thanks for project [PixivPy](https://github.com/upbit/pixivpy).
 - yande.re (crawl your voted posts, require your username)
-- nhentai.net  (crawl your favorite comics, must login)
 - twitter.com (crawl your liked posts, must login)
 
 # Requirements
@@ -71,18 +70,6 @@ run command:
 favors login yandere -u {username}
 ```
 
-## Login NHentai
-1. Get User-Agent and Cookie File
-   1. Open nhentai and login.
-   2. Open dev console (F12) and switch to network tab.
-   3. Open any comic.
-   4. Copy user-agent from any request.
-   5. Use "Get cookies.txt" browser extension download cookie file.
-2. Execute command:
-   ```commandline
-   favors login nhentai -u "{User-Agent}" -c "{Cookie File}"
-   ```
-
 ## Login Twitter
 
 1. Get Authorization, X-Csrf-Token RequestURL and Cookie File
@@ -122,12 +109,6 @@ favors crawl pixiv
 Before run this command, make sure you are already [login](#login-yandere).
 ```
 favors crawl yandere
-```
-
-## Crawl NHentai
-Before run this command, make sure you are already [login](#login-nhentai).
-```
-favors crawl nhantai
 ```
 
 ## Crawl Twitter

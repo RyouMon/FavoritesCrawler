@@ -25,10 +25,11 @@ def replace_space_with_under_scope(text):
 
 def original_url_from_nhentai_thumb_url(url):
     """replace 't' with 'i' in domain, remove 't' from filename.
-    'https://t2.nhentai.net/galleries/154829234522/4t.png'
              |                                      |
     'https://i2.nhentai.net/galleries/154829234522/4.png'
     """
+    if not url.startswith('https:') and url.startswith('//'):
+        url = f'https:{url}'
     return re.sub(r'https://t(.+/\d+)t(\..+)', r'https://i\g<1>\g<2>', url)
 
 

@@ -6,10 +6,13 @@ from favorites_crawler import processors
 from favorites_crawler.processors import tweet_time_2_datetime
 
 
-def test_original_url_from_nhentai_thumb_url():
-    result = processors.original_url_from_nhentai_thumb_url('https://t2.nhentai.net/galleries/154829234522/4t.png')
-    expect = 'https://i2.nhentai.net/galleries/154829234522/4.png'
-    assert result == expect
+@pytest.mark.parametrize('url,expected', (
+        ('https://t2.nhentai.net/galleries/154829234522/4t.png', 'https://i2.nhentai.net/galleries/154829234522/4.png'),
+        ('//t9.nhentai.net/galleries/2947431/20t.jpg', 'https://i9.nhentai.net/galleries/2947431/20.jpg'),
+))
+def test_original_url_from_nhentai_thumb_url(url, expected):
+    result = processors.original_url_from_nhentai_thumb_url(url)
+    assert result == expected
 
 
 @pytest.mark.parametrize('title,expected', (

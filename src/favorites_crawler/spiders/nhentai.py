@@ -16,7 +16,7 @@ class NHentaiSpider(BaseSpider):
     allowed_domains = (NHENTAI_DOMAIN, )
     rules = (
         Rule(
-            LinkExtractor(restrict_xpaths='//section[@class="pagination"]'),
+            LinkExtractor(restrict_xpaths='//section[contains(@class, "pagination")]'),
             process_request='add_cookies',
         ),
         Rule(
@@ -47,7 +47,7 @@ class NHentaiSpider(BaseSpider):
 
         loader.add_value('id', response.url)
         loader.add_value('referer', response.url)
-        loader.add_xpath('file_urls', '//div[@id="thumbnail-container"]//img/@data-src')
+        loader.add_xpath('file_urls', '//div[@class="thumb-container"]//img/@src')
         loader.add_xpath('sort_title', '//h1[@class="title"]/span/text()')
         loader.add_xpath('parodies', '//h2[@class="title"]/span[@class="after"]/text()')
         loader.add_xpath('parodies', '//section[@id="tags"]/div[1]//span[@class="name"]/text()')
